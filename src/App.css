@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+
+body{
+  @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
+  overflow-x-hidden
+}
+
+#root{
+  @apply w-full h-full bg-amber-300
+}
+
+.is-active{
+  z-index: 4;
+}
+
+.is-old{
+  z-index: 3;
+}
+
+.is-intial{
+  
+}
+
+.bg-item.is-active .img:first-child{
+  -webkit-mask: url("#radial-mask-left");
+  mask: url("#radial-mask-left");
+}
+
+.bg-item.is-active .img:last-child{
+  -webkit-mask: url("#radial-mask-right");
+  mask: url("#radial-mask-right");
+}
+
+/* @keyframes dashOffsetSmooth {
+  from{
+    stroke-dashoffset: 314%;
+  }
+  to{
+stroke-dashoffset: -.01%;
+  }
+}
+
+#mask-circle-left {
+  animation: dashOffsetSmooth 2.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+#mask-circle-right {
+  animation: dashOffsetSmooth 2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  animation-delay: 0.3s;
+} */
