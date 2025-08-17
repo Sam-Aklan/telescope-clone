@@ -7,7 +7,7 @@ body{
 }
 
 #root{
-  @apply w-full h-full bg-amber-300
+  @apply w-full h-full bg-[#fffddd] overflow-x-hidden
 }
 
 .is-active{
@@ -18,9 +18,17 @@ body{
   z-index: 3;
 }
 
-.is-intial{
-  
+.intial-pos{
+  position: absolute;
 }
+
+/* .box:hover{
+  width: 7.5rem !important;
+  transition: all .3s ease-in;
+  z-index: 300 !important;
+} */
+
+
 
 .bg-item.is-active .img:first-child{
   -webkit-mask: url("#radial-mask-left");

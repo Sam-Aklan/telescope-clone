@@ -1,7 +1,6 @@
 
 import './App.css'
-import BaseIdea from './components/BaseIdea'
-import Carousel from './components/Carousel'
+import Test_ThumbNails from './components/Test_ThumbNails'
 
 
 
@@ -22,7 +21,9 @@ function App() {
     </div> */}
 
       {/* <BaseIdea/> */}
-      <Carousel/>
+      {/* <Carousel/> */}
+      {/* <div className='bg-red-500 w-60 h-60'/> */}
+      <Test_ThumbNails/>
     </>
   
   )
