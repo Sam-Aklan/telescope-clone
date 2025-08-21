@@ -3,7 +3,7 @@
 
 body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
-  overflow-x-hidden
+  overflow-x-hidden relative
 }
 
 #root{
@@ -40,7 +40,55 @@ body{
   mask: url("#radial-mask-right");
 }
 
-/* @keyframes dashOffsetSmooth {
+.btn-controller{
+  @apply absolute bottom-10! left-1/2 -translate-x-1/2 flex gap-4
+}
+
+.mouse-pointer{
+  @apply bg-green-400 w-20 h-20 rounded-full  transition-transform duration-100 absolute z-25
+}
+
+.person-name{
+  @apply absolute top-[47%] left-1/5 -translate-y-[47%] -translate-x-1/4 text-5xl text-white
+}
+
+.person-description:nth-child(2){
+  @apply absolute top-1/6 right-8 -translate-y-1/6
+}
+
+.person-description:nth-child(3){
+  @apply absolute top-3/4 right-8 -translate-y-3/4
+}
+
+.person-description{
+  @apply text-4xl text-white whitespace-pre-line w-100
+}
+
+.person-description .line {
+  display: inline-block;
+  overflow: hidden;
+  /* color: #ddd8d8; */
+}
+
+.person-description .line > span {
+  display: block;
+  opacity: 0;
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+.person-name{
+  opacity: 0;
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+/* .svg-container{
+  @apply absolute -top-20 -left-10
+} */
+
+
+@keyframes dashOffsetSmooth {
   from{
     stroke-dashoffset: 314%;
   }
@@ -56,4 +104,4 @@ stroke-dashoffset: -.01%;
 #mask-circle-right {
   animation: dashOffsetSmooth 2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
   animation-delay: 0.3s;
-} */
+}

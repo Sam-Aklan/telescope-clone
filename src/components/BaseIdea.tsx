@@ -85,7 +85,7 @@ const BaseIdea = () => {
                   translate: "none",
                   strokeDashoffset: "314%",
                 }}
-                transform="matrix(0.70711,0.70711,-0.70711,0.70711,556.57658,-67.69578)"
+                transform="matrix(0.70711,0.70711,-0.70711,0.70711,456.57658,-67.69578)" 
               ></circle>
             </mask>
             <mask id="radial-mask-right" data-v-5a2fb63a="">
@@ -109,7 +109,7 @@ const BaseIdea = () => {
                   translate: "none",
                   strokeDashoffset: "314%",
                 }}
-                transform="matrix(0.70711,-0.70711,0.70711,0.70711,-345.69578,441.42342)"
+                transform="matrix(0.70711,-0.70711,0.70711,0.70711,-445.69578,441.42342)"
               ></circle>
             </mask>
           </defs>

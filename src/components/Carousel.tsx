@@ -20,11 +20,6 @@ const Carousel = () => {
   const rightCircleRef= useRef<SVGCircleElement>(null)
   const slideRefs = useRef<HTMLDivElement[]>([])
 
-  // Bring next slide to front
-    // nextSlide.classList.add("is-active")
-   
-    // currentSlide.classList.add("is-old")
-
  const {contextSafe}= useGSAP()
 
 const goToSlide = contextSafe((nextIndex:number)=>{
@@ -63,16 +58,18 @@ const goToSlide = contextSafe((nextIndex:number)=>{
       .set(nextSlide, { zIndex: 3})
       .set(currentSlide, { zIndex: 4 })
       .to(leftCircleRef.current, {
-        strokeDashoffset: "314%",
-        duration: 2,
-        ease: "cubic-bezier(0.77, 0, 0.175, 1)",
+        strokeDashoffset: "-314%",
+        duration: 1.5,
+        // ease: "cubic-bezier(0.77, 0, 0.175, 1)",
+        ease:"power3.inOut"
       })
       .to(
         rightCircleRef.current,
         {
-          strokeDashoffset: "314%",
-          duration: 2.5,
-          ease: "cubic-bezier(0.77, 0, 0.175, 1)"
+          strokeDashoffset: "-314%",
+          duration: 1.5,
+          // ease: "cubic-bezier(0.77, 0, 0.175, 1)"
+          ease:"power3"
         },
         0.3
       );
@@ -99,7 +96,9 @@ const ctx =gsap.context(()=>{
     if(i === current)el.classList.add("is-active")
   });
   if (leftCircleRef.current && rightCircleRef.current) {
-    gsap.set([leftCircleRef.current, rightCircleRef.current], { strokeDashoffset: "0%" });
+    leftCircleRef.current.setAttribute("stroke-dashoffset","0%")
+    rightCircleRef.current.setAttribute("stroke-dashoffset","0%")
+    // gsap.set([leftCircleRef.current, rightCircleRef.current], { strokeDashoffset: "0%" });
   }
 })
 
