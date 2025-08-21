@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Federant&display=swap');
 @import "tailwindcss";
 
+@theme{
+
+  --font-federant-regular:"Federant", serif;
+}
 
 body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
-  overflow-x-hidden relative
+  overflow-x-hidden relative  font-federant-regular
 }
 
 #root{
@@ -49,15 +54,15 @@ body{
 }
 
 .person-name{
-  @apply absolute top-[47%] left-1/5 -translate-y-[47%] -translate-x-1/4 text-5xl text-white
+  @apply absolute top-[47%] left-1/5 -translate-y-[47%] -translate-x-1/4 text-5xl text-white uppercase
 }
 
 .person-description:nth-child(2){
-  @apply absolute top-1/6 right-8 -translate-y-1/6
+  @apply absolute top-1/20 right-8 -translate-y-1/6
 }
 
 .person-description:nth-child(3){
-  @apply absolute top-3/4 right-8 -translate-y-3/4
+  @apply absolute top-1/2 right-8 -translate-y-3/4 uppercase
 }
 
 .person-description{
@@ -81,6 +86,7 @@ body{
   opacity: 0;
   transform: translateY(100%);
   will-change: transform;
+  
 }
 
 /* .svg-container{
@@ -88,7 +94,7 @@ body{
 } */
 
 
-@keyframes dashOffsetSmooth {
+/* @keyframes dashOffsetSmooth {
   from{
     stroke-dashoffset: 314%;
   }
@@ -104,4 +110,4 @@ stroke-dashoffset: -.01%;
 #mask-circle-right {
   animation: dashOffsetSmooth 2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
   animation-delay: 0.3s;
-}
+} */

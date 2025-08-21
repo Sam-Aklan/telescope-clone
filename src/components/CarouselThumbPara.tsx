@@ -1,15 +1,15 @@
 import { useGSAP } from '@gsap/react';
 import  { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import TestButton from './Test_Button';
+import TestButton from './TrailingButton';
 import {SplitText} from 'gsap/SplitText'
 gsap.registerPlugin(useGSAP,SplitText);
 const slides = [
-  "./pics/tel-1.jpg",
-  "./pics/tel-2.jpg",
-  "./pics/tel-3.jpg",
-  "./pics/tel-4.jpg",
-  "./pics/tel-5.jpg",
+  "./pics/leonardo.jpg",
+  "./pics/Mari-curl.jpg",
+  "./pics/albert-einstein.jpg",
+  "./pics/Mozart.jpg",
+  "./pics/frida-kahlo.jpg",
 ];
 
 const slidesPara = [
@@ -172,12 +172,12 @@ return ()=> ctx.revert()
           <div className="img w-full h-screen absolute">
             <img
               src={src}
-              alt=""
+              alt="pic"
               className="object-cover w-full max-w-[1080px] h-full absolute"
             />
             <img
               src={src}
-              alt=""
+              alt="pic"
               className="object-cover w-full max-w-full h-full absolute"
             />
           </div>
