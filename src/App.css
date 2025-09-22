@@ -8,11 +8,11 @@
 
 body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
-  overflow-x-hidden relative  font-federant-regular
+  overflow-x-hidden relative  
 }
 
 #root{
-  @apply w-full h-full bg-[#fffddd] overflow-x-hidden
+  @apply w-full h-full bg-white overflow-x-hidden
 }
 
 .is-active{
@@ -34,6 +34,10 @@ body{
 } */
 
 
+
+.bg-item{
+  @apply font-federant-regular
+}
 
 .bg-item.is-active .img:first-child{
   -webkit-mask: url("#radial-mask-left");
@@ -87,6 +91,33 @@ body{
   transform: translateY(100%);
   will-change: transform;
   
+}
+
+.lottie{
+  --tilt:15svh;
+  --color-yellow:#e3f794;
+  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-yellow);
+  font-family: 'Times New Roman', Times, serif;
+}
+
+@media screen and(min-width:1024) {
+  .lottie{
+    --tilt:25svh;
+  --color-yellow:#e3f794;
+  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-yellow);
+  }
 }
 
 /* .svg-container{
