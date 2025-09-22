@@ -1,7 +1,10 @@
 import gsap from "gsap";
+import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin'
 import { drawshapes } from "../../utils/morphShapes";
 import { useEffect, useRef } from "react";
 import { motionPathReverse } from "../../utils/morphShapes";
+
+gsap.registerPlugin(DrawSVGPlugin)
 
 const TasteMorphing = () => {
   const morphingLineRef = useRef<SVGPathElement>(null)
