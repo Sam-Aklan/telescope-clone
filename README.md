@@ -14,7 +14,7 @@ A React implementation of the stunning carousel effect from Telescope.fyi, featu
 
 ## 🛠️ Tech Stack
 
-- **React** (v18+) - UI framework
+- **React** (v19+) - UI framework
 - **Tailwind CSS** - Styling and responsive design
 - **GSAP** (GreenSock Animation Platform) - Advanced animations
 - **GSAP SplitText Plugin** - Text splitting and sequencing effects
