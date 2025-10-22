@@ -82,7 +82,7 @@ function App() {
   
   return (
     <>
-    <ReactLenis root ref={lenisRef} options={{lerp:.5,autoRaf:false}}>
+    <ReactLenis root ref={lenisRef} options={{lerp:.05,autoRaf:false}}>
 
     <div className=" w-full h-screen relative hero">
 
