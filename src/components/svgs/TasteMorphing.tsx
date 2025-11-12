@@ -170,7 +170,7 @@ let currentSampleCount = 30
       <div className="absolute w-full h-full z-5">
 
     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 773 414" width="773" height="414" preserveAspectRatio="xMidYMid meet"
-    style={{width:"100%", height:"100%",transform:"translate3d(0px, 0px, 0px", contentVisibility:"visible"}}
+    style={{width:"100%", height:"100%",transform:"translate3d(0px, 0px, 0px)", contentVisibility:"visible"}}
      >
     <defs>
     <clipPath id="__lottie_element_10">

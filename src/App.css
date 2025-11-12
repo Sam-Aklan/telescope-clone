@@ -104,7 +104,7 @@ body{
 
 @media screen and(min-width:1024) {
   .lottie{
-    --tilt:25svh;
+  --tilt:25svh;
   --color-yellow:#e3f794;
   clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
   width: 100%;
@@ -142,6 +142,20 @@ body{
   mask-size: cover;
   -webkit-mask-position: center;
   mask-position: center;
+}
+
+/* circualr carousel */
+
+.thumbNail{
+  @apply w-10 h-10 md:w-20 md:h-20 lg:w-25 lg:h-25 absolute top-0 left-0
+}
+
+.thumb-slide{
+  @apply w-full h-screen absolute text-3xl
+}
+
+.trailing-image{
+  @apply w-15 h-15 md:w-30 md:h-30 lg:w-40 lg:h-40 absolute 
 }
 
 /* @keyframes dashOffsetSmooth {
