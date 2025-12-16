@@ -81,15 +81,8 @@ const goToSlide = contextSafe((nextIndex:number)=>{
 
 // go next slide
 
-const nextSlide = ()=>{
-
-}
-
 useEffect(()=>{
-// console.log(slideRefs.current)
-// if (slideRefs.current[slides.length - 1]) {
-//   slideRefs.current[slides.length - 1].classList.add("is-active");
-// }
+
 const ctx =gsap.context(()=>{
 
   if(!slideRefs.current.length  || !leftCircleRef.current || !rightCircleRef.current) return
