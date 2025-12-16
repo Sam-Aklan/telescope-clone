@@ -54,19 +54,19 @@ body{
 }
 
 .person-name{
-  @apply absolute top-[47%] left-1/5 -translate-y-[47%] -translate-x-1/4 text-5xl text-white uppercase
+  @apply absolute top-[47%] left-1/5 -translate-y-[47%] -translate-x-1/4 md:-translate-x-2/3 text-xs md:text-lg xl:text-5xl text-white uppercase
 }
 
 .person-description:nth-child(2){
-  @apply absolute top-1/20 right-8 -translate-y-1/6
+  @apply absolute top-1/10 md:top-1/20 right-4 md:right-8 -translate-y-1/6
 }
 
 .person-description:nth-child(3){
-  @apply absolute top-1/2 right-8 -translate-y-3/4 uppercase
+  @apply absolute top-1/2 right-2 md:right-8 -translate-y-1/2 uppercase w-30 md:w-70 xl:w-100
 }
 
 .person-description{
-  @apply text-4xl text-white whitespace-pre-line w-100
+  @apply text-sm md:text-xl xl:text-4xl text-white whitespace-pre-line w-50 md:w-70 xl:w-100
 }
 
 .person-description .line {
@@ -87,6 +87,14 @@ body{
   transform: translateY(100%);
   will-change: transform;
   
+}
+
+.stake.line:first-child{
+  @apply absolute md:top-[45] md:left-[40%] origin-[0%_50%] z-6 md:rotate-0 top-[10%] left-[40%] rotate-90 w-[110%] h-auto md:w-auto
+}
+
+.stake.line:nth-child(2){
+  @apply absolute top-[10%] left-[60%] md:bottom-[45%] md:left-[40%] origin-[0%_50%] z-6 rotate-90 w-[110%] h-auto md:w-auto
 }
 
 /* .svg-container{

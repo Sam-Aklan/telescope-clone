@@ -3,6 +3,8 @@ import  { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import TestButton from './TrailingButton';
 import {SplitText} from 'gsap/SplitText'
+import useWindowSize from '../lib/useWindowSize';
+import { useResponsiveMatrix } from '../lib/useResposiveTranslation';
 gsap.registerPlugin(useGSAP,SplitText);
 const slides = [
   "./pics/leonardo.jpg",
@@ -73,8 +75,7 @@ const slidesBoxes = [
   ]
 ];
   
-  const boxWidth = 3.75;
-  const expandedWidth = 7.5;
+  
 
 const CarousselThumbPara = () => {
 
@@ -151,6 +152,35 @@ const ctx =gsap.context(()=>{
 return ()=> ctx.revert()
 
 },[])
+
+const leftMatrix = useResponsiveMatrix(
+  {
+    a: 0.70711,
+    b: 0.70711,
+    c: -0.70711,
+    d: 0.70711,
+    e: 506.57658,
+    f: -237.69578,
+  },
+  1440,
+  1
+)
+
+const rightMatrix = useResponsiveMatrix(
+  {
+    a: 0.70711,
+    b: -0.70711,
+    c: 0.70711,
+    d: 0.70711,
+    e: -395.69578,
+    f: 271.42342,
+  },
+  1440,
+  1
+)
+
+console.log("right matrix",rightMatrix)
+console.log("left matrix", leftMatrix)
 
   return (
     <>
@@ -232,8 +262,13 @@ return ()=> ctx.revert()
             strokeLinecap="butt"
             cx="25%"
             cy="50%"
-            transform="matrix(0.70711,0.70711,-0.70711,0.70711,506.57658,-117.69578)"
-            // transform="(translate(-20%, 0) rotate(45))"
+            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,506.57658,103.69578)" 2560
+            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,506.57658,-237.69578)" 1440
+            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,406.57658,-367.69578)" 1024
+            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,346.57658,-447.69578)"768
+            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,295.57658,-457.69578)" 320
+            transform="matrix(0.70711,0.70711,-0.70711,0.70711,295.57658,-457.69578)"
+            // transform={leftMatrix ===""?undefined:leftMatrix}
           ></circle>
         </mask>
         <mask id="radial-mask-right">
@@ -248,9 +283,15 @@ return ()=> ctx.revert()
             strokeLinecap="butt"
             cx="25%"
             cy="50%"
-            transform="matrix(0.70711,-0.70711,0.70711,0.70711,-395.69578,391.42342)" 
-            // transform="(translate(20%, 0) rotate(-45))"
+            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-395.69578,611.42342)" 2560
+            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-395.69578,271.42342)" 1440
+            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-495.69578,141.42342)" 1024
+            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-555.69578,61.42342)" 768
+            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-605.69578,51.42342)" 320
+            transform="matrix(0.70711,-0.70711,0.70711,0.70711,-605.69578,51.42342)"
+            //  transform={rightMatrix ===""?undefined:rightMatrix}
           ></circle>
+          
         </mask>
       </defs>
     </svg>
@@ -272,6 +313,29 @@ const ThumbnailBoxes = ({
   const boxesRef = useRef<HTMLDivElement[]>([]);
   const initialPositions = useRef<number[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [boxWidth, setboxWidth] = useState(3.75)
+  const [expandedWidth, setexpandedWidth] = useState(7.5)
+  const {isDesktop,isMobile,isTablet}=useWindowSize()
+
+  useEffect(()=>{
+    if(isMobile) {
+      setboxWidth(1.875)
+      setexpandedWidth(3.75)
+      return
+    }
+    if(isTablet){
+       setboxWidth(2.5)
+      setexpandedWidth(5)
+      return
+    }
+    if(isDesktop){
+       setboxWidth(3.75)
+      setexpandedWidth(7.5)
+      return
+    }
+  },[isMobile,isDesktop,isTablet])
+ 
+  // console.log("box width",boxWidth)
 
   const { contextSafe } = useGSAP(
     () => {
@@ -362,7 +426,7 @@ const ThumbnailBoxes = ({
   };
 
   return (
-    <div className={`absolute -bottom-8 -right-32 ${isActive? "z-20":"z-15"}`}>
+    <div className={`absolute -bottom-30 md:-bottom-8  -right-32 ${isActive? "z-20":"z-15"}`}>
       <div className="relative h-50 w-100 overflow-hidden">
         {boxes.map((box, i) => (
           <div
@@ -370,7 +434,7 @@ const ThumbnailBoxes = ({
             ref={(el) => {
               if (el) boxesRef.current[i] = el;
             }}
-            className="absolute rounded-2xl shadow-lg w-30 h-30"
+            className="absolute rounded-2xl shadow-lg w-15 h-15 md:w-20 md:h-20 xl:w-30 xl:h-30"
             style={{
               zIndex: 0,
               background: `linear-gradient(to top left, ${box.from}, ${box.to})`,
@@ -432,7 +496,7 @@ const ThumbnailBoxes = ({
   
     return (
       <div ref={containerRef} className={`absolute w-full h-screen flex flex-col justify-center items-center ${isActive?"z-20":"z-0"}`}>
-        <div className="person-name text-6xl font-bold mb-4 text-white">{person.personname}</div>
+        <div className="person-name text-sm xl:text-6xl font-bold mb-4 text-white">{person.personname}</div>
         <div className="person-description ">{person.description1}</div>
         <div className="person-description ">{person.description2}</div>
       </div>
@@ -444,36 +508,35 @@ const ThumbnailBoxes = ({
 
 
 const Stakes = () => {
-    useGSAP(()=>{
-        gsap.fromTo(".line",
-          {
-            rotate:0
-          },
-          {
-            rotate:(index)=> index / 2 ===0?-45:45,
-            duration:1,
-        })
-    })
+  const {isMobile}= useWindowSize()
+    // useGSAP(()=>{
+    //     gsap.fromTo(".line",
+    //       {
+    //         rotate:isMobile?90:0
+    //       },
+    //       {
+    //         rotate:(index)=>{ 
+    //           console.log("stake index", index)
+    //           if(isMobile) return index / 2 ===0? 135: 45
+    //           return index / 2 ===0?-45:45
+    //         }
+    //           ,
+    //         duration:1,
+    //     })
+    // })
     return (
       <>
       
-        <div className="line"
-        style={{
-            position:"absolute",
-            top:"45%",
-            left:"40%",
-            transform:`translate(-25%,-45%)`,
-            transformOrigin:"left center",
-            zIndex:6,
-            
-        }}>
+        <div className="stake line "
+        >
           <svg
             height="6"
             viewBox="0 0 1426 6"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={{
-                width:"100%"
+                width:"100%",
+                
             }}
           >
             <path
@@ -484,16 +547,9 @@ const Stakes = () => {
             />
           </svg>
         </div>
-        <div className=" line"
-        style={{
-            position:"absolute",
-            bottom:"45%",
-            left:"40%",
-            transform:`translate(-25%,-45%)`,
-            transformOrigin:"left center",
-            zIndex:6,
-            
-        }}>
+        <div className="stake line "
+       
+        >
           <svg
             // className='line'
             height="6"
