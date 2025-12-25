@@ -1,10 +1,11 @@
 import { useGSAP } from '@gsap/react';
 import  { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import TestButton from './TrailingButton';
+import TrialingButton from './TrailingButton';
 import {SplitText} from 'gsap/SplitText'
-import useWindowSize from '../lib/useWindowSize';
-import { useResponsiveMatrix } from '../lib/useResposiveTranslation';
+import useWindowSize from '../../lib/useWindowSize';
+import { useResponsiveMatrix } from '../../lib/useResposiveTranslation';
+import MobileCarouselBtns from './MobileCarouselBtns';
 gsap.registerPlugin(useGSAP,SplitText);
 const slides = [
   "./pics/leonardo.jpg",
@@ -17,27 +18,27 @@ const slides = [
 const slidesPara = [
   { 
     personname: "Leonardo da Vinci", 
-    description1: "Renaissance polymath and universal genius.\nWhose extraordinary intellect spanned multiple.\ndisciplines including art, science, engineering.", 
+    description1: "Renaissance polymath and universal genius.\nWhose extraordinary intellect spanned multiple.", 
     description2: "Mona Lisa & Last.\nSupper artist." 
   },
   { 
     personname: "Marie Curie", 
-    description1: "Groundbreaking physicist and chemist.\nFirst woman to win a Nobel Prize.\nOnly person to win Nobel Prizes in two fields.", 
+    description1: "Groundbreaking physicist and chemist.\nOnly person to win Nobel Prizes in two fields.", 
     description2: "Pioneer in.\nRadioactivity research." 
   },
   { 
     personname: "Albert Einstein", 
-    description1: "Revolutionary theoretical physicist.\nTransformed our understanding of space.\nAnd time, one of history's most influential scientists.", 
+    description1: "Revolutionary theoretical physicist.\nAnd time, one of history's most influential scientists.", 
     description2: "Developed theory.\nof relativity." 
   },
   { 
     personname: "Mozart", 
-    description1: "Prolific Classical era composer.\nBegan composing at age five.\nProduced over 600 defining works.", 
+    description1: "Began composing at age five.\nProduced over 600 defining works.", 
     description2: "Child prodigy.\nMusical genius." 
   },
   { 
     personname: "Frida Kahlo", 
-    description1: "Mexican surrealist painter known.\nFor vibrant, personal self-portraits.\nExplored identity, pain, and Mexican culture.", 
+    description1: "Mexican surrealist painter known.\nExplored identity, pain, and Mexican culture.", 
     description2: "Iconic self-portrait.\nartist and feminist icon." 
   }
 ];
@@ -84,6 +85,7 @@ const CarousselThumbPara = () => {
   const leftCircleRef= useRef<SVGCircleElement>(null)
   const rightCircleRef= useRef<SVGCircleElement>(null)
   const slideRefs = useRef<HTMLDivElement[]>([])
+  const maskContainerRef=useRef<HTMLDivElement>(null)
  const {contextSafe}= useGSAP()
 
 const goToSlide = contextSafe((nextIndex:number)=>{
@@ -153,40 +155,46 @@ return ()=> ctx.revert()
 
 },[])
 
+const {debouncedWindowSize}=useWindowSize()
+
+
 const leftMatrix = useResponsiveMatrix(
   {
-    a: 0.70711,
-    b: 0.70711,
-    c: -0.70711,
-    d: 0.70711,
-    e: 506.57658,
-    f: -237.69578,
+  containerRef:maskContainerRef,
+  xPercent: debouncedWindowSize.width < 1024 ? .5 : .25,
+  yPercent: debouncedWindowSize.width < 1024 ? .25: .5,
+  rotationDegree:debouncedWindowSize.width>=1024?45:135,
   },
-  1440,
-  1
 )
 
 const rightMatrix = useResponsiveMatrix(
   {
-    a: 0.70711,
-    b: -0.70711,
-    c: 0.70711,
-    d: 0.70711,
-    e: -395.69578,
-    f: 271.42342,
+  containerRef:maskContainerRef,
+  xPercent: debouncedWindowSize.width < 1024 ? .5 : .25,
+  yPercent: debouncedWindowSize.width < 1024 ? .25: .5,
+  rotationDegree:debouncedWindowSize.width >=1024?-45:45
   },
-  1440,
-  1
+ 
 )
 
-console.log("right matrix",rightMatrix)
-console.log("left matrix", leftMatrix)
+// console.log("left matrix", leftMatrix)
+// console.log("right matrix",rightMatrix)
 
   return (
     <>
-    <div className="w-full h-screen relative overflow-hidden">
+    <div className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
 
-    <Stakes/>
+    <Stakes isMobile ={debouncedWindowSize.width<1024}/>
+
+    <div className="absolute top-0   left-1/2 -translate-x-1/2 w-0.25 h-full bg-red-600 z-10"></div>
+      <div className="absolute top-1/4  -translate-y-1/4 left-0 w-full h-0.25 bg-red-600 z-10"></div>
+
+    {/* <div className="absolute top-0 left-1/4 h-full w-1 bg-red-600 z-10"></div> */}
+    {/* <div className="absolute top-0 left-[50%] -translate-x-1/2 h-full w-0.5 bg-red-600 z-10">
+    </div> */}
+    {/* <div className="absolute top-1/2 left-0 -translate-y-1/4 h-0.5 w-full bg-red-600 z-10">
+    </div> */}
+
       {slides.map((src, i) => (
         <div
         key={i}>
@@ -200,11 +208,11 @@ console.log("left matrix", leftMatrix)
         >
           {/* First half */}
           <div className="img w-full h-screen absolute">
-            <img
+            {/* <img
               src={src}
               alt="pic"
               className="object-cover w-full max-w-[1080px] h-full absolute"
-            />
+            /> */}
             <img
               src={src}
               alt="pic"
@@ -214,11 +222,11 @@ console.log("left matrix", leftMatrix)
 
           {/* Second half */}
           <div className="img w-full h-screen">
-            <img
+            {/* <img
               src={src}
               alt=""
               className="object-cover w-full max-w-[1080px] h-full absolute"
-            />
+            /> */}
             <img
               src={src}
               alt=""
@@ -232,23 +240,24 @@ console.log("left matrix", leftMatrix)
         
         
 
-          <ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} />
+          {debouncedWindowSize.width>=1024?<ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} />:undefined}
         
         </div>
         
       ))}
     <div className='absolute w-full h-screen'>
 
-    <TestButton goToSlide={goToSlide} currentIndex={current}/>
+    {debouncedWindowSize.width>=1024?<TrialingButton goToSlide={goToSlide} currentIndex={current}/>: <MobileCarouselBtns currentIndex={current} goToSlide={goToSlide}/>}
     </div>
     </div>
 
 
 
     {/* SVG Masks */}
-    <div className='svg-container'>
+    <div className='svg-container '>
 
- <svg width="0" height="0" viewBox="0 0 1440 1276" className='absolute'>
+ {/* SVG Masks */}
+    <svg width="0" height="0" viewBox={`0 0 ${Math.min(1440,debouncedWindowSize.width)} ${debouncedWindowSize.height}`}>
       <defs>
         <mask id="radial-mask-left">
           <circle
@@ -260,15 +269,9 @@ console.log("left matrix", leftMatrix)
             strokeDasharray="314%"
             strokeDashoffset="314%"
             strokeLinecap="butt"
-            cx="25%"
-            cy="50%"
-            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,506.57658,103.69578)" 2560
-            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,506.57658,-237.69578)" 1440
-            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,406.57658,-367.69578)" 1024
-            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,346.57658,-447.69578)"768
-            // transform="matrix(0.70711,0.70711,-0.70711,0.70711,295.57658,-457.69578)" 320
-            transform="matrix(0.70711,0.70711,-0.70711,0.70711,295.57658,-457.69578)"
-            // transform={leftMatrix ===""?undefined:leftMatrix}
+            cx={debouncedWindowSize.width>=1024?"25%":"50%"}
+            cy={debouncedWindowSize.width>=1024?"50%":"25%"}
+            transform={leftMatrix !==''?leftMatrix:undefined}
           ></circle>
         </mask>
         <mask id="radial-mask-right">
@@ -281,17 +284,10 @@ console.log("left matrix", leftMatrix)
             strokeDasharray="314%"
             strokeDashoffset="314%"
             strokeLinecap="butt"
-            cx="25%"
-            cy="50%"
-            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-395.69578,611.42342)" 2560
-            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-395.69578,271.42342)" 1440
-            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-495.69578,141.42342)" 1024
-            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-555.69578,61.42342)" 768
-            // transform="matrix(0.70711,-0.70711,0.70711,0.70711,-605.69578,51.42342)" 320
-            transform="matrix(0.70711,-0.70711,0.70711,0.70711,-605.69578,51.42342)"
-            //  transform={rightMatrix ===""?undefined:rightMatrix}
+            cx={debouncedWindowSize.width>=1024?"25%":"50%"}
+            cy={debouncedWindowSize.width>=1024?"50%":"25%"}
+            transform={rightMatrix !==''?rightMatrix:undefined}
           ></circle>
-          
         </mask>
       </defs>
     </svg>
@@ -347,13 +343,13 @@ const ThumbnailBoxes = ({
 
         gsap.set(boxesRef.current, {
           opacity: 1,
-          scaleX: 1,
           x: (index) => `${initialPositions.current[index]}rem`,
           zIndex: 20,
           pointerEvents: "auto",   
         });
 
         const tl = gsap.timeline();
+       
         tl.fromTo(
           boxesRef.current,
           { opacity: 0, pointerEvents: "none" },
@@ -367,7 +363,7 @@ const ThumbnailBoxes = ({
             delay: 0.2,
           }
         ).to(boxesRef.current, {
-          scaleX: 1, 
+          
           width:`${boxWidth}rem`,
           x: (index) => `${initialPositions.current[index]}rem`,
           zIndex: 20,
@@ -382,40 +378,76 @@ const ThumbnailBoxes = ({
         });
       }
     },
-    { dependencies: [isActive], revertOnUpdate: true }
+    { dependencies: [isActive,boxWidth], revertOnUpdate: true }
   );
 
   // expand on hover
   const expandBox = contextSafe((index: number) => {
-    if (activeIndex !== null && activeIndex !== index) {
-      // reset previously expanded
-      gsap.to(boxesRef.current[activeIndex], {
-        scaleX: 1,
-        duration: 0.3,
-      });
-    }
+    // if (activeIndex !== null && activeIndex !== index) {
+    //   // reset previously expanded
+    //   gsap.to(boxesRef.current[activeIndex], {
+    //     width: `${boxWidth}rem`,
+    //     duration: 0.3,
+    //   });
+    // }
+    const tl = gsap.timeline();
+    console.log("expanded", index)
 
-    gsap.to(boxesRef.current[index], {
-      scaleX: expandedWidth / boxWidth, // expand relative to original width
-      transformOrigin: "left center", // expand from center
+    tl.to(boxesRef.current[index], {
+      width: `${expandedWidth}rem`, // expand relative to original width
+      transformOrigin: "right center", // expand from center
       zIndex: 50,
       duration: 0.3,
     });
+
+    // Shift boxes AFTER hovered one
+  boxesRef.current.forEach((box, i) => {
+    if (i > index ) {
+      tl.to(
+        box,
+        {
+          x: `${initialPositions.current[i] + boxWidth}rem`,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        "<" // sync with width animation
+      );
+    }
+  });
 
     setActiveIndex(index);
   });
 
   // shrink on mouse leave
   const shrinkBox = contextSafe((index: number) => {
-    if (activeIndex === index) {
-      gsap.to(boxesRef.current[index], {
-        scaleX: 1,
-        zIndex: 20,
-        duration: 0.3,
-      });
-      setActiveIndex(null);
+    if(activeIndex !==index) return
+    const tl = gsap.timeline();
+
+  // Reset width
+  tl.to(boxesRef.current[index], {
+    width: `${boxWidth}rem`,
+    zIndex: 20,
+    duration: 0.3,
+    ease: "power2.inOut",
+  });
+
+  // Reset positions
+  boxesRef.current.forEach((box, i) => {
+    if(index !==i){
+
+      tl.to(
+        box,
+        {
+          x: `${initialPositions.current[i]}rem`,
+          duration: 0.3,
+          ease: "power2.inOut",
+        },
+        "<"
+      );
     }
   });
+    setActiveIndex(null);
+  },);
 
   const handleMouseEnter = (index: number) => () => {
     expandBox(index);
@@ -426,7 +458,7 @@ const ThumbnailBoxes = ({
   };
 
   return (
-    <div className={`absolute -bottom-30 md:-bottom-8  -right-32 ${isActive? "z-20":"z-15"}`}>
+    <div className={`absolute -bottom-30 md:-bottom-8  -right-32 ${isActive? "z-30":"z-25"}`}>
       <div className="relative h-50 w-100 overflow-hidden">
         {boxes.map((box, i) => (
           <div
@@ -492,7 +524,7 @@ const ThumbnailBoxes = ({
       }
   
       
-    }, { dependencies: [isActive],scope:containerRef });
+    }, { dependencies: [isActive],scope:containerRef,revertOnUpdate:true });
   
     return (
       <div ref={containerRef} className={`absolute w-full h-screen flex flex-col justify-center items-center ${isActive?"z-20":"z-0"}`}>
@@ -507,66 +539,42 @@ const ThumbnailBoxes = ({
 
 
 
-const Stakes = () => {
-  const {isMobile}= useWindowSize()
-    // useGSAP(()=>{
-    //     gsap.fromTo(".line",
-    //       {
-    //         rotate:isMobile?90:0
-    //       },
-    //       {
-    //         rotate:(index)=>{ 
-    //           console.log("stake index", index)
-    //           if(isMobile) return index / 2 ===0? 135: 45
-    //           return index / 2 ===0?-45:45
-    //         }
-    //           ,
-    //         duration:1,
-    //     })
-    // })
+const Stakes = ({isMobile}:{isMobile:boolean}) => {
+  
+    useGSAP(()=>{
+      console.log("mobile",isMobile)
+      gsap.set(".stake.line",{
+        rotate:()=> isMobile?90:0
+      })
+        gsap.fromTo(".stake.line",
+          {
+            rotate:isMobile?90:0
+          },
+          {
+            rotate:(index)=>{ 
+             
+              if(isMobile){ 
+                return index / 2 ===0? 135: 45
+                // return 90
+
+              }
+              return index / 2 ===0?-45:45
+            }
+              ,
+            duration:1,
+        })
+    },{dependencies:[isMobile]})
+    console.log("isMobile", isMobile)
     return (
       <>
       
-        <div className="stake line "
+        <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-1 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left  z-6 "
         >
-          <svg
-            height="6"
-            viewBox="0 0 1426 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{
-                width:"100%",
-                
-            }}
-          >
-            <path
-              d="M3 3H1423"
-              stroke="#ddd8d8"
-              strokeWidth="10"
-              strokeLinecap="round"
-            />
-          </svg>
+
         </div>
-        <div className="stake line "
+        <div className="stake line absolute top-1/4 -translate-y-1/4 left-[52%] z-6  w-[70%] h-1 origin-top-left  bg-white lg:top-[50.5%] lg:left-1/4"
        
         >
-          <svg
-            // className='line'
-            height="6"
-            viewBox="0 0 1426 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{
-                width:"100%"
-            }}
-          >
-            <path
-              d="M3 3H1423"
-              stroke="#ddd8d8"
-              strokeWidth="10"
-              strokeLinecap="round"
-            />
-          </svg>
         </div>
       </>
      
