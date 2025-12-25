@@ -65,12 +65,10 @@ const CircularCarousel = () => {
     },
     
         onEnterBack:()=>{
-          console.log("enter back")
           gsap.set(".thumbNail",{opacity:1})
         }
       },
       onComplete:()=>{
-        console.log("animation completed",)
         gsap.set(".thumbNail",{opacity:0})
       },
       
