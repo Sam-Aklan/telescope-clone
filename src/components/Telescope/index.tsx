@@ -1,8 +1,8 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { useEffect, useRef } from "react"
-import TelescopeHeader from "./Test_TelescopHeader"
-import TelescopeContent from "./Test_TelescopeContent"
+import TelescopeHeader from "./TelescopHeader"
+import TelescopeContent from "./TelescopeContent"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 gsap.registerPlugin([ScrollTrigger])
 
