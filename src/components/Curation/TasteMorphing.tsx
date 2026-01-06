@@ -3,8 +3,9 @@ import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin'
 import { drawshapes } from "../../utils/morphShapes";
 import { useEffect, useRef } from "react";
 import { motionPathReverse } from "../../utils/morphShapes";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(DrawSVGPlugin)
+gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger)
 
 const TasteMorphing = () => {
   const morphingLineRef = useRef<SVGPathElement>(null)
@@ -24,7 +25,10 @@ let currentSampleCount = 30
 
     const ctx = gsap.context(() => {
       gsap.set(".path-stroke", { drawSVG: "0%" })
-      const tl = gsap.timeline({ defaults: { ease: "none" },repeat:-1 })
+      gsap.set(morphingLineRef.current,{
+        strokeOpacity:0,
+      })
+      const tl = gsap.timeline({ defaults: { ease: "none" },repeat:-1 ,paused:true})
 
       const updateLineMorph = () => {
        
@@ -82,11 +86,14 @@ let currentSampleCount = 30
 
       }
 
+      // const progress =gsap.getProperty(".curation","--curation-progress",)
+      // console.log("progress",progress,"progrestype",typeof progress)
       // Main animation
+      // if(Number(progress) <.5) return
       tl.to({}, {
         duration,
         onUpdate: updateLineMorph,
-        ease:"none"
+        ease:"none",
       })
 
       // Insert pauses at given times
@@ -94,7 +101,7 @@ let currentSampleCount = 30
       pauseTimes.forEach(time => {
         tl.call(() => {
           tl.pause()
-          console.log("Paused at", time)
+          // console.log("Paused at", time)
 
           // Resume automatically after 1 second (optional)
           gsap.delayedCall(1, () => tl.resume())
@@ -157,20 +164,46 @@ let currentSampleCount = 30
         }
       },6.32)
 
+       ScrollTrigger.create({
+      trigger:".lottie.section",
+      start:"top 95%",
+      end:"bottom 100%",
+       onEnter: () => {
+    tl.play(); // Start the timeline when element comes into view
+    gsap.set(morphingLineRef.current,{
+      strokeOpacity:1,
+    })
+  },
+  onEnterBack: () => {
+    tl.play(); // Also play when scrolling back up
+  },
+  onLeave: () => {
+    tl.pause(); // Pause when leaving view
+  },
+  onLeaveBack: () => {
+    tl.pause(); // Pause when scrolling back up and leaving view
+  }
+    })
+
 
     })
+
+   
 
     return () => ctx.revert()
   }, [])
   return (
-    <div className="w-full h-full relative">
-      <div className="absolute w-full h-full  z-10 flex justify-center items-center">
-        <p className="text-9xl">taste</p>
+    <div className="lottie section">
+     <div className="curate-inner">
+      <div className="curation-text">
+        tast
       </div>
-      <div className="absolute w-full h-full z-5">
+     </div>
+      
+      <div >
 
     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 773 414" width="773" height="414" preserveAspectRatio="xMidYMid meet"
-    style={{width:"100%", height:"100%",transform:"translate3d(0px, 0px, 0px", contentVisibility:"visible"}}
+    style={{width:"100%", height:"100%",transform:"translate3d(0px, 0px, 0px)", contentVisibility:"visible"}}
      >
     <defs>
     <clipPath id="__lottie_element_10">

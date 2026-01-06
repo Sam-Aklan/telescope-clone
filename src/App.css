@@ -1,9 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Federant&display=swap');
 @import "tailwindcss";
 
+:root{
+  --tilt:15svh;
+  --color-yellow:#e3f794;
+  --curate-font-size:5.8rem;
+}
+
 @theme{
 
   --font-federant-regular:"Federant", serif;
+  --font-cm-geom-regular:"CM Geom", serif;
+  --color-primary: var(--color-yellow);
+  --text-curate:var(--curate-font-size);
+  /* --text-curate--line-height: .5rem;   */
+  --text-curate--font-weight: 400; 
+}
+
+@font-face {
+  font-family: "CM Geom";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/cmgeom-regular.woff2") format("woff2");
 }
 
 body{
@@ -12,7 +31,7 @@ body{
 }
 
 #root{
-  @apply w-full h-full bg-white overflow-x-hidden
+  @apply w-full h-full bg-white 
 }
 
 .is-active{
@@ -26,13 +45,6 @@ body{
 .intial-pos{
   position: absolute;
 }
-
-/* .box:hover{
-  width: 7.5rem !important;
-  transition: all .3s ease-in;
-  z-index: 300 !important;
-} */
-
 
 
 .bg-item{
@@ -93,52 +105,102 @@ body{
   
 }
 
+.curation{
+ --curation-progress:0.0;
+}
+
+.curation >.curate{
+  @apply h-[70svh] lg:h-[150svh]  bg-primary relative  -mb-[40svh] lg:-mb-[110svh] 
+}
+/* .curation >.curate{
+  @apply h-[70svh] lg:h-[150svh] -mb-[40svh] lg:-mb-[110svh] bg-primary relative 
+} */
+
+.curation .curate-inner{
+  @apply text-center text-curate font-cm-geom-regular absolute top-1/2 left-1/2 -translate-1/2 text-nowrap
+}
+/* .curation .curate-inner{
+  @apply w-full   text-center pt-[25svh] pb-[40svh] text-curate font-cm-geom-regular 
+} */
+
+
+.curation .curation-text{
+  @apply w-fit h-fit
+}
+
+
+.curation >.curate{
+  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 100%);
+  transform: translate(0%, -50%);
+}
+
+.curation >.your{
+  @apply h-[70svh] lg:h-[150svh] bg-white -mb-[40svh] lg:-mb-[115svh]
+}
+/* .curation >.your{
+  @apply h-[70svh] lg:h-[150svh] relative -mb-[40svh] lg:-mb-[115svh] bg-white
+} */
+
+.curation >.your{
+  clip-path: polygon(0 0, 100% var(--tilt), 100% 100%, 0 100%);
+  transform: translate(0%, -30%);
+}
+
 .lottie{
-  --tilt:15svh;
-  --color-yellow:#e3f794;
-  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-yellow);
-  font-family: 'Times New Roman', Times, serif;
+  @apply h-[60svh] lg:h-[90svh] relative bg-primary
 }
 
-@media screen and(min-width:1024) {
-  .lottie{
+.lottie svg{
+  @apply absolute top-0 left-0
+}
+
+.lottie{
+  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
+}
+
+@media screen and (min-width:1024px) {
+
+  :root{
+  --desktop-width:1512;
+  --desktop-height: 982;
     --tilt:25svh;
-  --color-yellow:#e3f794;
+    --curate-font-size:max(250px, min(100 * calc(250 / var(--desktop-width)) * 1vw, 100 * calc(250 / var(--desktop-height)) * 1svh));
+  }
+
+  .curation >.curate{
+  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 100%);
+  transform: translate(0%, -37%);
+}
+
+.curation >.your{
+  clip-path: polygon(0 0, 100% var(--tilt), 100% 100%, 0 100%);
+  transform: translate(0%, -23%);
+}
+
+  .curation .section{
+    @apply relative
+  }
+  .curation .section{
+    translate: 0% 37%;
+  }
+
+  .curation >.curate .curate-inner{
+  transform: translate(0%,-45%);
+} 
+
+.curation >.your .curate-inner{
+  transform: translate(0%, -55%);
+}
+
+.curation >.lottie .curate-inner{
+  --x-translation:0.0%;
+  transform: translate(var(--x-translation),0%) !important;
+} 
+
+  /* .lottie{
+  
   clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-yellow);
-  }
+  
+  } */
 }
 
-/* .svg-container{
-  @apply absolute -top-20 -left-10
-} */
-
-
-/* @keyframes dashOffsetSmooth {
-  from{
-    stroke-dashoffset: 314%;
-  }
-  to{
-stroke-dashoffset: -.01%;
-  }
-}
-
-#mask-circle-left {
-  animation: dashOffsetSmooth 2.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-#mask-circle-right {
-  animation: dashOffsetSmooth 2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-  animation-delay: 0.3s;
-} */
