@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 :root{
-  --tilt:15svh;
+  --tilt:10svh;
   --color-yellow:#e3f794;
   --curate-font-size:5.8rem;
 }
@@ -27,7 +27,7 @@
 
 body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
-  overflow-x-hidden relative  
+   relative  
 }
 
 #root{
@@ -105,9 +105,10 @@ body{
   
 }
 
-.curation{
- --curation-progress:0.0;
-}
+.curation .section{
+    translate: 0% 50%;
+    overflow: hidden;
+  }
 
 .curation >.curate{
   @apply h-[70svh] lg:h-[150svh]  bg-primary relative  -mb-[40svh] lg:-mb-[110svh] 
@@ -134,16 +135,22 @@ body{
   transform: translate(0%, -50%);
 }
 
+.curation >.curate .curate-inner{
+  transform: translate(0%, -20%);
+}
+
 .curation >.your{
   @apply h-[70svh] lg:h-[150svh] bg-white -mb-[40svh] lg:-mb-[115svh]
 }
-/* .curation >.your{
-  @apply h-[70svh] lg:h-[150svh] relative -mb-[40svh] lg:-mb-[115svh] bg-white
-} */
+
 
 .curation >.your{
   clip-path: polygon(0 0, 100% var(--tilt), 100% 100%, 0 100%);
   transform: translate(0%, -30%);
+}
+
+.curation >.your .curate-inner{
+  transform: translate(0%, -20%);
 }
 
 .lottie{
@@ -156,6 +163,35 @@ body{
 
 .lottie{
   clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
+}
+
+.curation >.lottie .curate-inner{
+  --x-translation:0.0%;
+  transform: translate(var(--x-translation),0%) !important;
+} 
+
+@media screen and(min-width:768) {
+  :root{
+     --tilt:15svh;
+  }
+  .curation .section{
+    translate: 0% 37%;
+  }
+
+  .curation >.curate{
+  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 100%);
+  transform: translate(0%, -50%);
+}
+.curation >.your{
+  clip-path: polygon(0 0, 100% var(--tilt), 100% 100%, 0 100%);
+  transform: translate(0%, -30%);
+}
+
+/* .curation >.lottie .curate-inner{
+  --x-translation:0.0%;
+  transform: translate(var(--x-translation),0%) !important;
+}  */
+
 }
 
 @media screen and (min-width:1024px) {
@@ -192,10 +228,7 @@ body{
   transform: translate(0%, -55%);
 }
 
-.curation >.lottie .curate-inner{
-  --x-translation:0.0%;
-  transform: translate(var(--x-translation),0%) !important;
-} 
+
 
   /* .lottie{
   

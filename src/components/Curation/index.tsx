@@ -1,5 +1,5 @@
 
-import { useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import CurateSection from './CurateSection'
 import TasteMorphing from './TasteMorphing'
 // import TasteMorphing from './Test_TasteMorphing'
@@ -12,6 +12,49 @@ gsap.registerPlugin(ScrollTrigger,SplitText)
 
 const CurationSection = () => {
     const curationSectionRef = useRef<HTMLDivElement>(null)
+    const curaitontextRangs =useMemo(()=>{
+      if(window.innerWidth <768){
+        return{
+          
+          curate:{
+            start:.0,
+            end:.35,
+          },
+          your:{
+            start:.57,
+            end:.77,
+          },
+          lottie:{
+            start:.77,
+            end:1.,
+          }
+        }
+      }
+      return{
+          
+          curate:{
+            start:.0,
+            end:.25,
+          },
+          your:{
+            start:.25,
+            end:.35,
+          },
+          lottie:{
+            start:.4,
+            end:.6,
+          }
+        }
+    },[window.innerWidth])
+
+   const calcualteYTranslation = useCallback((progress:number)=>{
+
+    if(window.innerWidth < 768){
+
+      return 50 - 50 * Math.min(1,progress)
+    }
+    return  37 - 87 * Math.min(1,progress )
+    },[window.innerWidth])
    
     useGSAP(()=>{
       if(!curationSectionRef.current) return
@@ -51,28 +94,32 @@ const CurationSection = () => {
 
      ScrollTrigger.create({
       trigger: curationSectionRef.current,
-      start: "top 50%",
+      start: "top 95%",
       end: `bottom bottom`,
       scrub: 1,
-      markers:true,
+      markers:{
+        startColor:"orange",
+        indent:300,
+      },
       onUpdate: ({ progress }) => {
-      
-        gsap.set(".curation .section",{
-          translate:`0% ${(37 - 87 * Math.min(1,progress * 1.5)).toFixed(2)}%`,
+      // 37 - 87 * Math.min(1,progress * 1.5)).toFixed(2)
+        gsap.to(".curation .section",{
+          translate:`0% ${calcualteYTranslation(progress)}%`,
+          overwrite:"auto"
         })
 
         console.log("progress",progress.toFixed(2))
-        const roundedProgress = Math.round(progress * 100) / 100
+        const roundProgress = Math.round(progress * 100) / 100
 
         // 0.0 -> .22
-        if(roundedProgress >=0 && roundedProgress <.22){
-           const mappedProgress =( ((roundedProgress - 0.) * 1) / (0.22 - 0)) 
+        if(progress >=curaitontextRangs.curate.start && progress < curaitontextRangs.curate.end){
+           const mappedProgress =( ((progress - curaitontextRangs.curate.start) * 1) / (curaitontextRangs.curate.end - curaitontextRangs.curate.start)) 
           //  console.log("mapped progress1", mappedProgress)
 
-           gsap.set(".curate .curate-inner",{
+           gsap.to(".curate .curate-inner",{
       x:`${100 - 100 * mappedProgress}%`,
      })
-             gsap.set(".curate .curation-text .letter  ",{
+             gsap.to(".curate .curation-text .letter  ",{
       yPercent:(i)=>{
         if((i+1)%2 === 0){
            if((i + 1)%4 === 0){
@@ -84,14 +131,14 @@ const CurationSection = () => {
      })
         }
  // .22 -> .32 to 0 -> 1
-        if(roundedProgress >=.22 && roundedProgress <.32){
-           const mappedProgress =( ((roundedProgress - 0.22) * 1) / (0.32 - 0.22)) 
+        if(progress >= curaitontextRangs.your.start && progress < curaitontextRangs.your.end){
+           const mappedProgress =( ((progress - curaitontextRangs.your.start) * 1) / (curaitontextRangs.your.end - curaitontextRangs.your.start)) 
 
-             gsap.set(".your .curate-inner",{
+             gsap.to(".your .curate-inner",{
       x:`${-100 + 100 * mappedProgress}%`,
      })
           
-             gsap.set(".your .curation-text .letter  ",{
+             gsap.to(".your .curation-text .letter  ",{
       yPercent:(i)=>{
         if((i+1)%2 === 0){
           // console.log("your progress",mappedProgress )
@@ -107,14 +154,14 @@ const CurationSection = () => {
         }
 
         // .32 -> .57
-        if(roundedProgress >=0.32 && roundedProgress <.57){
-           const mappedProgress =( ((roundedProgress - 0.32) * 1) / (.57 - .32)) 
+        if(progress >=curaitontextRangs.lottie.start && progress <curaitontextRangs.lottie.end){
+           const mappedProgress =( ((progress - curaitontextRangs.lottie.start) * 1) / (curaitontextRangs.lottie.end - curaitontextRangs.lottie.start)) 
 
-           gsap.set(".lottie .curate-inner",{
+           gsap.to(".lottie .curate-inner",{
             "--x-translation":`${100 - 100 * mappedProgress}%`
            })
           
-             gsap.set(".lottie .curation-text .letter  ",{
+             gsap.to(".lottie .curation-text .letter  ",{
       yPercent:(i)=>{
         if((i+1)%2 === 0){
           if((i + 1)%4 === 0){
