@@ -50,7 +50,7 @@ const ImagesTrailer = () => {
                 minX: rect?.left||0,
                 maxX: (rect?.right || window.innerWidth) - 200,
                 minY:rect?.top || 0,
-                maxY:(rect?.top || window.innerHeight ) - 50,
+                maxY:(rect?.bottom || window.innerHeight ) - 50,
             }
         }
 
