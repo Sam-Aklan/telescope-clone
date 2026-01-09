@@ -5,7 +5,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import { ReactLenis, type LenisRef } from "lenis/react";
 import CircularCarousel from "./components/CircularCarousel";
-import ImagesTrailer from "./components/Test_ImagesTrailer";
+// import ImagesTrailer from "./components/Test_ImagesTrailer2";
+import ImagesTrailer from "./components/ImageTrailerSection/ImagesTrailer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,10 +31,7 @@ function App() {
        {/* <CircularCarousel/> */}
        <div className="w-full h-screen bg-amber-300"></div>
 
-        <div className="w-full h-screen">
-          {/* <ImagesTrailer /> */}
-          <ImagesTrailer/>
-        </div>
+        <div className="w-full h-screen bg-blue-400 sticky"> </div>
          <div className="w-full h-screen bg-amber-300"></div>
       </ReactLenis>
     </>
