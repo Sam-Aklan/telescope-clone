@@ -9,7 +9,7 @@
   --min-h:calc(2.65rem + .3rem*2);
   --min-w:min(33vw,475px);
   --shift:.3rem;
-  --footer-width:calc(100vw - 15px);
+  --footer-width:calc(min(1440px,100vw) - 15px);
   --footer-height:calc(50svh + var(--min-h) * 2);
   --grid-margin:calc(var(--shift) * 2);
   --min-scale:.4;
@@ -206,7 +206,7 @@ body{
 }
 
 .footer{
-  @apply fixed top-2.5 left-1/2 -translate-x-1/2 w-[var(--footer-width)] h-[var(--footer-height)] z-100 lg:inset-[auto_auto_0.75rem_50%] lg:w-[calc(var(--footer-width)_-_var(--grid-margin)_*_2)]
+  @apply fixed top-2.5 left-1/2 -translate-x-1/2 w-[var(--footer-width)] h-[var(--footer-height)] z-100 lg:inset-[auto_auto_0.75rem_50%] lg:w-[calc(var(--footer-width)_-_var(--grid-margin)_*_2)] xl:max-w-[1440px] xl:mx-auto
 }
 
 .footer-top{
@@ -234,7 +234,7 @@ body{
 
 
 .ui-button .btn-inner{
-  @apply relative flex justify-center items-center outline-offset-[0.1rem] text-xs text-button-color font-dm-mono-regular font-normal uppercase w-31.5 h-11.5 px-4 py-2 lg:h-10.5
+  @apply relative flex justify-center items-center outline-offset-[0.1rem] text-xs text-nowrap text-button-color font-dm-mono-regular font-normal uppercase w-31.5 h-11.5 px-4 py-2 lg:h-10.5
 }
 
 .ui-button .btn-inner::before{
