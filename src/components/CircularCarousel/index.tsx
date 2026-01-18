@@ -26,28 +26,37 @@ const CircularCarousel = () => {
    const {contextSafe}= useGSAP(()=>{
 
      // intialization for navigation and cards
-  if(!slideRefs.current.length) return
+  if(!slideRefs.current.length ) return
 
   slideRefs.current.forEach((el, i) => {
    
     if(i === current) gsap.set(el,{zIndex:4})
   });
 
+  gsap.set(".thumbNail",{
+    motionPath:{
+       path:"#curve",
+        align:"#curve",
+        alignOrigin:[.5,.5],
+        start:0,
+        end:0,
+    }
+  })
+
     gsap.to(".thumbNail",{
       motionPath:{
         path:"#curve",
         align:"#curve",
-        alignOrigin:[.5,.5]
+        alignOrigin:[.5,.5],
       },
-    
       stagger:0.07,
       ease:"power2.inOut",
       scrollTrigger:{
-        trigger:carouselContainerRef.current,
+        trigger:"#stack-wrapper",
         start:"top top",
         end:`+=${slideImages.length * 80}%`,
-        pin:true,
-        pinSpacing:true,
+        // pin:true,
+        // pinSpacing:true,
         scrub:1,
         onUpdate:({progress})=>{
 
@@ -74,7 +83,7 @@ const CircularCarousel = () => {
       
     })
 
-  },{scope:carouselContainerRef})
+  },)
 
 
   const goToSlide = contextSafe((newIndex:number)=>{
@@ -99,7 +108,8 @@ setCurrent(newIndex)
 },[current])
 
   return (
-    <div className="w-full h-screen relative overflow-hidden" ref={carouselContainerRef}>
+    <div id='carousel-container' className="w-full h-screen opacity-100 panel" ref={carouselContainerRef}>
+      <div className="w-full h-full overflow-hidden relative">
 
          {slideImages.map((src, i) => (
         
@@ -115,6 +125,7 @@ setCurrent(newIndex)
       ))}
 
       <CarouselThumbnails thumbNailsImages={slideImages}/>
+      </div>
 
     </div>
   )

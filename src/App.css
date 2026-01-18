@@ -146,6 +146,14 @@ body{
 
 /* circualr carousel */
 
+.panel:nth-child(1){
+  @apply w-full h-screen  absolute top-0 left-0 
+}
+
+.panel:nth-child(2){
+  @apply w-full h-screen absolute top-0 left-0 
+}
+
 .thumbNail{
   @apply w-10 h-10 md:w-20 md:h-20 lg:w-25 lg:h-25 absolute top-0 left-0
 }

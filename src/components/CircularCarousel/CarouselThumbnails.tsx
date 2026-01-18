@@ -1,7 +1,20 @@
+import { useCallback, useMemo } from "react"
 
 const CarouselThumbnails = ({thumbNailsImages}:{thumbNailsImages:string[]}) => {
   const svgWidth =  219.10413 
   const svehight = 1084.304
+
+  const mapRangs = useCallback(()=>{
+    const newValue = ((window.innerWidth - 320) / (768 - 320)) * (800 - 300) + (300)
+    return `translate(${-newValue},-437.6721163)`
+  },[])
+
+  const transfomMatrix = useMemo(()=>{
+    if(window.innerWidth <=768){
+      return mapRangs()
+    }
+    return `translate(-800.0682,-5.6721163)`
+  },[mapRangs])
 
   return (
     
@@ -30,13 +43,15 @@ const CarouselThumbnails = ({thumbNailsImages}:{thumbNailsImages:string[]}) => {
      id="layer1"
      //  transform="translate(-800.0682,-5.6721163)"
     //  transform="translate(-700.0682,-437.6721163) " 768 * 510
-     transform={`${window.innerWidth>=1024?"translate(-800.0682,-5.6721163)":"translate(-700.0682,-437.6721163)"}`}
+    //  transform={`${window.innerWidth>=1024?"translate(-800.0682,-5.6721163)":"translate(-300.0682,-437.6721163)"}`}
+     transform={transfomMatrix}
      className="w-full h-auto"
      >
     <path
       fill='none'
     stroke='#000'
     strokeWidth={3}
+    visibility={"hidden"}
        d="m 1344.958,7.5618811 c 388.5954,551.1922789 164.5085,801.2152089 0,1080.5244189"
        id="curve" />
   </g>
