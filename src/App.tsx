@@ -3,6 +3,8 @@ import gsap from "gsap";
 import {  useEffect,  useRef } from "react";
 import { ReactLenis, type LenisRef } from "lenis/react";
 import Section4 from "./components/Section4";
+import Telescope from "./components/Telescope";
+gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const lenisRef = useRef<LenisRef>(null);
@@ -21,6 +23,7 @@ function App() {
     <>
       <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
        <Section4/>
+      <Telescope/>
       </ReactLenis>
     </>
   );

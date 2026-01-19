@@ -1,10 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Federant&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Federant&display=swap');
 @import "tailwindcss";
 
 :root{
   --tilt:10svh;
   --color-yellow:#e3f794;
   --curate-font-size:5.8rem;
+  --p:0.0;
+  --tilt:15svh;
+  --color-yellow:#e3f794;
+  --min-h:calc(2.65rem + .3rem*2);
+  --min-w:min(33vw,475px);
+  --shift:.3rem;
+  --footer-width:calc(min(1440px,100vw) - 15px);
+  --footer-height:calc(50svh + var(--min-h) * 2);
+  --grid-margin:calc(var(--shift) * 2);
+  --min-scale:.4;
+  --button-height:2.5rem;
+  
 }
 
 @theme{
@@ -23,7 +36,15 @@
   font-weight: 200 700;
   font-display: swap;
   src: url("/fonts/cmgeom-regular.woff2") format("woff2");
+  --font-dm-mono-regular: "DM Mono", monospace;
+  --color-primary:var(--color-yellow);
+  --color-button-color: #1a1915;
+  --text-mono: 0.7em;
+  --text-mono--line-height: 1.1rem; 
+  --text-mono--letter-spacing: 0.3em; 
+  --text-mono--font-weight: 500; 
 }
+
 
 body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto relative font-federant-regular
@@ -114,8 +135,8 @@ body{
 /* taste morphing */
 
 .lottie{
-  --tilt:15svh;
-  --color-yellow:#e3f794;
+  /* --tilt:15svh;
+  --color-yellow:#e3f794; */
   clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
   width: 100%;
   height: 100%;
@@ -128,12 +149,22 @@ body{
 
 .stake.line:last-child{
   @apply absolute top-[10%] left-[60%] bg-white md:bottom-[45%] md:left-[40%] origin-[0%_50%] z-6 rotate-90 w-[110%] h-auto md:w-fit md:h-[80%] md:rotate-0
-} */
+} 
 
-/* .svg-container{
-  @apply absolute -top-20 -left-10
-.curation{
- --curation-progress:0.0;
+
+
+.var-test{
+  @apply w-25 h-25 bg-primary
+}
+
+/* .var-test-2{
+  @apply w-[calc(var(--spacing) * var(--ip))] h-[calc(var(--spacing) * var(--ip))] bg-amber-300
+} */
+ .var-test-2{
+  @apply w-[calc(var(--ip)_*_10)] h-[calc(var(--ip)_*_10)]
+ }
+
+
 @media screen and(min-width:1024) {
   .lottie{
   --tilt:25svh;
@@ -147,7 +178,7 @@ body{
   background-color: var(--color-yellow);
   }
 }
-=======
+
 .curation .section{
     translate: 0% 50%;
     overflow: hidden;
@@ -229,6 +260,154 @@ body{
 }
 .trailing-image-1{
   @apply w-15 h-15 md:w-20 md:h-20 lg:w-25 lg:h-25  
+}
+
+.footer{
+  @apply fixed top-2.5 left-1/2 -translate-x-1/2 w-[var(--footer-width)] h-[var(--footer-height)] z-100 lg:inset-[auto_auto_0.75rem_50%] lg:w-[calc(var(--footer-width)_-_var(--grid-margin)_*_2)] xl:max-w-[1440px] xl:mx-auto
+}
+
+.footer-top{
+  @apply w-full h-fit p-2 flex justify-between
+}
+
+.footer-top > .socials{
+  @apply flex gap-1 items-center
+}
+
+.icon.is-instagram, .icon.is-x{
+  @apply w-4! h-auto block!
+}
+.icon.is-youtube{
+  @apply w-5! h-auto block!
+}
+
+.footer-top .extra-buttons{
+  @apply flex gap-1 
+}
+
+.sign-in-btn{
+  @apply text-xs font-dm-mono-regular uppercase font-normal text-button-color
+}
+
+
+.ui-button .btn-inner{
+  @apply relative flex justify-center items-center outline-offset-[0.1rem] text-xs text-nowrap text-button-color font-dm-mono-regular font-normal uppercase w-31.5 h-11.5 px-4 py-2 lg:h-10.5
+}
+
+.ui-button .btn-inner::before{
+  @apply absolute left-0 w-[0.7rem] h-full content-[""]
+}
+.ui-button .btn-inner::after{
+  @apply absolute right-0 w-[0.7rem] h-full content-[""] 
+}
+
+.svg-container{
+  @apply w-full h-[150%] absolute  -z-0
+}
+
+.btn-inner{
+  @apply p-2 h-[var(--button-height)] 
+}
+
+.footer > .bg{
+@apply absolute inset-0 bg-white
+}
+
+.footer .bg{
+  --bg-p:min(.965,calc(1 - var(--p)));
+  clip-path: inset(0 0 calc((100% - var(--button-height) - var(--shift) * 2) * var(--bg-p)) 0);
+}
+
+.bg > .inner{
+  @apply w-full h-full flex flex-col justify-between items-center
+}
+
+.inner > .top{
+  @apply w-full h-10 px-2 bg-green-400
+}
+
+/* .inner > .bottom{
+  @apply w-full h-10 px-2 bg-green-400
+} */
+
+.brand{
+  @apply w-[calc(var(--shift)_*_60.8)] h-[calc(var(--shift)_*_12.7)] lg:w-192 lg:h-40  
+}
+
+.footer .inner .brand{
+  --ip:calc(1 - var(--p));
+transform: translateY(calc((-50% - (50svh - 4.15rem + var(--min-h)) * .5) * var(--ip))) translate(calc((-50vw + var(--spacing) * 1) * var(--ip))) translate(calc(4.585rem * var(--ip)));
+ 
+}
+
+.brand > .svg-typography{
+  @apply w-full h-full
+}
+
+.brand > .svg-typography{
+ transform: scale(calc(var(--min-scale) + (1 - var(--min-scale)) * var(--p)));
+}
+
+.footer .bottom{
+  @apply w-full h-fit p-2 flex items-center justify-between text-xs font-dm-mono-regular uppercase font-normal text-button-color
+}
+
+.footer .bottom > .right-links{
+  @apply flex flex-col items-start justify-center 
+}
+
+/* @media screen and(max-width:1023px) {
+
+  .footer .bg{
+  --bg-p:min(.965,calc(1 - var(--p)));
+  clip-path: inset(0 0 calc((100% - var(--button-height) - var(--shift) * 2) * var(--bg-p)) 0);
+
+}
+
+
+  .footer .inner .brand{
+  --ip:calc(1 - var(--p));
+transform: translateY(calc((-50% - (50svh - 4.15rem + var(--min-h)) * .5) * var(--ip))) translate(calc((-50vw + var(--spacing) * 1) * var(--ip))) translate(calc(4.585rem * var(--ip)));
+ 
+}
+.brand > .svg-typography{
+ transform: scale(calc(var(--min-scale) + (1 - var(--min-scale))*var(--p)));
+}
+  
+} */
+
+@media screen and (min-width:1024px){
+
+  :root{
+    --min-scale:.15625;
+    --grid-margin:.75rem;
+    --min-w:max(33vw,475px);
+  }
+  html{
+    font-size: 19px;
+  }
+ 
+   .footer .bg {
+    --bg-p: calc(1 - var(--p));
+    background-color: #fff;
+    clip-path: inset(calc((100% - var(--min-h)) * var(--bg-p)) calc((50% - var(--min-w) * 0.5) * var(--bg-p)) 0% calc((50% - var(--min-w) * 0.5) * var(--bg-p)));
+  }
+
+  .footer-top .extra-buttons {
+    --side-shift: calc((var(--footer-width) - var(--min-w)) * 0.5);
+    --ip:calc(1 - var(--p));
+    transform: translateY(calc((var(--footer-height) - 100% - var(--shift) * 2.5) * var(--ip))) translate(calc((var(--side-shift) * -1 + var(--grid-margin) + var(--shift)) * var(--ip)));
+  }
+
+  .footer .inner .brand {
+    --ip: calc(1 - var(--p));
+    transform: translateY(calc((50% + (50svh - 10.5rem + var(--min-h)) * 0.5) * var(--ip))) translate(calc((var(--min-w) * -0.5 + var(--shift) * 2) * var(--ip))) translate(calc(4.15rem * var(--ip)));
+  }
+
+  .brand > .svg-typography{
+ transform: scale(calc(var(--min-scale) + (1 - var(--min-scale)) * var(--p)));
+}
+
 }
 
 /* @keyframes dashOffsetSmooth {
