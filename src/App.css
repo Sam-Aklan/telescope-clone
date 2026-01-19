@@ -29,8 +29,9 @@ body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto relative font-federant-regular
 }
 
+
 #root{
-  @apply w-full h-full bg-[#fffddd] relative  
+  @apply @apply w-full h-full bg-[#fffddd] relative   p-0 m-0
 }
 
 
@@ -45,8 +46,6 @@ body{
 .intial-pos{
   position: absolute;
 }
-
-
 
 .bg-item{
   @apply font-federant-regular
@@ -112,6 +111,19 @@ body{
 
 /* .stake.line:first-child{
   @apply absolute top-[10%] left-[40%] bg-white rotate-90 w-[110%] h-auto md:top-[45] md:left-[40%] origin-[0%_50%] z-6 md:rotate-0 md:w-auto
+/* taste morphing */
+
+.lottie{
+  --tilt:15svh;
+  --color-yellow:#e3f794;
+  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-yellow);
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .stake.line:last-child{
@@ -120,7 +132,6 @@ body{
 
 /* .svg-container{
   @apply absolute -top-20 -left-10
-=======
 .curation{
  --curation-progress:0.0;
 }
@@ -129,7 +140,6 @@ body{
     translate: 0% 50%;
     overflow: hidden;
   }
->>>>>>> feat/taste-morphing-mobile
 
 .curation >.curate{
   @apply h-[70svh] lg:h-[150svh]  bg-primary relative  -mb-[40svh] lg:-mb-[110svh] 
@@ -146,6 +156,33 @@ body{
 >>>>>>> taste-morphing
 } */
 
+
+ 
+
+/* zoom effect */
+
+
+.banner img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.banner-img-container img{
+ 
+  will-change: transform;
+}
+
+.banner-img-container .image.mask{
+  position: absolute;
+  -webkit-mask-image: url("/pics/zoom/stefan-moertl.png");
+  mask-image: url("/pics/zoom/stefan-moertl.png");
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
 
 .curation .curation-text{
   @apply w-fit h-fit
