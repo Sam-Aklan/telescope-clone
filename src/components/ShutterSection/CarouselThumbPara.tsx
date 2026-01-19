@@ -1,12 +1,13 @@
 import { useGSAP } from '@gsap/react';
-import  { useEffect, useRef, useState } from 'react'
+import  React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import TrialingButton from './TrailingButton';
 import {SplitText} from 'gsap/SplitText'
 import useWindowSize from '../../lib/useWindowSize';
 import { useResponsiveMatrix } from '../../lib/useResposiveTranslation';
 import MobileCarouselBtns from './MobileCarouselBtns';
-gsap.registerPlugin(useGSAP,SplitText);
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(useGSAP,SplitText,ScrollTrigger);
 const slides = [
   "./pics/leonardo.jpg",
   "./pics/Mari-curl.jpg",
@@ -86,7 +87,20 @@ const CarousselThumbPara = () => {
   const rightCircleRef= useRef<SVGCircleElement>(null)
   const slideRefs = useRef<HTMLDivElement[]>([])
   const maskContainerRef=useRef<HTMLDivElement>(null)
- const {contextSafe}= useGSAP()
+
+ const {contextSafe}= useGSAP(()=>{
+    if(!slideRefs.current.length  || !leftCircleRef.current || !rightCircleRef.current) return
+
+  slideRefs.current.forEach((el, i) => {
+
+    if(i === current)el.classList.add("is-active")
+
+  });
+  if (leftCircleRef.current && rightCircleRef.current) {
+    leftCircleRef.current.setAttribute("stroke-dashoffset","0%")
+    rightCircleRef.current.setAttribute("stroke-dashoffset","0%")
+  }
+ })
 
 const goToSlide = contextSafe((nextIndex:number)=>{
 
@@ -134,26 +148,6 @@ const goToSlide = contextSafe((nextIndex:number)=>{
 
 
 
-useEffect(()=>{
-
-const ctx =gsap.context(()=>{
-
-  if(!slideRefs.current.length  || !leftCircleRef.current || !rightCircleRef.current) return
-
-  slideRefs.current.forEach((el, i) => {
-    // gsap.set(el, { zIndex: i === current ? 2 : 0 });
-    if(i === current)el.classList.add("is-active")
-  });
-  if (leftCircleRef.current && rightCircleRef.current) {
-    leftCircleRef.current.setAttribute("stroke-dashoffset","0%")
-    rightCircleRef.current.setAttribute("stroke-dashoffset","0%")
-    // gsap.set([leftCircleRef.current, rightCircleRef.current], { strokeDashoffset: "0%" });
-  }
-})
-
-return ()=> ctx.revert()
-
-},[])
 
 const {debouncedWindowSize}=useWindowSize()
 
@@ -177,23 +171,12 @@ const rightMatrix = useResponsiveMatrix(
  
 )
 
-// console.log("left matrix", leftMatrix)
-// console.log("right matrix",rightMatrix)
 
   return (
     <>
-    <div className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
-
-    <Stakes isMobile ={debouncedWindowSize.width<1024}/>
-
-    <div className="absolute top-0   left-1/2 -translate-x-1/2 w-0.25 h-full bg-red-600 z-10"></div>
-      <div className="absolute top-1/4  -translate-y-1/4 left-0 w-full h-0.25 bg-red-600 z-10"></div>
-
-    {/* <div className="absolute top-0 left-1/4 h-full w-1 bg-red-600 z-10"></div> */}
-    {/* <div className="absolute top-0 left-[50%] -translate-x-1/2 h-full w-0.5 bg-red-600 z-10">
-    </div> */}
-    {/* <div className="absolute top-1/2 left-0 -translate-y-1/4 h-0.5 w-full bg-red-600 z-10">
-    </div> */}
+    <div id="mask-container" className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
+      
+    <Stakes isMobile ={debouncedWindowSize.width<1024} sectionRef={maskContainerRef}/>
 
       {slides.map((src, i) => (
         <div
@@ -235,11 +218,8 @@ const rightMatrix = useResponsiveMatrix(
           </div>
         </div>
         
-        
           <Paragraphs person={slidesPara[i]} isActive={ i === current} />
         
-        
-
           {debouncedWindowSize.width>=1024?<ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} />:undefined}
         
         </div>
@@ -383,13 +363,7 @@ const ThumbnailBoxes = ({
 
   // expand on hover
   const expandBox = contextSafe((index: number) => {
-    // if (activeIndex !== null && activeIndex !== index) {
-    //   // reset previously expanded
-    //   gsap.to(boxesRef.current[activeIndex], {
-    //     width: `${boxWidth}rem`,
-    //     duration: 0.3,
-    //   });
-    // }
+    
     const tl = gsap.timeline();
     console.log("expanded", index)
 
@@ -539,14 +513,19 @@ const ThumbnailBoxes = ({
 
 
 
-const Stakes = ({isMobile}:{isMobile:boolean}) => {
-  
+const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivElement|null>}) => {
+  // const StakesSection = useRef<HTMLDivElement>(null)
     useGSAP(()=>{
-      console.log("mobile",isMobile)
+
+      if(!sectionRef.current) return
+
+      console.log("stakes", sectionRef.current)
+
+     const tl = gsap.timeline({paused:true})
       gsap.set(".stake.line",{
         rotate:()=> isMobile?90:0
       })
-        gsap.fromTo(".stake.line",
+        tl.fromTo(".stake.line",
           {
             rotate:isMobile?90:0
           },
@@ -555,7 +534,6 @@ const Stakes = ({isMobile}:{isMobile:boolean}) => {
              
               if(isMobile){ 
                 return index / 2 ===0? 135: 45
-                // return 90
 
               }
               return index / 2 ===0?-45:45
@@ -563,18 +541,29 @@ const Stakes = ({isMobile}:{isMobile:boolean}) => {
               ,
             duration:1,
         })
+
+        ScrollTrigger.create({
+          trigger:sectionRef.current,
+          start:"top center",
+          end:"bottom top",
+          markers:true,
+          onEnter:()=>{
+            tl.play()
+          },
+          onEnterBack:()=>{
+            tl.restart()
+          }
+        })
     },{dependencies:[isMobile]})
     console.log("isMobile", isMobile)
     return (
       <>
       
-        <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-1 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left  z-6 "
+        <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-0.5 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left z-6 "
         >
 
         </div>
-        <div className="stake line absolute top-1/4 -translate-y-1/4 left-[52%] z-6  w-[70%] h-1 origin-top-left  bg-white lg:top-[50.5%] lg:left-1/4"
-       
-        >
+        <div className="stake line absolute top-1/4 -translate-y-1/4 left-[52%] z-6  w-[70%] h-0.5 origin-top-left  bg-white lg:top-[50.5%] lg:left-1/4">
         </div>
       </>
      

@@ -1,15 +1,13 @@
 import "./App.css";
-import Carousel from "./components/Carousel";
 
 import CarousselThumbPara from "./components/ShutterSection/CarouselThumbPara";
-import VisualizeSvg from "./components/visualizeSvg";
 
 function App() {
   return (
     <>
+    <div className="w-full h-screen bg-amber-200"/>
       <CarousselThumbPara />
-      {/* <Carousel/> */}
-      {/* <VisualizeSvg/> */}
+    <div className="w-full h-screen bg-amber-200"/>
     </>
   );
 }

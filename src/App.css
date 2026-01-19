@@ -8,11 +8,11 @@
 
 body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
-  overflow-x-hidden relative  font-federant-regular
+   relative  font-federant-regular
 }
 
 #root{
-  @apply w-full h-full bg-[#fffddd] overflow-x-hidden
+  @apply w-full h-full bg-[#fffddd] 
 }
 
 .is-active{
@@ -26,13 +26,6 @@ body{
 .intial-pos{
   position: absolute;
 }
-
-/* .box:hover{
-  width: 7.5rem !important;
-  transition: all .3s ease-in;
-  z-index: 300 !important;
-} */
-
 
 
 .bg-item.is-active .img:first-child{
@@ -77,7 +70,6 @@ body{
 .person-description .line {
   display: inline-block;
   overflow: hidden;
-  /* color: #ddd8d8; */
 }
 
 .person-description .line > span {
