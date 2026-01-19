@@ -1,18 +1,20 @@
 import "./App.css";
 import CurateSection from "./components/Curation";
 import CarousselThumbPara from "./components/ShutterSection/CarouselThumbPara";
-import Intro from "./components/Intro";
-import ZoomEffect from "./components/ZoomEffect";
+import Intro from "./components/ZoomEffect/Intro";
+import ZoomEffect from "./components/ZoomEffect/ZoomEffect";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
+import {SplitText} from 'gsap/SplitText'
 import {ReactLenis, type LenisRef} from 'lenis/react'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger,SplitText);
 
 function App() {
   const lenisRef = useRef<LenisRef>(null)
+  const heroContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(()=>{
      function update(time:number) {
@@ -26,6 +28,7 @@ function App() {
   },[])
 
   useGSAP(() => {
+    if(!heroContainerRef.current) return
     // set the intial size of every layer
     gsap.set(".image.mask", { scale: (i) => 0.9 - i * 0.15 });
 
@@ -33,10 +36,41 @@ function App() {
 
     gsap.set(".banner-img-container", { scale: 0 });
 
+    // animate images from deeper z
+    gsap.from([".pic.z-1",".pic.z-2",".pic.z-4"],{
+      z:-50,
+      duration:1,
+      overwrite:"auto",
+      delay:.1,
+      
+    }
+  )
+
+  // animate text
+  const secondLine =heroContainerRef.current.querySelectorAll(".line")
+
+  secondLine.forEach(phrase=>{
+    const splitedWords = new SplitText(phrase,{type:"words",wordsClass:"word"})
+    splitedWords.words.forEach(word=>{
+      word.innerHTML = `<span>${word.innerHTML}</span>`
+    })
+  })
+
+  gsap.fromTo(".word >span",{
+    opacity:0,
+    y:"100%",
+  },{
+    opacity:.8,
+    y:"0",
+    stagger:.3,
+    duration:1,
+    ease:"power2.inOut"
+  })
+
     // gsap.set(".text-left, .text-right", { xPercent: 0 });
 
     ScrollTrigger.create({
-      trigger: ".hero",
+      trigger: heroContainerRef.current,
       start: "top top",
       end: `+=${window.innerHeight * 4}px`,
       pin: true,
@@ -77,7 +111,7 @@ function App() {
         gsap.to(".right-text", { xPercent: progress*2 * 500 });
       },
     });
-  });
+  },{scope:heroContainerRef});
 
  
 
@@ -95,7 +129,7 @@ function App() {
    
     <div className="w-full h-screen bg-green-700"></div>
 
-    <div className=" w-full h-screen relative hero">
+    <div className=" w-full h-screen relative hero" ref={heroContainerRef}>
 
 <div className="absolute w-full h-full">
 
