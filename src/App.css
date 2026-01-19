@@ -8,11 +8,11 @@
 
 body{
   @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
-  overflow-x-hidden relative  font-federant-regular
+   relative  font-federant-regular
 }
 
 #root{
-  @apply w-full h-full bg-[#fffddd] overflow-x-hidden
+  @apply w-full h-full bg-[#fffddd] 
 }
 
 .is-active{
@@ -26,13 +26,6 @@ body{
 .intial-pos{
   position: absolute;
 }
-
-/* .box:hover{
-  width: 7.5rem !important;
-  transition: all .3s ease-in;
-  z-index: 300 !important;
-} */
-
 
 
 .bg-item.is-active .img:first-child{
@@ -50,29 +43,33 @@ body{
 }
 
 .mouse-pointer{
-  @apply bg-green-400 w-20 h-20 rounded-full  transition-transform duration-100 absolute z-25
+  @apply bg-green-400 w-10 h-10 lg:w-20 lg:h-20 rounded-full  transition-transform duration-100 absolute z-20
 }
 
 .person-name{
-  @apply absolute top-[47%] left-1/5 -translate-y-[47%] -translate-x-1/4 text-5xl text-white uppercase
-}
-
-.person-description:nth-child(2){
-  @apply absolute top-1/20 right-8 -translate-y-1/6
-}
-
-.person-description:nth-child(3){
-  @apply absolute top-1/2 right-8 -translate-y-3/4 uppercase
+  @apply absolute top-1/5 left-1/2 -translate-y-1/5 -translate-x-1/2 lg:top-[47.5%] lg:-translate-y-[47.5%] lg:left-1/4 lg:-translate-x-1/4 text-lg lg:text-xl xl:text-3xl text-white uppercase max-w-45 text-center
 }
 
 .person-description{
-  @apply text-4xl text-white whitespace-pre-line w-100
+  @apply text-sm lg:text-xl xl:text-4xl text-white whitespace-pre-line w-50 lg:w-70 xl:w-100 xl:max-w-150
 }
+
+.person-description:nth-child(2){
+  @apply absolute  lg:top-1/20 right-4 lg:right-8 hidden lg:block
+}
+
+.person-description:nth-child(3){
+  @apply absolute top-1/2 -translate-y-1/2 lg:right-8  uppercase w-45 lg:w-70 xl:w-100 
+}
+
+.person-description:nth-child(3) .line{
+  @apply text-center! lg:text-start! text-2xl
+}
+
 
 .person-description .line {
   display: inline-block;
   overflow: hidden;
-  /* color: #ddd8d8; */
 }
 
 .person-description .line > span {
@@ -88,6 +85,14 @@ body{
   will-change: transform;
   
 }
+
+/* .stake.line:first-child{
+  @apply absolute top-[10%] left-[40%] bg-white rotate-90 w-[110%] h-auto md:top-[45] md:left-[40%] origin-[0%_50%] z-6 md:rotate-0 md:w-auto
+}
+
+.stake.line:last-child{
+  @apply absolute top-[10%] left-[60%] bg-white md:bottom-[45%] md:left-[40%] origin-[0%_50%] z-6 rotate-90 w-[110%] h-auto md:w-fit md:h-[80%] md:rotate-0
+} */
 
 /* .svg-container{
   @apply absolute -top-20 -left-10

@@ -91,12 +91,13 @@ const TrailingButton = ({goToSlide,currentIndex}:{goToSlide:(nextIndex:number)=>
       }
     }
     >
-      <div className='absolute'>
+      <div className='absolute w-10 h-10 lg:w-20 lg:h-20 '>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        width={80}
-        height={80}
+        // width={80}
+        // height={80}
+        className='w-full h-full'
         ref={svgRef}
       >
         <path

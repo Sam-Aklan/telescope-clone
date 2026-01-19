@@ -1,9 +1,13 @@
 import { useGSAP } from '@gsap/react';
-import  { useEffect, useRef, useState } from 'react'
+import  React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import TestButton from './TrailingButton';
+import TrialingButton from './TrailingButton';
 import {SplitText} from 'gsap/SplitText'
-gsap.registerPlugin(useGSAP,SplitText);
+import useWindowSize from '../../lib/useWindowSize';
+import { useResponsiveMatrix } from '../../lib/useResposiveTranslation';
+import MobileCarouselBtns from './MobileCarouselBtns';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(useGSAP,SplitText,ScrollTrigger);
 const slides = [
   "./pics/leonardo.jpg",
   "./pics/Mari-curl.jpg",
@@ -15,27 +19,27 @@ const slides = [
 const slidesPara = [
   { 
     personname: "Leonardo da Vinci", 
-    description1: "Renaissance polymath and universal genius.\nWhose extraordinary intellect spanned multiple.\ndisciplines including art, science, engineering.", 
+    description1: "Renaissance polymath and universal genius.\nWhose extraordinary intellect spanned multiple.", 
     description2: "Mona Lisa & Last.\nSupper artist." 
   },
   { 
     personname: "Marie Curie", 
-    description1: "Groundbreaking physicist and chemist.\nFirst woman to win a Nobel Prize.\nOnly person to win Nobel Prizes in two fields.", 
+    description1: "Groundbreaking physicist and chemist.\nOnly person to win Nobel Prizes in two fields.", 
     description2: "Pioneer in.\nRadioactivity research." 
   },
   { 
     personname: "Albert Einstein", 
-    description1: "Revolutionary theoretical physicist.\nTransformed our understanding of space.\nAnd time, one of history's most influential scientists.", 
+    description1: "Revolutionary theoretical physicist.\nAnd time, one of history's most influential scientists.", 
     description2: "Developed theory.\nof relativity." 
   },
   { 
     personname: "Mozart", 
-    description1: "Prolific Classical era composer.\nBegan composing at age five.\nProduced over 600 defining works.", 
+    description1: "Began composing at age five.\nProduced over 600 defining works.", 
     description2: "Child prodigy.\nMusical genius." 
   },
   { 
     personname: "Frida Kahlo", 
-    description1: "Mexican surrealist painter known.\nFor vibrant, personal self-portraits.\nExplored identity, pain, and Mexican culture.", 
+    description1: "Mexican surrealist painter known.\nExplored identity, pain, and Mexican culture.", 
     description2: "Iconic self-portrait.\nartist and feminist icon." 
   }
 ];
@@ -73,8 +77,7 @@ const slidesBoxes = [
   ]
 ];
   
-  const boxWidth = 3.75;
-  const expandedWidth = 7.5;
+  
 
 const CarousselThumbPara = () => {
 
@@ -83,7 +86,21 @@ const CarousselThumbPara = () => {
   const leftCircleRef= useRef<SVGCircleElement>(null)
   const rightCircleRef= useRef<SVGCircleElement>(null)
   const slideRefs = useRef<HTMLDivElement[]>([])
- const {contextSafe}= useGSAP()
+  const maskContainerRef=useRef<HTMLDivElement>(null)
+
+ const {contextSafe}= useGSAP(()=>{
+    if(!slideRefs.current.length  || !leftCircleRef.current || !rightCircleRef.current) return
+
+  slideRefs.current.forEach((el, i) => {
+
+    if(i === current)el.classList.add("is-active")
+
+  });
+  if (leftCircleRef.current && rightCircleRef.current) {
+    leftCircleRef.current.setAttribute("stroke-dashoffset","0%")
+    rightCircleRef.current.setAttribute("stroke-dashoffset","0%")
+  }
+ })
 
 const goToSlide = contextSafe((nextIndex:number)=>{
 
@@ -131,32 +148,36 @@ const goToSlide = contextSafe((nextIndex:number)=>{
 
 
 
-useEffect(()=>{
 
-const ctx =gsap.context(()=>{
+const {debouncedWindowSize}=useWindowSize()
 
-  if(!slideRefs.current.length  || !leftCircleRef.current || !rightCircleRef.current) return
 
-  slideRefs.current.forEach((el, i) => {
-    // gsap.set(el, { zIndex: i === current ? 2 : 0 });
-    if(i === current)el.classList.add("is-active")
-  });
-  if (leftCircleRef.current && rightCircleRef.current) {
-    leftCircleRef.current.setAttribute("stroke-dashoffset","0%")
-    rightCircleRef.current.setAttribute("stroke-dashoffset","0%")
-    // gsap.set([leftCircleRef.current, rightCircleRef.current], { strokeDashoffset: "0%" });
-  }
-})
+const leftMatrix = useResponsiveMatrix(
+  {
+  containerRef:maskContainerRef,
+  xPercent: debouncedWindowSize.width < 1024 ? .5 : .25,
+  yPercent: debouncedWindowSize.width < 1024 ? .25: .5,
+  rotationDegree:debouncedWindowSize.width>=1024?45:135,
+  },
+)
 
-return ()=> ctx.revert()
+const rightMatrix = useResponsiveMatrix(
+  {
+  containerRef:maskContainerRef,
+  xPercent: debouncedWindowSize.width < 1024 ? .5 : .25,
+  yPercent: debouncedWindowSize.width < 1024 ? .25: .5,
+  rotationDegree:debouncedWindowSize.width >=1024?-45:45
+  },
+ 
+)
 
-},[])
 
   return (
     <>
-    <div className="w-full h-screen relative overflow-hidden">
+    <div id="mask-container" className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
+      
+    <Stakes isMobile ={debouncedWindowSize.width<1024} sectionRef={maskContainerRef}/>
 
-    <Stakes/>
       {slides.map((src, i) => (
         <div
         key={i}>
@@ -170,11 +191,11 @@ return ()=> ctx.revert()
         >
           {/* First half */}
           <div className="img w-full h-screen absolute">
-            <img
+            {/* <img
               src={src}
               alt="pic"
               className="object-cover w-full max-w-[1080px] h-full absolute"
-            />
+            /> */}
             <img
               src={src}
               alt="pic"
@@ -184,11 +205,11 @@ return ()=> ctx.revert()
 
           {/* Second half */}
           <div className="img w-full h-screen">
-            <img
+            {/* <img
               src={src}
               alt=""
               className="object-cover w-full max-w-[1080px] h-full absolute"
-            />
+            /> */}
             <img
               src={src}
               alt=""
@@ -197,28 +218,26 @@ return ()=> ctx.revert()
           </div>
         </div>
         
-        
           <Paragraphs person={slidesPara[i]} isActive={ i === current} />
         
-        
-
-          <ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} />
+          {debouncedWindowSize.width>=1024?<ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} />:undefined}
         
         </div>
         
       ))}
     <div className='absolute w-full h-screen'>
 
-    <TestButton goToSlide={goToSlide} currentIndex={current}/>
+    {debouncedWindowSize.width>=1024?<TrialingButton goToSlide={goToSlide} currentIndex={current}/>: <MobileCarouselBtns currentIndex={current} goToSlide={goToSlide}/>}
     </div>
     </div>
 
 
 
     {/* SVG Masks */}
-    <div className='svg-container'>
+    <div className='svg-container '>
 
- <svg width="0" height="0" viewBox="0 0 1440 1276" className='absolute'>
+ {/* SVG Masks */}
+    <svg width="0" height="0" viewBox={`0 0 ${Math.min(1440,debouncedWindowSize.width)} ${debouncedWindowSize.height}`}>
       <defs>
         <mask id="radial-mask-left">
           <circle
@@ -230,10 +249,9 @@ return ()=> ctx.revert()
             strokeDasharray="314%"
             strokeDashoffset="314%"
             strokeLinecap="butt"
-            cx="25%"
-            cy="50%"
-            transform="matrix(0.70711,0.70711,-0.70711,0.70711,506.57658,-117.69578)"
-            // transform="(translate(-20%, 0) rotate(45))"
+            cx={debouncedWindowSize.width>=1024?"25%":"50%"}
+            cy={debouncedWindowSize.width>=1024?"50%":"25%"}
+            transform={leftMatrix !==''?leftMatrix:undefined}
           ></circle>
         </mask>
         <mask id="radial-mask-right">
@@ -246,10 +264,9 @@ return ()=> ctx.revert()
             strokeDasharray="314%"
             strokeDashoffset="314%"
             strokeLinecap="butt"
-            cx="25%"
-            cy="50%"
-            transform="matrix(0.70711,-0.70711,0.70711,0.70711,-395.69578,391.42342)" 
-            // transform="(translate(20%, 0) rotate(-45))"
+            cx={debouncedWindowSize.width>=1024?"25%":"50%"}
+            cy={debouncedWindowSize.width>=1024?"50%":"25%"}
+            transform={rightMatrix !==''?rightMatrix:undefined}
           ></circle>
         </mask>
       </defs>
@@ -272,6 +289,29 @@ const ThumbnailBoxes = ({
   const boxesRef = useRef<HTMLDivElement[]>([]);
   const initialPositions = useRef<number[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [boxWidth, setboxWidth] = useState(3.75)
+  const [expandedWidth, setexpandedWidth] = useState(7.5)
+  const {isDesktop,isMobile,isTablet}=useWindowSize()
+
+  useEffect(()=>{
+    if(isMobile) {
+      setboxWidth(1.875)
+      setexpandedWidth(3.75)
+      return
+    }
+    if(isTablet){
+       setboxWidth(2.5)
+      setexpandedWidth(5)
+      return
+    }
+    if(isDesktop){
+       setboxWidth(3.75)
+      setexpandedWidth(7.5)
+      return
+    }
+  },[isMobile,isDesktop,isTablet])
+ 
+  // console.log("box width",boxWidth)
 
   const { contextSafe } = useGSAP(
     () => {
@@ -283,13 +323,13 @@ const ThumbnailBoxes = ({
 
         gsap.set(boxesRef.current, {
           opacity: 1,
-          scaleX: 1,
           x: (index) => `${initialPositions.current[index]}rem`,
           zIndex: 20,
           pointerEvents: "auto",   
         });
 
         const tl = gsap.timeline();
+       
         tl.fromTo(
           boxesRef.current,
           { opacity: 0, pointerEvents: "none" },
@@ -303,7 +343,7 @@ const ThumbnailBoxes = ({
             delay: 0.2,
           }
         ).to(boxesRef.current, {
-          scaleX: 1, 
+          
           width:`${boxWidth}rem`,
           x: (index) => `${initialPositions.current[index]}rem`,
           zIndex: 20,
@@ -318,40 +358,70 @@ const ThumbnailBoxes = ({
         });
       }
     },
-    { dependencies: [isActive], revertOnUpdate: true }
+    { dependencies: [isActive,boxWidth], revertOnUpdate: true }
   );
 
   // expand on hover
   const expandBox = contextSafe((index: number) => {
-    if (activeIndex !== null && activeIndex !== index) {
-      // reset previously expanded
-      gsap.to(boxesRef.current[activeIndex], {
-        scaleX: 1,
-        duration: 0.3,
-      });
-    }
+    
+    const tl = gsap.timeline();
+    console.log("expanded", index)
 
-    gsap.to(boxesRef.current[index], {
-      scaleX: expandedWidth / boxWidth, // expand relative to original width
-      transformOrigin: "left center", // expand from center
+    tl.to(boxesRef.current[index], {
+      width: `${expandedWidth}rem`, // expand relative to original width
+      transformOrigin: "right center", // expand from center
       zIndex: 50,
       duration: 0.3,
     });
+
+    // Shift boxes AFTER hovered one
+  boxesRef.current.forEach((box, i) => {
+    if (i > index ) {
+      tl.to(
+        box,
+        {
+          x: `${initialPositions.current[i] + boxWidth}rem`,
+          duration: 0.3,
+          ease: "power2.out",
+        },
+        "<" // sync with width animation
+      );
+    }
+  });
 
     setActiveIndex(index);
   });
 
   // shrink on mouse leave
   const shrinkBox = contextSafe((index: number) => {
-    if (activeIndex === index) {
-      gsap.to(boxesRef.current[index], {
-        scaleX: 1,
-        zIndex: 20,
-        duration: 0.3,
-      });
-      setActiveIndex(null);
+    if(activeIndex !==index) return
+    const tl = gsap.timeline();
+
+  // Reset width
+  tl.to(boxesRef.current[index], {
+    width: `${boxWidth}rem`,
+    zIndex: 20,
+    duration: 0.3,
+    ease: "power2.inOut",
+  });
+
+  // Reset positions
+  boxesRef.current.forEach((box, i) => {
+    if(index !==i){
+
+      tl.to(
+        box,
+        {
+          x: `${initialPositions.current[i]}rem`,
+          duration: 0.3,
+          ease: "power2.inOut",
+        },
+        "<"
+      );
     }
   });
+    setActiveIndex(null);
+  },);
 
   const handleMouseEnter = (index: number) => () => {
     expandBox(index);
@@ -362,7 +432,7 @@ const ThumbnailBoxes = ({
   };
 
   return (
-    <div className={`absolute -bottom-8 -right-32 ${isActive? "z-20":"z-15"}`}>
+    <div className={`absolute -bottom-30 md:-bottom-8  -right-32 ${isActive? "z-30":"z-25"}`}>
       <div className="relative h-50 w-100 overflow-hidden">
         {boxes.map((box, i) => (
           <div
@@ -370,7 +440,7 @@ const ThumbnailBoxes = ({
             ref={(el) => {
               if (el) boxesRef.current[i] = el;
             }}
-            className="absolute rounded-2xl shadow-lg w-30 h-30"
+            className="absolute rounded-2xl shadow-lg w-15 h-15 md:w-20 md:h-20 xl:w-30 xl:h-30"
             style={{
               zIndex: 0,
               background: `linear-gradient(to top left, ${box.from}, ${box.to})`,
@@ -428,11 +498,11 @@ const ThumbnailBoxes = ({
       }
   
       
-    }, { dependencies: [isActive],scope:containerRef });
+    }, { dependencies: [isActive],scope:containerRef,revertOnUpdate:true });
   
     return (
       <div ref={containerRef} className={`absolute w-full h-screen flex flex-col justify-center items-center ${isActive?"z-20":"z-0"}`}>
-        <div className="person-name text-6xl font-bold mb-4 text-white">{person.personname}</div>
+        <div className="person-name text-sm xl:text-6xl font-bold mb-4 text-white">{person.personname}</div>
         <div className="person-description ">{person.description1}</div>
         <div className="person-description ">{person.description2}</div>
       </div>
@@ -443,74 +513,57 @@ const ThumbnailBoxes = ({
 
 
 
-const Stakes = () => {
+const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivElement|null>}) => {
+  // const StakesSection = useRef<HTMLDivElement>(null)
     useGSAP(()=>{
-        gsap.fromTo(".line",
+
+      if(!sectionRef.current) return
+
+      console.log("stakes", sectionRef.current)
+
+     const tl = gsap.timeline({paused:true})
+      gsap.set(".stake.line",{
+        rotate:()=> isMobile?90:0
+      })
+        tl.fromTo(".stake.line",
           {
-            rotate:0
+            rotate:isMobile?90:0
           },
           {
-            rotate:(index)=> index / 2 ===0?-45:45,
+            rotate:(index)=>{ 
+             
+              if(isMobile){ 
+                return index / 2 ===0? 135: 45
+
+              }
+              return index / 2 ===0?-45:45
+            }
+              ,
             duration:1,
         })
-    })
+
+        ScrollTrigger.create({
+          trigger:sectionRef.current,
+          start:"top center",
+          end:"bottom top",
+          markers:true,
+          onEnter:()=>{
+            tl.play()
+          },
+          onEnterBack:()=>{
+            tl.restart()
+          }
+        })
+    },{dependencies:[isMobile]})
+    console.log("isMobile", isMobile)
     return (
       <>
       
-        <div className="line"
-        style={{
-            position:"absolute",
-            top:"45%",
-            left:"40%",
-            transform:`translate(-25%,-45%)`,
-            transformOrigin:"left center",
-            zIndex:6,
-            
-        }}>
-          <svg
-            height="6"
-            viewBox="0 0 1426 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{
-                width:"100%"
-            }}
-          >
-            <path
-              d="M3 3H1423"
-              stroke="#ddd8d8"
-              strokeWidth="10"
-              strokeLinecap="round"
-            />
-          </svg>
+        <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-0.5 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left z-6 "
+        >
+
         </div>
-        <div className=" line"
-        style={{
-            position:"absolute",
-            bottom:"45%",
-            left:"40%",
-            transform:`translate(-25%,-45%)`,
-            transformOrigin:"left center",
-            zIndex:6,
-            
-        }}>
-          <svg
-            // className='line'
-            height="6"
-            viewBox="0 0 1426 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{
-                width:"100%"
-            }}
-          >
-            <path
-              d="M3 3H1423"
-              stroke="#ddd8d8"
-              strokeWidth="10"
-              strokeLinecap="round"
-            />
-          </svg>
+        <div className="stake line absolute top-1/4 -translate-y-1/4 left-[52%] z-6  w-[70%] h-0.5 origin-top-left  bg-white lg:top-[50.5%] lg:left-1/4">
         </div>
       </>
      
