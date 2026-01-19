@@ -26,25 +26,13 @@
 }
 
 body{
-  @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto
-<<<<<<< HEAD
-<<<<<<< HEAD
-   relative  font-federant-regular
+  @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto relative font-federant-regular
 }
 
 #root{
-  @apply w-full h-full bg-[#fffddd] 
-=======
-  overflow-x-hidden relative  
-=======
-   relative  
->>>>>>> feat/taste-morphing-mobile
+  @apply w-full h-full bg-[#fffddd] relative  
 }
 
-#root{
-  @apply w-full h-full bg-white 
->>>>>>> taste-morphing
-}
 
 .is-active{
   z-index: 4;
