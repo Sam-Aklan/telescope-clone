@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { getPosition } from "../../utils/zoomEffect"
 
 const introImages = [
@@ -37,21 +37,6 @@ const Intro = () => {
     {start:9}, 
 ],[isMobile])
 
-// useEffect(()=>{
-//     const items =Array.from({length:12},(_,i)=>i)
-//     console.log("group 0")
-//     console.log("items",items.slice(imagesScliecs[0].start,imagesScliecs[0].end))
-//     console.log("group 1")
-//     console.log("items",items.slice(imagesScliecs[1].start,imagesScliecs[1].end))
-//     console.log("group 2")
-//     console.log("items",items.slice(imagesScliecs[2].start,imagesScliecs[2].end))
-//     console.log("group 3")
-//     console.log("items",items.slice(imagesScliecs[3].start,imagesScliecs[3].end))
-//     console.log("group 4")
-//     console.log("items",items.slice(imagesScliecs[4].start,imagesScliecs[4].end))
-//     console.log("group 5")
-//     console.log("items",items.slice(imagesScliecs[5].start))
-// },[imagesScliecs])
 
 
   return (
