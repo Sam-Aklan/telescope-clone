@@ -28,6 +28,13 @@
   --text-curate:var(--curate-font-size);
   /* --text-curate--line-height: .5rem;   */
   --text-curate--font-weight: 400; 
+   --font-dm-mono-regular: "DM Mono", monospace;
+  --color-primary:var(--color-yellow);
+  --color-button-color: #1a1915;
+  --text-mono: 0.7em;
+  --text-mono--line-height: 1.1rem; 
+  --text-mono--letter-spacing: 0.3em; 
+  --text-mono--font-weight: 500; 
 }
 
 @font-face {
@@ -36,13 +43,6 @@
   font-weight: 200 700;
   font-display: swap;
   src: url("/fonts/cmgeom-regular.woff2") format("woff2");
-  --font-dm-mono-regular: "DM Mono", monospace;
-  --color-primary:var(--color-yellow);
-  --color-button-color: #1a1915;
-  --text-mono: 0.7em;
-  --text-mono--line-height: 1.1rem; 
-  --text-mono--letter-spacing: 0.3em; 
-  --text-mono--font-weight: 500; 
 }
 
 
