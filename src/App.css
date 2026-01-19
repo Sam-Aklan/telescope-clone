@@ -200,6 +200,14 @@ body{
   @apply w-fit h-fit
 /* circualr carousel */
 
+.panel:nth-child(1){
+  @apply w-full h-screen  absolute top-0 left-0 
+}
+
+.panel:nth-child(2){
+  @apply w-full h-screen absolute top-0 left-0 
+}
+
 .thumbNail{
   @apply w-10 h-10 md:w-20 md:h-20 lg:w-25 lg:h-25 absolute top-0 left-0
 }
@@ -208,8 +216,19 @@ body{
   @apply w-full h-screen absolute text-3xl
 }
 
+.images-container{
+  @apply w-18 h-45 md:w-22 md:h-66 lg:w-27.5 lg:h-75 relative
+}
+
+/* .trailing-image-wraper{
+  @apply flex flex-col w-fit h-fit absolute
+} */
+
 .trailing-image{
-  @apply w-15 h-15 md:w-30 md:h-30 lg:w-40 lg:h-40 absolute 
+  @apply w-15 h-15 md:w-20 md:h-20 lg:w-25 lg:h-25 absolute 
+}
+.trailing-image-1{
+  @apply w-15 h-15 md:w-20 md:h-20 lg:w-25 lg:h-25  
 }
 
 /* @keyframes dashOffsetSmooth {
