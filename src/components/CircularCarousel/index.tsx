@@ -108,7 +108,7 @@ setCurrent(newIndex)
 },[current])
 
   return (
-    <div id='carousel-container' className="w-full h-screen opacity-100 panel" ref={carouselContainerRef}>
+    <div id='carousel-container' className="w-full h-screen opacity-100 panel z-2" ref={carouselContainerRef}>
       <div className="w-full h-full overflow-hidden relative">
 
          {slideImages.map((src, i) => (

@@ -25,13 +25,11 @@ const Telescope = () => {
 
   })
 
-  gsap.to("#main",{
+  gsap.to("#stack-wrapper",{
     scrollTrigger:{
-      trigger:"#main",
-      start:"top top",
-      end:`${window.innerHeight * 2}px`,
-      pin:true,
-      pinSpacing:true,
+      trigger:"#stack-wrapper",
+      start:"+=630%",
+      end:`+=100%`,
       scrub:1,
       onUpdate:({progress})=>{
         gsap.set(".footer",{

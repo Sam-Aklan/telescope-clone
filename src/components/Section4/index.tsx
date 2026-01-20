@@ -4,6 +4,7 @@ import CircularCarousel from "../CircularCarousel";
 import ImagesTrailer from "../ImageTrailerSection";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Telescope from "../Telescope";
 gsap.registerPlugin(ScrollTrigger)
 
 const Section4 = () => {
@@ -12,6 +13,10 @@ const Section4 = () => {
  
 useGSAP(() => {
 
+   gsap.set(".black-overlay",{
+              opacity: 0,
+            })
+
  gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -19,6 +24,16 @@ useGSAP(() => {
         end: "+=730%",
         scrub: 1,
         pin: true,
+        pinSpacing:true,
+        onUpdate:({progress})=>{
+          if(progress >.66 && progress <= 1.){
+            const mappedProgress = ((progress - .66) *(1 - 0)) / (1. - .66) +0.
+            console.log("mapped progress", mappedProgress.toFixed(2))
+            gsap.set(".black-overlay",{
+              opacity: `${30 * mappedProgress}%`,
+            })
+          }
+        }
         
       }
     })
@@ -31,23 +46,21 @@ useGSAP(() => {
 
   return (
     <>
-      <div className="w-full h-screen bg-yellow-300" />
-
+     
       <div
         ref={sectionRef}
         id="stack-wrapper"
         className="relative w-full h-screen"
       >
         
-
         <CircularCarousel />
         <ImagesTrailer/>
-       
+       <Telescope/>
+        <div className="w-full h-screen absolute bg-black z-20 black-overlay"/>
 
        
       </div>
 
-      <div className="w-full h-screen bg-yellow-300" />
     </>
   );
 };

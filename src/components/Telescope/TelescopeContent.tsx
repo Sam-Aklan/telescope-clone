@@ -1,6 +1,7 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import { useRef} from "react"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState} from "react"
 
 const thumbNails = [
     "kevinbidwell.jpg",
@@ -12,17 +13,27 @@ const thumbNails = [
 const TelescopeContent = () => {
    const oPathRef=useRef<SVGPathElement>(null)
    const thumbNailsRef = useRef<HTMLDivElement[]>([])
+   const [thumbNailsSize, setThumbNailsSize] = useState({width:0,height:0,top:0,left:0})
 
    useGSAP(()=>{
       if(!oPathRef.current) return
-    const {width:oWidth, height:oHeight,x:oTop, y:oLeft} =oPathRef.current.getBoundingClientRect()
-    gsap.set(".switching-image",{
-        width:oWidth,
-        height:oHeight,
-        left:oTop,
-        top:oLeft,
+    //  const {width:oWidth, height:oHeight,top:oTop,left:oLeft} =oPathRef.current.getBoundingClientRect()
+    // gsap.set(".switching-image",{
+    //     width:oWidth,
+    //     height:oHeight,
+    //     left:oLeft ,
+    //     top: oTop - 500,
       
-    })
+    // })
+
+
+    // const resizeHandler = ()=>{
+    //     if(!oPathRef.current) return
+    //   const {width,height,top,left}= oPathRef.current.getBoundingClientRect()
+    //    console.log("size and postion",width,height,top,left)
+    // }
+
+    // oPathRef.current.addEventListener("resize",resizeHandler)
 
     if(!thumbNailsRef.current || thumbNailsRef.current.length === 0) return
 
@@ -33,45 +44,97 @@ const TelescopeContent = () => {
     const fadeDuration = 0.5      // seconds
   const displayDuration = 1  // seconds each image stays visible
 
-//     const tl =gsap.timeline({
-//       repeat:-1,
-//       defaults:{ease:"power2.inOut"},
-//       repeatDelay:.3,
+    const tl =gsap.timeline({
+      repeat:-1,
+      defaults:{ease:"power2.inOut"},
+      repeatDelay:.3,
+      paused:true,
 
-//       onComplete:()=>{
-//         gsap.set(oPathRef.current,{autoAlpha:1,})
-//         gsap.set(thumbNailsRef.current,{autoAlpha:0})
-//       },
-//       onStart:()=>{
-//         gsap.set(oPathRef.current,{autoAlpha:0})
-//       }
-//     })
+      onComplete:()=>{
+        gsap.set(oPathRef.current,{autoAlpha:1,})
+        // gsap.set(thumbNailsRef.current,{autoAlpha:0})
+      },
+      onStart:()=>{
+        // gsap.set(oPathRef.current,{autoAlpha:0})
+      }
+    })
 
-//     thumbNailsRef.current.forEach((thumb,i)=>{
-//       const nextThumb = thumbNailsRef.current[(i+1) % thumbNailsRef.current.length ]
+    thumbNailsRef.current.forEach((thumb,i)=>{
+      const nextThumb = thumbNailsRef.current[(i+1) % thumbNailsRef.current.length ]
 
-//       // hold current thumb
-//       tl.to({},{duration:displayDuration})
+      // hold current thumb
+      tl.to({},{duration:displayDuration})
 
-//       // crossfade
-//       .to(thumb, { autoAlpha: 0, duration: fadeDuration },"<" )
-//       .to(nextThumb, { autoAlpha: 1, duration: fadeDuration },"<" )
+      // crossfade
+      .to(thumb, { autoAlpha: 0, duration: fadeDuration },"<" )
+      .to(nextThumb, { autoAlpha: 1, duration: fadeDuration },"<" )
 
-//     })
+    })
 
-//     // FINAL STEP: show the O
-// tl.to(oPathRef.current, {
-//   autoAlpha: 1,
-//   duration: 0.6,
-// })
+    // FINAL STEP: show the O
+tl.to(oPathRef.current, {
+  autoAlpha: 1,
+  duration: 0.6,
+})
 
-// // hide thumbnails when O shows
-// tl.to(thumbNailsRef.current, {
-//   autoAlpha: 0,
-//   duration: 0.3,
-// }, "<")
+// hide thumbnails when O shows
+tl.to(thumbNailsRef.current, {
+  autoAlpha: 0,
+  duration: 0.3,
+}, "<")
+
+ScrollTrigger.create({
+  trigger:"#stack-wrapper",
+  start:"+=720%",
+  end:"+=730%",
+  onEnter:()=>{
+    // if(!oPathRef.current)return
+    //  const {width:oWidth, height:oHeight,top:oTop,left:oLeft} =oPathRef.current.getBoundingClientRect()
+    // gsap.set(".switching-image",{
+    //     width:oWidth,
+    //     height:oHeight,
+    //     left:oLeft ,
+    //     top: oTop,
+      
+    // })
+
+    tl.play()
+  },
+  onLeave:()=>{tl.pause()}
+
+})
+
    
    })
+
+   const updateOMatrix = useCallback(()=>{
+
+    if(!oPathRef.current) return
+    const {width,height,top,left}= oPathRef.current.getBoundingClientRect()
+    setThumbNailsSize({width,height,top,left})
+
+   },[oPathRef.current])
+
+   useLayoutEffect(()=>{
+    
+    updateOMatrix()
+
+     const observer = new MutationObserver(updateOMatrix);
+    
+    if (oPathRef.current) {
+      observer.observe(oPathRef.current, {
+        attributes: true,
+        attributeFilter: ['style', 'class'], // Only trigger if styles/classes change
+      });
+    }
+
+    return ()=> observer.disconnect();
+
+   },[])
+
+   useEffect(()=>{
+    console.log("thumbNailsSize", thumbNailsSize)
+   },[thumbNailsSize])
   
    
   return (
@@ -105,9 +168,16 @@ const TelescopeContent = () => {
 </path>
 </svg>
         </div>
+        <div className="absolute w-24 h-24 bg-red-500"></div>
         {
             thumbNails.map((nail,i)=> <div key={i} className={`absolute w-24 h-24  switching-image rounded-full  `} ref={(el)=>{
             if(el)thumbNailsRef.current[i] = el
+            }}
+            style={{
+              width:thumbNailsSize.width,
+              height:thumbNailsSize.height,
+              top:thumbNailsSize.top,
+              left:thumbNailsSize.left,
             }}>
             <img src={`./pics/intro/${nail}`} alt="" className="w-full h-full object-cover rounded-full"/>
         </div>)

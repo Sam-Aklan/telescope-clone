@@ -4,6 +4,7 @@ import {  useEffect,  useRef } from "react";
 import { ReactLenis, type LenisRef } from "lenis/react";
 import ZoomEffectSection from "./components/ZoomEffectSection";
 import CarousselThumbPara from "./components/ShutterSection/CarouselThumbPara";
+import Section4 from "./components/Section4";
 
 function App() {
   const lenisRef = useRef<LenisRef>(null);
@@ -21,9 +22,10 @@ function App() {
   return (
     <>
       <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
-        <ZoomEffectSection/>
+        {/* <ZoomEffectSection/>
         <CarousselThumbPara/>
-        <div className="w-full h-screen bg-yellow-300"></div>
+        <div className="w-full h-screen bg-yellow-300"></div> */}
+        <Section4/>
       </ReactLenis>
     </>
   );
