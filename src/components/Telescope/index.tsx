@@ -1,17 +1,16 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import { useEffect, useRef } from "react"
 import TelescopeHeader from "./TelescopHeader"
 import TelescopeContent from "./TelescopeContent"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 gsap.registerPlugin([ScrollTrigger])
 
-const thumbNails = [
-    "kevinbidwell.jpg",
-    "dad-palstine.jpg",
-    "pexels-moose.jpg",
-    "christian-buehner.jpg",   
-]
+// const thumbNails = [
+//     "kevinbidwell.jpg",
+//     "dad-palstine.jpg",
+//     "pexels-moose.jpg",
+//     "christian-buehner.jpg",   
+// ]
 
 const Telescope = () => {
  useGSAP(()=>{

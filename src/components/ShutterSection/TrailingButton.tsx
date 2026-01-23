@@ -32,7 +32,6 @@ const TrailingButton = ({goToSlide,currentIndex}:{goToSlide:(nextIndex:number)=>
       targetPosition.current = { x: relativeX, y: relativeY };
   
       const newIsLeftSide = relativeX < rect.width / 2;
-      console.log("is left", newIsLeftSide)
       if (newIsLeftSide !== isLeftSide.current) {
         isLeftSide.current = newIsLeftSide;
         if (pathRef.current && svgRef.current) {

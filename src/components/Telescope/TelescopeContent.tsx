@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useCallback, useEffect, useLayoutEffect, useRef, useState} from "react"
+import { useCallback, useRef,} from "react"
 
 const thumbNails = [
     "kevinbidwell.jpg",
@@ -11,31 +11,40 @@ const thumbNails = [
 ]
 
 const TelescopeContent = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
    const oPathRef=useRef<SVGPathElement>(null)
    const thumbNailsRef = useRef<HTMLDivElement[]>([])
-   const [thumbNailsSize, setThumbNailsSize] = useState({width:0,height:0,top:0,left:0})
+
+   const updateOMatrix = useCallback(()=>{
+
+    if(!oPathRef.current || !containerRef.current) return
+    const oPathRect= oPathRef.current.getBoundingClientRect()
+    const parentRect = containerRef.current.getBoundingClientRect()
+
+    
+    gsap.set(".switching-image",{
+        width:oPathRect.width,
+        height:oPathRect.height,
+       top:0,
+       left:0,
+        x: oPathRect.left - parentRect.left,
+        y: oPathRect.top - parentRect.top,
+        transform:"none",
+        margin:0,
+    })
+
+   },[])
 
    useGSAP(()=>{
-      if(!oPathRef.current) return
-    //  const {width:oWidth, height:oHeight,top:oTop,left:oLeft} =oPathRef.current.getBoundingClientRect()
-    // gsap.set(".switching-image",{
-    //     width:oWidth,
-    //     height:oHeight,
-    //     left:oLeft ,
-    //     top: oTop - 500,
-      
-    // })
-
-
-    // const resizeHandler = ()=>{
-    //     if(!oPathRef.current) return
-    //   const {width,height,top,left}= oPathRef.current.getBoundingClientRect()
-    //    console.log("size and postion",width,height,top,left)
-    // }
-
-    // oPathRef.current.addEventListener("resize",resizeHandler)
+      if(!oPathRef.current || !containerRef.current) return
+    
 
     if(!thumbNailsRef.current || thumbNailsRef.current.length === 0) return
+
+    gsap.ticker.add(updateOMatrix);
+
+
+    gsap.set(oPathRef.current,{autoAlpha:1})
 
     gsap.set(thumbNailsRef.current,{
       autoAlpha:0
@@ -52,10 +61,10 @@ const TelescopeContent = () => {
 
       onComplete:()=>{
         gsap.set(oPathRef.current,{autoAlpha:1,})
-        // gsap.set(thumbNailsRef.current,{autoAlpha:0})
+        gsap.set(thumbNailsRef.current,{autoAlpha:0})
       },
       onStart:()=>{
-        // gsap.set(oPathRef.current,{autoAlpha:0})
+        gsap.set(oPathRef.current,{autoAlpha:0})
       }
     })
 
@@ -83,71 +92,51 @@ tl.to(thumbNailsRef.current, {
   duration: 0.3,
 }, "<")
 
+
+
 ScrollTrigger.create({
   trigger:"#stack-wrapper",
   start:"+=720%",
   end:"+=730%",
   onEnter:()=>{
-    // if(!oPathRef.current)return
-    //  const {width:oWidth, height:oHeight,top:oTop,left:oLeft} =oPathRef.current.getBoundingClientRect()
-    // gsap.set(".switching-image",{
-    //     width:oWidth,
-    //     height:oHeight,
-    //     left:oLeft ,
-    //     top: oTop,
-      
-    // })
-
-    tl.play()
+    
+    tl.restart()
   },
-  onLeave:()=>{tl.pause()}
+  onLeave:()=>{
+    gsap.set(oPathRef.current,{autoAlpha:1})
+
+    gsap.set(thumbNailsRef.current,{
+      autoAlpha:0
+    })
+
+    tl.pause()
+  },
+  onLeaveBack:()=>{
+     gsap.set(oPathRef.current,{autoAlpha:1})
+
+    gsap.set(thumbNailsRef.current,{
+      autoAlpha:0
+    })
+
+    tl.pause()
+  }
 
 })
 
+
+  return ()=>{
+    // resizeObserver.disconnect();
+    gsap.ticker.remove(updateOMatrix)
+  }
    
    })
 
-   const updateOMatrix = useCallback(()=>{
-
-    if(!oPathRef.current) return
-    const {width,height,top,left}= oPathRef.current.getBoundingClientRect()
-    setThumbNailsSize({width,height,top,left})
-
-   },[oPathRef.current])
-
-   useLayoutEffect(()=>{
-    
-    updateOMatrix()
-
-     const observer = new MutationObserver(updateOMatrix);
-    
-    if (oPathRef.current) {
-      observer.observe(oPathRef.current, {
-        attributes: true,
-        attributeFilter: ['style', 'class'], // Only trigger if styles/classes change
-      });
-    }
-
-    return ()=> observer.disconnect();
-
-   },[])
-
-   useEffect(()=>{
-    console.log("thumbNailsSize", thumbNailsSize)
-   },[thumbNailsSize])
-  
-   
   return (
     <>
      {/* <div className='w-full h-screen relative'> */}
-        <div className="brand"
-        >
+        <div className="brand" ref={containerRef}>
 
-   <svg viewBox="0 0 1118 230" fill="none" xmlns="http://www.w3.org/2000/svg" className="svg-typography"
-  //  style={{
-  //   transform: `scale(calc(var(--min-scale) + (1 - var(--min-scale))*var(--p)))`
-  //  }} 
-   >
+   <svg viewBox="0 0 1118 230" fill="none" xmlns="http://www.w3.org/2000/svg" className="svg-typography">
 <path d="M141.252 0.337891V33.1567H89.8705V178.383H51.7153V33.1567H0.333496V0.337891H141.252Z" fill="#232323" >
 </path>
 <path d="M234.444 108.932C234.444 113.506 234.101 117.585 233.453 121.168H138.58V122.159C139.419 131.65 142.468 139.121 147.728 144.572C152.988 149.984 160.192 152.691 169.341 152.691C176.621 152.691 182.643 151.166 187.408 148.117C192.325 144.877 195.527 140.226 197.052 134.128H232.424C231.052 142.78 227.774 150.556 222.514 157.531C217.254 164.469 210.278 169.996 201.664 174.074C193.011 177.962 183.063 179.906 171.894 179.906C157.296 179.906 144.679 177.2 134.006 171.787C123.486 166.336 115.329 158.637 109.573 148.612C103.97 138.435 101.187 126.657 101.187 113.278C101.187 99.8984 103.894 87.9297 109.306 77.9049C114.909 67.7276 122.647 59.9517 132.481 54.501C142.468 48.9359 154.017 46.1152 167.054 46.1152C180.09 46.1152 191.906 48.7453 201.893 54.0055C212.07 59.075 219.96 66.3935 225.563 75.8847C231.319 85.2234 234.292 96.2392 234.444 108.932ZM139.342 97.7639H198.576C197.395 89.7974 194.117 83.6606 188.666 79.4296C183.406 75.0461 176.735 72.8353 168.578 72.8353C160.421 72.8353 154.17 75.1223 148.757 79.6964C143.497 84.118 140.333 90.1405 139.342 97.7639Z" fill="#232323" >
@@ -167,23 +156,17 @@ ScrollTrigger.create({
 <path d="M1117.67 108.932C1117.67 113.506 1117.32 117.585 1116.64 121.168H1021.76V122.159C1022.6 131.65 1025.65 139.121 1030.91 144.572C1036.17 149.984 1043.38 152.691 1052.52 152.691C1059.84 152.691 1065.87 151.166 1070.59 148.117C1075.51 144.877 1078.75 140.226 1080.27 134.128H1115.61C1114.27 142.78 1110.96 150.556 1105.7 157.531C1100.44 164.469 1093.5 169.996 1084.85 174.074C1076.2 177.962 1066.28 179.906 1055.08 179.906C1040.52 179.906 1027.86 177.2 1017.19 171.787C1006.67 166.336 998.551 158.637 992.757 148.612C987.154 138.435 984.371 126.657 984.371 113.278C984.371 99.8984 987.078 87.9297 992.528 77.9049C998.093 67.7276 1005.83 59.9517 1015.67 54.501C1025.65 48.9359 1037.2 46.1152 1050.24 46.1152C1063.27 46.1152 1075.09 48.7453 1085.08 54.0055C1095.25 59.075 1103.14 66.3935 1108.75 75.8847C1114.5 85.2234 1117.48 96.2392 1117.67 108.932ZM1022.53 97.7639H1081.8C1080.62 89.7974 1077.3 83.6606 1071.85 79.4296C1066.63 75.0461 1059.92 72.8353 1051.76 72.8353C1043.61 72.8353 1037.35 75.1223 1031.94 79.6964C1026.68 84.118 1023.56 90.1405 1022.53 97.7639Z" fill="#232323" >
 </path>
 </svg>
-        </div>
-        <div className="absolute w-24 h-24 bg-red-500"></div>
         {
-            thumbNails.map((nail,i)=> <div key={i} className={`absolute w-24 h-24  switching-image rounded-full  `} ref={(el)=>{
+            thumbNails.map((nail,i)=> <div key={i} className={`absolute w-24 h-24  switching-image rounded-full`} ref={(el)=>{
             if(el)thumbNailsRef.current[i] = el
             }}
-            style={{
-              width:thumbNailsSize.width,
-              height:thumbNailsSize.height,
-              top:thumbNailsSize.top,
-              left:thumbNailsSize.left,
-            }}>
+          
+            >
             <img src={`./pics/intro/${nail}`} alt="" className="w-full h-full object-cover rounded-full"/>
         </div>)
         }
+        </div>
 
-{/* </div> */}
         </>
    
   )
