@@ -4,7 +4,7 @@ const ZoomEffect = () => {
   return (
     <div className="banner w-full  h-[100svh] max-h-255 relative">
       <div className="flex flex-col w-full gap-4  overflow-hidden absolute top-1/2 left-1/2 -translate-1/2 z-5">
-        <div className="text-3xl shrink text-center whitespace-nowrap line">
+        <div className="text-3xl shrink text-center whitespace-nowrap line first-line">
           Real Recommendation
         </div>
 

@@ -1,7 +1,7 @@
 
 
-import { RoundKeyboardArrowLeft } from '../ArrowLeft';
-import { RoundKeyboardArrowRight } from '../ArrowRight';
+import { RoundKeyboardArrowLeft } from '../svgs/ArrowLeft';
+import { RoundKeyboardArrowRight } from '../svgs/ArrowRight';
 
 
 const MobileCarouselBtns = ({goToSlide,currentIndex}:{goToSlide:(nextIndex:number)=>void,currentIndex:number}) => {

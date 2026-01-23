@@ -514,12 +514,11 @@ const ThumbnailBoxes = ({
 
 
 const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivElement|null>}) => {
-  // const StakesSection = useRef<HTMLDivElement>(null)
+  
     useGSAP(()=>{
 
       if(!sectionRef.current) return
 
-      console.log("stakes", sectionRef.current)
 
      const tl = gsap.timeline({paused:true})
       gsap.set(".stake.line",{
