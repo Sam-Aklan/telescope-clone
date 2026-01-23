@@ -1,17 +1,16 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import { useEffect, useRef } from "react"
 import TelescopeHeader from "./TelescopHeader"
 import TelescopeContent from "./TelescopeContent"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 gsap.registerPlugin([ScrollTrigger])
 
-const thumbNails = [
-    "kevinbidwell.jpg",
-    "dad-palstine.jpg",
-    "pexels-moose.jpg",
-    "christian-buehner.jpg",   
-]
+// const thumbNails = [
+//     "kevinbidwell.jpg",
+//     "dad-palstine.jpg",
+//     "pexels-moose.jpg",
+//     "christian-buehner.jpg",   
+// ]
 
 const Telescope = () => {
  useGSAP(()=>{
@@ -25,13 +24,11 @@ const Telescope = () => {
 
   })
 
-  gsap.to("#main",{
+  gsap.to("#stack-wrapper",{
     scrollTrigger:{
-      trigger:"#main",
-      start:"top top",
-      end:`${window.innerHeight * 2}px`,
-      pin:true,
-      pinSpacing:true,
+      trigger:"#stack-wrapper",
+      start:"+=630%",
+      end:`+=100%`,
       scrub:1,
       onUpdate:({progress})=>{
         gsap.set(".footer",{
