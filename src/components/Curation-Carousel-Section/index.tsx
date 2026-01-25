@@ -19,6 +19,7 @@ const CurationCarouselSection = () => {
     const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
 
     console.log("precent", (curationHeightPrecent + 50).toFixed(3))
+    console.log("precent", `+=${(curationHeightPrecent + 50).toFixed(3)}%`)
     ScrollTrigger.create({
       trigger:carouselCurationRef.current,
       start:"top top",

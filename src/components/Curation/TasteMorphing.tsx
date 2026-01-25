@@ -163,9 +163,12 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
        ScrollTrigger.create({
       trigger:"#carousel-curation",
       start:"+=120%",
-      end:"+=95%",
+      end:"+=90%",
+      onUpdate:({progress})=>{
+        console.log("progress taste morphing",progress)
+      },
        onEnter: () => {
-        console.log("taste morphing is entered")
+        // console.log("taste morphing is entered")
     tl.play(); // Start the timeline when element comes into view
     gsap.set(morphingLineRef.current,{
       strokeOpacity:1,

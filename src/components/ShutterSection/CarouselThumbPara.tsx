@@ -173,7 +173,7 @@ const rightMatrix = useResponsiveMatrix(
 
 
   return (
-    <div className='absolute w-full h-screen'>
+    <div className='absolute w-full h-screen overflow-hidden'>
     <div id="mask-container" className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
       
     <Stakes isMobile ={debouncedWindowSize.width<1024} sectionRef={maskContainerRef}/>
@@ -545,7 +545,7 @@ const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObje
           trigger:sectionRef.current,
           start:"top center",
           end:"bottom top",
-          markers:true,
+          // markers:true,
           onEnter:()=>{
             tl.play()
           },

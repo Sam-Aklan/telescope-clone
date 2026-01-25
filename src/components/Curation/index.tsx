@@ -149,7 +149,7 @@ const CurationSection = () => {
         if(progress >=curaitontextRangs.lottie.start && progress <curaitontextRangs.lottie.end){
            const mappedProgress =( ((progress - curaitontextRangs.lottie.start) * 1) / (curaitontextRangs.lottie.end - curaitontextRangs.lottie.start)) 
 
-           console.log("mapped progress lottie", mappedProgress)
+          //  console.log("mapped progress lottie", mappedProgress)
 
            gsap.to(".lottie .curate-inner",{
             "--x-translation":`${100 - 100 * mappedProgress}%`

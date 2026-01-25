@@ -5,6 +5,7 @@ import ImagesTrailer from "../ImageTrailerSection";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Telescope from "../Telescope";
+import Test_ImageTrailerSection from "../ImageTrailerSection";
 gsap.registerPlugin(ScrollTrigger)
 
 const Section4 = () => {
@@ -54,7 +55,8 @@ useGSAP(() => {
       >
         
         <CircularCarousel />
-        <ImagesTrailer/>
+        {/* <ImagesTrailer/> */}
+        <Test_ImageTrailerSection/>
        <Telescope/>
         <div className="w-full h-screen absolute bg-black z-20 black-overlay pointer-events-none"/>
 

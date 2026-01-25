@@ -5,20 +5,9 @@ import TelescopeContent from "./TelescopeContent"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 gsap.registerPlugin([ScrollTrigger])
 
-// const thumbNails = [
-//     "kevinbidwell.jpg",
-//     "dad-palstine.jpg",
-//     "pexels-moose.jpg",
-//     "christian-buehner.jpg",   
-// ]
-
 const Telescope = () => {
  useGSAP(()=>{
-//  const bgEl = document.querySelector(".footer > .bg");
-//  if(bgEl){
 
-//    console.log(bgEl.getAttribute("transform"))
-//  }
   gsap.set(".footer-top .socials",{
     autoAlpha:0
 
