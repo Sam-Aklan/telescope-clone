@@ -41,7 +41,6 @@ return [...firstPostions,...secondPostions]
     useGSAP(()=>{
 
        if (!sectionRef.current ) return;
-      console.log("hello")
       const rect = sectionRef.current.getBoundingClientRect();
       const intailXPostion = rect.width * 2/3
       const intailYPostion = rect.height /4

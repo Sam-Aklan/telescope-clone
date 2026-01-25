@@ -162,7 +162,13 @@ body{
   }
 }
 
+.curation {
+  @apply w-full absolute z-50 top-0 left-0 
+}
+
+
 .curation .section{
+    /* translate: 0% 50%; */
     translate: 0% 50%;
     overflow: hidden;
   }
@@ -278,7 +284,7 @@ body{
 }
 
 .svg-container{
-  @apply w-full h-[150%] absolute  -z-0
+  @apply w-full h-screen absolute
 }
 
 .btn-inner{

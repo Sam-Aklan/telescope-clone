@@ -2,7 +2,6 @@
 import { useCallback, useMemo, useRef } from 'react'
 import CurateSection from './CurateSection'
 import TasteMorphing from './TasteMorphing'
-// import TasteMorphing from './Test_TasteMorphing'
 import YourSection from './YourSection'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -42,7 +41,7 @@ const CurationSection = () => {
           },
           lottie:{
             start:.4,
-            end:.6,
+            end:.66,
           }
         }
     },[window.innerWidth])
@@ -91,31 +90,24 @@ const CurationSection = () => {
       },
      })
    
-
-     ScrollTrigger.create({
-      trigger: curationSectionRef.current,
-      start: "top 95%",
-      end: `bottom bottom`,
-      scrub: 1,
-      markers:{
-        startColor:"orange",
-        indent:300,
-      },
-      onUpdate: ({ progress }) => {
-      // 37 - 87 * Math.min(1,progress * 1.5)).toFixed(2)
-        gsap.to(".curation .section",{
-          translate:`0% ${calcualteYTranslation(progress)}%`,
-          overwrite:"auto"
-        })
-
-        console.log("progress",progress.toFixed(2))
-        const roundProgress = Math.round(progress * 100) / 100
+     gsap.fromTo(curationSectionRef.current,
+      {y:"100%"},
+      {
+        y:"-60%",
+      scrollTrigger:{
+        trigger:"#carousel-curation",
+        start:"+=50%",
+        end:"+=165.022%",
+        scrub:1,
+        onUpdate: ({ progress }) => {
+    
+        // console.log("progress",progress.toFixed(2))
+        // const roundProgress = Math.round(progress * 100) / 100
 
         // 0.0 -> .22
         if(progress >=curaitontextRangs.curate.start && progress < curaitontextRangs.curate.end){
            const mappedProgress =( ((progress - curaitontextRangs.curate.start) * 1) / (curaitontextRangs.curate.end - curaitontextRangs.curate.start)) 
-          //  console.log("mapped progress1", mappedProgress)
-
+         
            gsap.to(".curate .curate-inner",{
       x:`${100 - 100 * mappedProgress}%`,
      })
@@ -157,6 +149,8 @@ const CurationSection = () => {
         if(progress >=curaitontextRangs.lottie.start && progress <curaitontextRangs.lottie.end){
            const mappedProgress =( ((progress - curaitontextRangs.lottie.start) * 1) / (curaitontextRangs.lottie.end - curaitontextRangs.lottie.start)) 
 
+           console.log("mapped progress lottie", mappedProgress)
+
            gsap.to(".lottie .curate-inner",{
             "--x-translation":`${100 - 100 * mappedProgress}%`
            })
@@ -175,9 +169,12 @@ const CurationSection = () => {
 
        
       },
-    });
+      }
+     })
+
+
     
-  },{scope:curationSectionRef});
+  },);
   
   return (
    

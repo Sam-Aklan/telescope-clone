@@ -1,9 +1,10 @@
 import gsap from "gsap";
 import {DrawSVGPlugin} from 'gsap/DrawSVGPlugin'
 import { drawshapes } from "../../utils/morphShapes";
-import { useEffect, useRef } from "react";
+import {  useRef } from "react";
 import { motionPathReverse } from "../../utils/morphShapes";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger)
 
@@ -12,7 +13,7 @@ const TasteMorphing = () => {
   const motionPathRef = useRef<SVGPathElement>(null)
   const wrapperGRef = useRef<SVGGraphicsElement>(null)
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!morphingLineRef.current || !motionPathRef.current || !wrapperGRef.current) return
 
     const pathLength = motionPathRef.current.getTotalLength()
@@ -23,8 +24,7 @@ const TasteMorphing = () => {
     let currentLineLength = 50
 let currentSampleCount = 30
 
-    const ctx = gsap.context(() => {
-      gsap.set(".path-stroke", { drawSVG: "0%" })
+gsap.set(".path-stroke", { drawSVG: "0%" })
       gsap.set(morphingLineRef.current,{
         strokeOpacity:0,
       })
@@ -86,10 +86,6 @@ let currentSampleCount = 30
 
       }
 
-      // const progress =gsap.getProperty(".curation","--curation-progress",)
-      // console.log("progress",progress,"progrestype",typeof progress)
-      // Main animation
-      // if(Number(progress) <.5) return
       tl.to({}, {
         duration,
         onUpdate: updateLineMorph,
@@ -165,17 +161,18 @@ let currentSampleCount = 30
       },6.32)
 
        ScrollTrigger.create({
-      trigger:".lottie.section",
-      start:"top 95%",
-      end:"bottom 100%",
+      trigger:"#carousel-curation",
+      start:"+=120%",
+      end:"+=95%",
        onEnter: () => {
+        console.log("taste morphing is entered")
     tl.play(); // Start the timeline when element comes into view
     gsap.set(morphingLineRef.current,{
       strokeOpacity:1,
     })
   },
   onEnterBack: () => {
-    tl.play(); // Also play when scrolling back up
+    tl.resume(); // Also play when scrolling back up
   },
   onLeave: () => {
     tl.pause(); // Pause when leaving view
@@ -185,12 +182,15 @@ let currentSampleCount = 30
   }
     })
 
+    // const ctx = gsap.context(() => {
+      
 
-    })
+
+    // })
 
    
 
-    return () => ctx.revert()
+    // return () => ctx.revert()
   }, [])
   return (
     <div className="lottie section">

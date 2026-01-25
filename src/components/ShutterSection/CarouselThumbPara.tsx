@@ -173,7 +173,7 @@ const rightMatrix = useResponsiveMatrix(
 
 
   return (
-    <>
+    <div className='absolute w-full h-screen'>
     <div id="mask-container" className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
       
     <Stakes isMobile ={debouncedWindowSize.width<1024} sectionRef={maskContainerRef}/>
@@ -272,7 +272,7 @@ const rightMatrix = useResponsiveMatrix(
       </defs>
     </svg>
     </div>
-  </>
+  </div>
   )
 }
 
