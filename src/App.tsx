@@ -22,9 +22,11 @@ function App() {
   return (
     <>
       <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
-        <ZoomEffectSection/>
+        {/* <ZoomEffectSection/> */}
+        <div className="w-full h-screen"></div>
         <CurationCarouselSection/>
-        <Section4/>
+        <div className="w-full h-screen"></div>
+        {/* <Section4/> */}
       </ReactLenis>
     </>
   );

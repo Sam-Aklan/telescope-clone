@@ -93,7 +93,7 @@ const CurationSection = () => {
      gsap.fromTo(curationSectionRef.current,
       {y:"100%"},
       {
-        y:"-60%",
+        y:"-50%",
       scrollTrigger:{
         trigger:"#carousel-curation",
         start:"+=50%",

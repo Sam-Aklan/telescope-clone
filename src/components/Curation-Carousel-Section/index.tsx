@@ -33,9 +33,9 @@ const CurationCarouselSection = () => {
   },{scope:carouselCurationRef})
 
   return (
-    <div id="carousel-curation" className='relative w-full h-screen' ref={carouselCurationRef}>
+    <div id="carousel-curation" className='relative w-full h-screen bg-white' ref={carouselCurationRef}>
     <CarousselThumbPara/>
-    <CurationSection/>
+    {/* <CurationSection/> */}
     </div>
   )
 }

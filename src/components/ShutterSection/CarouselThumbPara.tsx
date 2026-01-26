@@ -1,5 +1,5 @@
 import { useGSAP } from '@gsap/react';
-import  React, { useEffect, useRef, useState } from 'react'
+import  React, { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import TrialingButton from './TrailingButton';
 import {SplitText} from 'gsap/SplitText'
@@ -173,7 +173,7 @@ const rightMatrix = useResponsiveMatrix(
 
 
   return (
-    <div className='absolute w-full h-screen overflow-hidden'>
+    <div className='absolute w-full h-screen '>
     <div id="mask-container" className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
       
     <Stakes isMobile ={debouncedWindowSize.width<1024} sectionRef={maskContainerRef}/>
@@ -365,7 +365,6 @@ const ThumbnailBoxes = ({
   const expandBox = contextSafe((index: number) => {
     
     const tl = gsap.timeline();
-    console.log("expanded", index)
 
     tl.to(boxesRef.current[index], {
       width: `${expandedWidth}rem`, // expand relative to original width
@@ -514,6 +513,13 @@ const ThumbnailBoxes = ({
 
 
 const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivElement|null>}) => {
+
+  const rotateDegree= useMemo(()=>{
+
+    if(isMobile) return {startDeg:90,firstEnd:45,lastEnd:135,}
+    return {startDeg:0,firstEnd:45,lastEnd:-45,}
+
+  },[isMobile])
   
     useGSAP(()=>{
 
@@ -522,31 +528,29 @@ const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObje
 
      const tl = gsap.timeline({paused:true})
       gsap.set(".stake.line",{
-        rotate:()=> isMobile?90:0
+        rotate:()=> rotateDegree.startDeg
       })
         tl.fromTo(".stake.line",
           {
-            rotate:isMobile?90:0
+            rotate:rotateDegree.startDeg
           },
           {
             rotate:(index)=>{ 
+             return index / 2 === 0 ?rotateDegree.lastEnd:rotateDegree.firstEnd
              
-              if(isMobile){ 
-                return index / 2 ===0? 135: 45
-
-              }
-              return index / 2 ===0?-45:45
             }
               ,
             duration:1,
         })
 
         ScrollTrigger.create({
-          trigger:sectionRef.current,
-          start:"top center",
+          trigger:"#carousel-curation",
+          start:"top center+=100px",
           end:"bottom top",
-          // markers:true,
+          scrub:true,
+          markers:true,
           onEnter:()=>{
+            console.log("stakes animations entered")
             tl.play()
           },
           onEnterBack:()=>{
@@ -556,16 +560,16 @@ const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObje
     },{dependencies:[isMobile]})
     console.log("isMobile", isMobile)
     return (
+      // <div className="w-full h-screen absolute ">
+      // <div className='w-full h-screen relative overflow-hidden'>
       <>
-      
-        <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-0.5 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left z-6 "
+          <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-0.5 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left z-6 "
         >
 
         </div>
         <div className="stake line absolute top-1/4 -translate-y-1/4 left-[52%] z-6  w-[70%] h-0.5 origin-top-left  bg-white lg:top-[50.5%] lg:left-1/4">
         </div>
       </>
-     
     );
   };
   
