@@ -18,6 +18,7 @@ const CurationCarouselSection = () => {
     if(!curationHeight) return
     const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
 
+    console.log("precent net", (curationHeightPrecent ).toFixed(3))
     console.log("precent", (curationHeightPrecent + 50).toFixed(3))
     console.log("precent", `+=${(curationHeightPrecent + 50).toFixed(3)}%`)
     ScrollTrigger.create({
@@ -35,7 +36,7 @@ const CurationCarouselSection = () => {
   return (
     <div id="carousel-curation" className='relative w-full h-screen bg-white' ref={carouselCurationRef}>
     <CarousselThumbPara/>
-    {/* <CurationSection/> */}
+    <CurationSection/>
     </div>
   )
 }

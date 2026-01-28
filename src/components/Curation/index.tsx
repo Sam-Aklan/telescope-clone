@@ -58,6 +58,14 @@ const CurationSection = () => {
     useGSAP(()=>{
       if(!curationSectionRef.current) return
 
+       const curationHeight = document.querySelector('.curation')?.clientHeight
+
+    if(!curationHeight) return
+    const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
+
+    // const totalCurationHeightPrecent = curationHeightPrecent + 50
+    console.log("curation height prencet", curationHeightPrecent.toFixed(3))
+
      const curationTexts = curationSectionRef.current.querySelectorAll(".curation .curation-text")
     
      curationTexts.forEach(text=>{
@@ -93,11 +101,11 @@ const CurationSection = () => {
      gsap.fromTo(curationSectionRef.current,
       {y:"100%"},
       {
-        y:"-50%",
+        y:"-45.5%",
       scrollTrigger:{
         trigger:"#carousel-curation",
         start:"+=50%",
-        end:"+=165.022%",
+        end:`+=${(curationHeightPrecent + 50).toFixed(3)}%`,
         scrub:1,
         onUpdate: ({ progress }) => {
     

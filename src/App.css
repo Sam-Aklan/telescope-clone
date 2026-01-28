@@ -360,7 +360,7 @@ stroke-dashoffset: -.01%;
 }
 
 .curation >.your{
-  @apply h-[80svh] lg:h-[150svh] bg-white -mb-[40svh] lg:-mb-[115svh]
+  @apply h-[70svh] lg:h-[150svh] bg-white -mb-[40svh] lg:-mb-[115svh]
 }
 
 

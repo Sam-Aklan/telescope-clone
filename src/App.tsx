@@ -25,7 +25,7 @@ function App() {
         {/* <ZoomEffectSection/> */}
         <div className="w-full h-screen"></div>
         <CurationCarouselSection/>
-        <div className="w-full h-screen"></div>
+        <div className="w-full h-screen bg-amber-400"></div>
         {/* <Section4/> */}
       </ReactLenis>
     </>

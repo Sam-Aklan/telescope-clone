@@ -173,7 +173,7 @@ const rightMatrix = useResponsiveMatrix(
 
 
   return (
-    <div className='absolute w-full h-screen '>
+    <div className='absolute top-0 left-0 w-full h-screen '>
     <div id="mask-container" className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
       
     <Stakes isMobile ={debouncedWindowSize.width<1024} sectionRef={maskContainerRef}/>
@@ -516,6 +516,7 @@ const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObje
 
   const rotateDegree= useMemo(()=>{
 
+    console.log("is mobile", isMobile)
     if(isMobile) return {startDeg:90,firstEnd:45,lastEnd:135,}
     return {startDeg:0,firstEnd:45,lastEnd:-45,}
 
@@ -523,13 +524,10 @@ const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObje
   
     useGSAP(()=>{
 
-      if(!sectionRef.current) return
-
-
-     const tl = gsap.timeline({paused:true})
       gsap.set(".stake.line",{
         rotate:()=> rotateDegree.startDeg
       })
+     const tl = gsap.timeline({paused:true})
         tl.fromTo(".stake.line",
           {
             rotate:rotateDegree.startDeg
@@ -543,14 +541,14 @@ const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObje
             duration:1,
         })
 
+
         ScrollTrigger.create({
           trigger:"#carousel-curation",
-          start:"top center+=100px",
+          start:"top center",
           end:"bottom top",
           scrub:true,
           markers:true,
           onEnter:()=>{
-            console.log("stakes animations entered")
             tl.play()
           },
           onEnterBack:()=>{
@@ -558,10 +556,9 @@ const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObje
           }
         })
     },{dependencies:[isMobile]})
-    console.log("isMobile", isMobile)
+    // console.log("isMobile", isMobile)
     return (
-      // <div className="w-full h-screen absolute ">
-      // <div className='w-full h-screen relative overflow-hidden'>
+     
       <>
           <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-0.5 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left z-6 "
         >

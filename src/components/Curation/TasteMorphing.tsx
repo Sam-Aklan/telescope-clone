@@ -12,10 +12,20 @@ const TasteMorphing = () => {
   const morphingLineRef = useRef<SVGPathElement>(null)
   const motionPathRef = useRef<SVGPathElement>(null)
   const wrapperGRef = useRef<SVGGraphicsElement>(null)
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null)
+  const tlRef = useRef<GSAPTimeline|null>(null)
 
   useGSAP(() => {
     if (!morphingLineRef.current || !motionPathRef.current || !wrapperGRef.current) return
 
+    const curationHeight = document.querySelector('.curation')?.clientHeight
+
+    if(!curationHeight) return
+    const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
+
+    const curaitonStartTriger = (curationHeightPrecent + 50) * .7
+    const curaitonEndTriger = (curationHeightPrecent + 50) * .5
+    
     const pathLength = motionPathRef.current.getTotalLength()
     const curvePath = motionPathRef.current
 
@@ -29,6 +39,8 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
         strokeOpacity:0,
       })
       const tl = gsap.timeline({ defaults: { ease: "none" },repeat:-1 ,paused:true})
+      
+      tlRef.current = tl
 
       const updateLineMorph = () => {
        
@@ -86,6 +98,8 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
 
       }
 
+      let resumedCalls:gsap.core.Tween[] = []
+
       tl.to({}, {
         duration,
         onUpdate: updateLineMorph,
@@ -97,10 +111,11 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
       pauseTimes.forEach(time => {
         tl.call(() => {
           tl.pause()
-          // console.log("Paused at", time)
-
+         
           // Resume automatically after 1 second (optional)
-          gsap.delayedCall(1, () => tl.resume())
+          const dc =gsap.delayedCall(1, () => tl.resume())
+          resumedCalls.push(dc)
+          
         }, [], time)
       })
 
@@ -160,43 +175,63 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
         }
       },6.32)
 
-       ScrollTrigger.create({
+       const scrolltrigger= ScrollTrigger.create({
       trigger:"#carousel-curation",
-      start:"+=120%",
-      end:"+=90%",
+      start:`+=${curaitonStartTriger.toFixed(3)}%`,
+      end:`+=${curaitonEndTriger.toFixed(3)}%`,
       onUpdate:({progress})=>{
         console.log("progress taste morphing",progress)
       },
        onEnter: () => {
-        // console.log("taste morphing is entered")
-    tl.play(); // Start the timeline when element comes into view
-    gsap.set(morphingLineRef.current,{
-      strokeOpacity:1,
-    })
+          
+          tl.play()
+          console.log("taste morphing is entered")
+          gsap.set(morphingLineRef.current, {
+            strokeOpacity: 1,
+          })
+      
   },
   onEnterBack: () => {
-    tl.resume(); // Also play when scrolling back up
+    console.log("entered back")
+    tl.play()
+
   },
   onLeave: () => {
-    tl.pause(); // Pause when leaving view
+    resumedCalls.forEach(dc=> dc.kill())
+    resumedCalls = []
+          tl.pause() // Pause at the beginning
+          console.log("onleave pause")
+    
   },
   onLeaveBack: () => {
-    tl.pause(); // Pause when scrolling back up and leaving view
+     resumedCalls.forEach(dc=> dc.kill())
+    resumedCalls = []
+    console.log("on leave back")
+   tl.pause()
   }
+  
     })
 
-    // const ctx = gsap.context(() => {
-      
+    scrollTriggerRef.current = scrolltrigger
 
+    return ()=>{
+      if(scrollTriggerRef.current){
+        scrollTriggerRef.current.kill()
+        scrollTriggerRef.current = null
+      }
 
-    // })
+      if(tlRef.current){
+        tlRef.current.kill()
+        tlRef.current = null
+      }
+
+    }
 
    
-
-    // return () => ctx.revert()
   }, [])
   return (
     <div className="lottie section">
+      {/* <div className="w-full h-[60svh] bg-white absolute -z-50"></div> */}
      <div className="curate-inner">
       <div className="curation-text">
         tast
