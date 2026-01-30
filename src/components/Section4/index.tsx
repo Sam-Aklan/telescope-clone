@@ -55,9 +55,9 @@ useGSAP(() => {
       >
         
         <CircularCarousel />
-        {/* <ImagesTrailer/> */}
-        <Test_ImageTrailerSection/>
-       <Telescope/>
+        <ImagesTrailer/>
+        {/* <Test_ImageTrailerSection/> */}
+       {/* <Telescope/> */}
         <div className="w-full h-screen absolute bg-black z-20 black-overlay pointer-events-none"/>
 
        

@@ -5,6 +5,7 @@ import { ReactLenis, type LenisRef } from "lenis/react";
 import ZoomEffectSection from "./components/ZoomEffectSection";
 import Section4 from "./components/Section4";
 import CurationCarouselSection from "./components/Curation-Carousel-Section";
+import Telescope from "./components/Telescope";
 
 function App() {
   const lenisRef = useRef<LenisRef>(null);
@@ -22,11 +23,12 @@ function App() {
   return (
     <>
       <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
-        {/* <ZoomEffectSection/> */}
+        <Telescope/>
+        <ZoomEffectSection/>
         <div className="w-full h-screen"></div>
         <CurationCarouselSection/>
-        <div className="w-full h-screen bg-amber-400"></div>
-        {/* <Section4/> */}
+        {/* <div className="relative w-full h-screen bg-amber-400 z-30"></div> */}
+        <Section4/>
       </ReactLenis>
     </>
   );

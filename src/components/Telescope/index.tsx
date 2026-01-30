@@ -16,13 +16,11 @@ const Telescope = () => {
   gsap.to("#stack-wrapper",{
     scrollTrigger:{
       trigger:"#stack-wrapper",
-      start:"+=630%",
+      start:"+=700%",
       end:`+=100%`,
       scrub:1,
       onUpdate:({progress})=>{
-        gsap.set(".footer",{
-          "--p":progress
-        })
+       
         if(Number(progress.toFixed(2)) === 1){
           gsap.to(".footer-top .socials",{
             autoAlpha:1,
@@ -32,6 +30,13 @@ const Telescope = () => {
             autoAlpha:0,
           })
         }
+        if(progress >.8 && progress <=1.){
+          const mappedProgress =( ((progress - .8) * 1) / (1. - .8))
+          gsap.set(".footer",{
+           "--p":mappedProgress
+         })
+        }
+
 
       },
     }

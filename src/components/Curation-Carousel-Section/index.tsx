@@ -18,9 +18,14 @@ const CurationCarouselSection = () => {
     if(!curationHeight) return
     const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
 
-    console.log("precent net", (curationHeightPrecent ).toFixed(3))
-    console.log("precent", (curationHeightPrecent + 50).toFixed(3))
-    console.log("precent", `+=${(curationHeightPrecent + 50).toFixed(3)}%`)
+    // console.log("precent net", (curationHeightPrecent ).toFixed(3))
+    // console.log("precent", (curationHeightPrecent + 50).toFixed(3))
+    // console.log("precent", `+=${(curationHeightPrecent + 50).toFixed(3)}%`)
+
+    gsap.set(".white-overlay",{
+      opacity:0,
+    })
+
     ScrollTrigger.create({
       trigger:carouselCurationRef.current,
       start:"top top",
@@ -28,14 +33,34 @@ const CurationCarouselSection = () => {
       pin:true,
       pinSpacing:true,
       scrub:1,
+      onUpdate:({progress})=>{
+        if(progress > .8 && progress <=.95){
+          const mappedProgress =( ((progress - .8) * 1) / (.95 - .8)) 
+          // console.log("mapped progress opacity",mappedProgress)
+          gsap.set(".white-overlay",{
+            opacity:mappedProgress
+          })
+        }
+      },
+      onLeaveBack:()=>{
+        gsap.set(".white-overlay",{
+          opacity:0,
+        })
+      },
+      // onLeave:()=>{
+      //   gsap.set(".white-overlay",{
+      //     opacity:0,
+      //   })
+      // },
     })
 
 
   },{scope:carouselCurationRef})
 
   return (
-    <div id="carousel-curation" className='relative w-full h-screen bg-white' ref={carouselCurationRef}>
+    <div id="carousel-curation" className='relative w-full h-screen' ref={carouselCurationRef}>
     <CarousselThumbPara/>
+    <div className="white-overlay w-full h-screen absolute top-0 left-0 z-20 bg-white pointer-events-none"/>
     <CurationSection/>
     </div>
   )

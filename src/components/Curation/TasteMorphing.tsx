@@ -12,8 +12,6 @@ const TasteMorphing = () => {
   const morphingLineRef = useRef<SVGPathElement>(null)
   const motionPathRef = useRef<SVGPathElement>(null)
   const wrapperGRef = useRef<SVGGraphicsElement>(null)
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null)
-  const tlRef = useRef<GSAPTimeline|null>(null)
 
   useGSAP(() => {
     if (!morphingLineRef.current || !motionPathRef.current || !wrapperGRef.current) return
@@ -24,7 +22,7 @@ const TasteMorphing = () => {
     const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
 
     const curaitonStartTriger = (curationHeightPrecent + 50) * .7
-    const curaitonEndTriger = (curationHeightPrecent + 50) * .5
+    const curaitonEndTriger = (curationHeightPrecent + 50) * .6
     
     const pathLength = motionPathRef.current.getTotalLength()
     const curvePath = motionPathRef.current
@@ -39,9 +37,7 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
         strokeOpacity:0,
       })
       const tl = gsap.timeline({ defaults: { ease: "none" },repeat:-1 ,paused:true})
-      
-      tlRef.current = tl
-
+   
       const updateLineMorph = () => {
        
   const timeElapsed = tl.time() % duration
@@ -175,24 +171,20 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
         }
       },6.32)
 
-       const scrolltrigger= ScrollTrigger.create({
+      ScrollTrigger.create({
       trigger:"#carousel-curation",
       start:`+=${curaitonStartTriger.toFixed(3)}%`,
       end:`+=${curaitonEndTriger.toFixed(3)}%`,
-      onUpdate:({progress})=>{
-        console.log("progress taste morphing",progress)
-      },
+      
        onEnter: () => {
           
           tl.play()
-          console.log("taste morphing is entered")
           gsap.set(morphingLineRef.current, {
             strokeOpacity: 1,
           })
       
   },
   onEnterBack: () => {
-    console.log("entered back")
     tl.play()
 
   },
@@ -200,34 +192,16 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
     resumedCalls.forEach(dc=> dc.kill())
     resumedCalls = []
           tl.pause() // Pause at the beginning
-          console.log("onleave pause")
     
   },
   onLeaveBack: () => {
      resumedCalls.forEach(dc=> dc.kill())
     resumedCalls = []
-    console.log("on leave back")
    tl.pause()
   }
   
     })
 
-    scrollTriggerRef.current = scrolltrigger
-
-    return ()=>{
-      if(scrollTriggerRef.current){
-        scrollTriggerRef.current.kill()
-        scrollTriggerRef.current = null
-      }
-
-      if(tlRef.current){
-        tlRef.current.kill()
-        tlRef.current = null
-      }
-
-    }
-
-   
   }, [])
   return (
     <div className="lottie section">

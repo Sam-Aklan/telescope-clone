@@ -12,8 +12,8 @@ gsap.registerPlugin(ScrollTrigger,SplitText)
 const CurationSection = () => {
     const curationSectionRef = useRef<HTMLDivElement>(null)
     const curaitontextRangs =useMemo(()=>{
-      if(window.innerWidth <768){
-        return{
+     
+      return{
           
           curate:{
             start:.0,
@@ -28,23 +28,13 @@ const CurationSection = () => {
             end:1.,
           }
         }
-      }
-      return{
-          
-          curate:{
-            start:.0,
-            end:.25,
-          },
-          your:{
-            start:.25,
-            end:.35,
-          },
-          lottie:{
-            start:.4,
-            end:.66,
-          }
-        }
-    },[window.innerWidth])
+    },[])
+
+    const curationSectionLift= useMemo(()=>{
+      if(window.innerWidth < 768) return "-40%"
+      return "-60.5%"
+      
+    },[])
 
    const calcualteYTranslation = useCallback((progress:number)=>{
 
@@ -101,16 +91,13 @@ const CurationSection = () => {
      gsap.fromTo(curationSectionRef.current,
       {y:"100%"},
       {
-        y:"-45.5%",
+        y:curationSectionLift,
       scrollTrigger:{
         trigger:"#carousel-curation",
         start:"+=50%",
         end:`+=${(curationHeightPrecent + 50).toFixed(3)}%`,
         scrub:1,
         onUpdate: ({ progress }) => {
-    
-        // console.log("progress",progress.toFixed(2))
-        // const roundProgress = Math.round(progress * 100) / 100
 
         // 0.0 -> .22
         if(progress >=curaitontextRangs.curate.start && progress < curaitontextRangs.curate.end){
@@ -167,9 +154,9 @@ const CurationSection = () => {
       yPercent:(i)=>{
         if((i+1)%2 === 0){
           if((i + 1)%4 === 0){
-            return 50 - 50 *Math.min(mappedProgress * 1.1)
+            return 50 - 50 *Math.min(1,mappedProgress * 1.2)
           }
-          return -50 + 50 * Math.min(mappedProgress * 1.1)
+          return -50 + 50 * Math.min(1,mappedProgress * 1.2)
         }else return 0
       },
      })
