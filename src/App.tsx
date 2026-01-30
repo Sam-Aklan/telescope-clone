@@ -25,9 +25,7 @@ function App() {
       <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
         <Telescope/>
         <ZoomEffectSection/>
-        <div className="w-full h-screen"></div>
         <CurationCarouselSection/>
-        {/* <div className="relative w-full h-screen bg-amber-400 z-30"></div> */}
         <Section4/>
       </ReactLenis>
     </>
