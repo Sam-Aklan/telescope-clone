@@ -23,9 +23,9 @@ function App() {
   return (
     <>
       <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
-        <Telescope/>
         <ZoomEffectSection/>
         <CurationCarouselSection/>
+        <Telescope/>
         <Section4/>
       </ReactLenis>
     </>

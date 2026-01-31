@@ -18,7 +18,6 @@ const ImagesTrailer = () => {
     const pointerRelativePostion = useRef({x:0,y:0})
     const [targetPosition, setTargetPosition] = useState<{x:number,y:number}>({x:0,y:0})
     const animationRef = useRef(0)
-    const imagesContainerRef = useRef<HTMLDivElement>(null)
    
 const imagesPostions= useMemo(()=>{
   const firstPostions = Array.from({length:3},(_,i)=>{
@@ -41,7 +40,8 @@ return [...firstPostions,...secondPostions]
 
     useGSAP(()=>{
 
-       if (!sectionRef.current  || !imagesContainerRef.current) return;
+       if (!sectionRef.current ) return;
+      console.log("hello")
       const rect = sectionRef.current.getBoundingClientRect();
       const intailXPostion = rect.width * 2/3
       const intailYPostion = rect.height /4
@@ -52,56 +52,53 @@ return [...firstPostions,...secondPostions]
         top:intailYPostion
       })
 
-      const container = imagesContainerRef.current
+        const handleMouseMove = (e: MouseEvent) => {
+             if (!sectionRef.current) return;
+  
 
-        // GSAP setters (super fast)
-    const setX = gsap.quickTo(container, "x", {
-      duration: 0.4,
-      ease: "power3.out",
-    })
+       // this function is resopnsible for determing how far the trailing images can go horizontally and vertically
+        const getBounds = ()=>{
+            const rect = sectionRef.current?.getBoundingClientRect()
+            return {
+                minX: rect?.left||0,
+                maxX: (rect?.right || window.innerWidth) - 200,
+                minY:rect?.top || 0,
+                maxY:(rect?.bottom || window.innerHeight ) - 50,
+            }
+        }
 
-    const setY = gsap.quickTo(container, "y", {
-      duration: 0.4,
-      ease: "power3.out",
-    })
+          const clampPosition = (x: number, y: number) => {
+      const bounds = getBounds();
+      return {
+        x: gsap.utils.clamp(bounds.minX, bounds.maxX, x),
+        y: gsap.utils.clamp(bounds.minY, bounds.maxY, y),
+      };
+    };
+  
+    
+     
+  
+      pointerRelativePostion.current = clampPosition(e.clientX, e.clientY)
+    
+    };
 
-    let bounds = sectionRef.current.getBoundingClientRect()
+    const animate = ()=>{
+       
+        setTargetPosition(prev=>{
+          const dx = pointerRelativePostion.current.x - prev.x
+        const dy = pointerRelativePostion.current.y - prev.y
 
-    // Cache bounds (important)
-    const updateBounds = () => {
-      bounds = sectionRef.current!.getBoundingClientRect()
+        return {
+          x:prev.x + dx * .2,
+          y:prev.y + dy * .2,
+        }
+        })
+       
+        
+        animationRef.current = requestAnimationFrame(animate)
     }
 
-    updateBounds()
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const x =
-        e.clientX -
-        bounds.left -
-        container.offsetWidth / 2
-
-      const y =
-        e.clientY -
-        bounds.top 
-        // -
-        // container.offsetHeight / 2
-
-      const clampedX = gsap.utils.clamp(
-        0,
-        bounds.width - container.offsetWidth,
-        x
-      )
-
-      const clampedY = gsap.utils.clamp(
-        0,
-        bounds.height - container.offsetHeight,
-        y
-      )
-
-      setX(clampedX)
-      setY(clampedY)
-
-    }
+    animationRef.current =requestAnimationFrame(animate)
 
     sectionRef.current.addEventListener("mousemove",handleMouseMove)
 
@@ -155,16 +152,14 @@ return [...firstPostions,...secondPostions]
   )
 
  
-  gsap.to(sectionRef.current,{
-    scrollTrigger:{
-      trigger:"#stack-wrapper",
-      start:`+=530%`,
-      end:`+=200%`,
-      // onUpdate:({progress})=>{
-      //   console.log("image trailing progress", progress)
-      // }
-    }
-  })
+  // gsap.to(sectionRef.current,{
+  //   scrollTrigger:{
+  //     trigger:"#stack-wrapper",
+  //     start:`+=530%`,
+  //     end:`+=200%`,
+    
+  //   }
+  // })
 
   
 
@@ -178,16 +173,14 @@ return [...firstPostions,...secondPostions]
 
 
   return (
-    <div id="trailing-image-container" ref={sectionRef} className='w-full h-screen bg-white z-10 panel  '>
+    <div id="trailing-image-container" ref={sectionRef} className='w-full h-screen bg-white z-20 panel  '>
       <div id='trailing-inner' className="w-full h-screen relative overflow-hidden">
 
-        <div className="images-container will-change-transform"
-        ref={imagesContainerRef}
-        // style={{
-        //   top:targetPosition.y,
-        //   left: targetPosition.x
-        // }}
-        >
+        <div className="images-container"
+        style={{
+          top:targetPosition.y,
+          left: targetPosition.x
+        }}>
 
          <div className="trailing-image-wraper">
 

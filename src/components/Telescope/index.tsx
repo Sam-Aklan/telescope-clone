@@ -13,11 +13,11 @@ const Telescope = () => {
 
   })
 
-  gsap.to("#stack-wrapper",{
+  gsap.to(".footer",{
     scrollTrigger:{
       trigger:"#stack-wrapper",
-      start:"+=700%",
-      end:`+=100%`,
+      start:"+=600%",
+      end:`+=230%`,
       scrub:1,
       onUpdate:({progress})=>{
        
@@ -32,6 +32,7 @@ const Telescope = () => {
         }
         if(progress >.8 && progress <=1.){
           const mappedProgress =( ((progress - .8) * 1) / (1. - .8))
+          console.log("mapped progress footer", mappedProgress)
           gsap.set(".footer",{
            "--p":mappedProgress
          })

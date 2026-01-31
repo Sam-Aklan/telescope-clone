@@ -149,8 +149,9 @@ const goToSlide = contextSafe((nextIndex:number)=>{
 
 
 
-const {debouncedWindowSize,isMobile,isDesktop,isTablet}=useWindowSize()
+const {debouncedWindowSize,isMobile,isDesktop,isXlarge,isTablet}=useWindowSize()
 
+// console.log("is desktop", isDesktop)
 
 const leftMatrix = useResponsiveMatrix(
   {
@@ -225,10 +226,10 @@ const rightMatrix = useResponsiveMatrix(
         </div>
         
       ))}
-    <div className='absolute w-full h-screen'>
+    {/* <div className='absolute w-full h-screen '> */}
 
-    {isDesktop?<TrialingButton goToSlide={goToSlide} currentIndex={current}/>: <MobileCarouselBtns currentIndex={current} goToSlide={goToSlide}/>}
-    </div>
+    {isDesktop || isXlarge?<TrialingButton goToSlide={goToSlide} currentIndex={current}/>: <MobileCarouselBtns currentIndex={current} goToSlide={goToSlide}/>}
+    {/* </div> */}
     </div>
 
 
@@ -530,8 +531,6 @@ const Stakes = ({isMobile}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivE
 
      const tl = gsap.timeline({paused:true})
 
-    //  tl.clear().progress(0)
-
         tl.fromTo(".stake.line",
           {
             rotate:rotateDegree.startDeg
@@ -552,7 +551,6 @@ const Stakes = ({isMobile}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivE
           trigger:"#carousel-curation",
           start:"top center",
           end:"bottom top",
-          markers:true,
           onEnter:()=>{
             tl.play()
           },
