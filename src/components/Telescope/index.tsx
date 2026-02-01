@@ -5,35 +5,22 @@ import TelescopeContent from "./TelescopeContent"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 gsap.registerPlugin([ScrollTrigger])
 
-// const thumbNails = [
-//     "kevinbidwell.jpg",
-//     "dad-palstine.jpg",
-//     "pexels-moose.jpg",
-//     "christian-buehner.jpg",   
-// ]
-
 const Telescope = () => {
  useGSAP(()=>{
-//  const bgEl = document.querySelector(".footer > .bg");
-//  if(bgEl){
 
-//    console.log(bgEl.getAttribute("transform"))
-//  }
   gsap.set(".footer-top .socials",{
     autoAlpha:0
 
   })
 
-  gsap.to("#stack-wrapper",{
+  gsap.to(".footer",{
     scrollTrigger:{
       trigger:"#stack-wrapper",
-      start:"+=630%",
-      end:`+=100%`,
+      start:"+=600%",
+      end:`+=230%`,
       scrub:1,
       onUpdate:({progress})=>{
-        gsap.set(".footer",{
-          "--p":progress
-        })
+       
         if(Number(progress.toFixed(2)) === 1){
           gsap.to(".footer-top .socials",{
             autoAlpha:1,
@@ -43,6 +30,14 @@ const Telescope = () => {
             autoAlpha:0,
           })
         }
+        if(progress >.8 && progress <=1.){
+          const mappedProgress =( ((progress - .8) * 1) / (1. - .8))
+          console.log("mapped progress footer", mappedProgress)
+          gsap.set(".footer",{
+           "--p":mappedProgress
+         })
+        }
+
 
       },
     }

@@ -142,12 +142,12 @@ function ZoomEffectSection() {
 
     <div className=" w-full h-screen relative hero" ref={heroContainerRef}>
 
-<div className="absolute w-full h-full">
+<div className="absolute w-full h-full overflow-hidden">
 
     <Intro/>
 </div>
 
-<div className="absolute w-full h-full">
+<div className="absolute w-full h-full overflow-hidden">
 
     <ZoomEffect/>
 </div>

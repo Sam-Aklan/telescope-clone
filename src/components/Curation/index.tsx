@@ -2,7 +2,6 @@
 import { useCallback, useMemo, useRef } from 'react'
 import CurateSection from './CurateSection'
 import TasteMorphing from './TasteMorphing'
-// import TasteMorphing from './Test_TasteMorphing'
 import YourSection from './YourSection'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -13,8 +12,8 @@ gsap.registerPlugin(ScrollTrigger,SplitText)
 const CurationSection = () => {
     const curationSectionRef = useRef<HTMLDivElement>(null)
     const curaitontextRangs =useMemo(()=>{
-      if(window.innerWidth <768){
-        return{
+     
+      return{
           
           curate:{
             start:.0,
@@ -25,27 +24,17 @@ const CurationSection = () => {
             end:.77,
           },
           lottie:{
-            start:.77,
-            end:1.,
+            start:.7,
+            end:.82,
           }
         }
-      }
-      return{
-          
-          curate:{
-            start:.0,
-            end:.25,
-          },
-          your:{
-            start:.25,
-            end:.35,
-          },
-          lottie:{
-            start:.4,
-            end:.6,
-          }
-        }
-    },[window.innerWidth])
+    },[])
+
+    const curationSectionLift= useMemo(()=>{
+      if(window.innerWidth < 768) return "-40%"
+      return "-60.5%"
+      
+    },[])
 
    const calcualteYTranslation = useCallback((progress:number)=>{
 
@@ -58,6 +47,14 @@ const CurationSection = () => {
    
     useGSAP(()=>{
       if(!curationSectionRef.current) return
+
+       const curationHeight = document.querySelector('.curation')?.clientHeight
+
+    if(!curationHeight) return
+    const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
+
+    // const totalCurationHeightPrecent = curationHeightPrecent + 50
+    console.log("curation height prencet", curationHeightPrecent.toFixed(3))
 
      const curationTexts = curationSectionRef.current.querySelectorAll(".curation .curation-text")
     
@@ -91,31 +88,21 @@ const CurationSection = () => {
       },
      })
    
-
-     ScrollTrigger.create({
-      trigger: curationSectionRef.current,
-      start: "top 95%",
-      end: `bottom bottom`,
-      scrub: 1,
-      markers:{
-        startColor:"orange",
-        indent:300,
-      },
-      onUpdate: ({ progress }) => {
-      // 37 - 87 * Math.min(1,progress * 1.5)).toFixed(2)
-        gsap.to(".curation .section",{
-          translate:`0% ${calcualteYTranslation(progress)}%`,
-          overwrite:"auto"
-        })
-
-        console.log("progress",progress.toFixed(2))
-        const roundProgress = Math.round(progress * 100) / 100
+     gsap.fromTo(curationSectionRef.current,
+      {y:"100%"},
+      {
+        y:curationSectionLift,
+      scrollTrigger:{
+        trigger:"#carousel-curation",
+        start:"+=50%",
+        end:`+=${(curationHeightPrecent + 50).toFixed(3)}%`,
+        scrub:1,
+        onUpdate: ({ progress }) => {
 
         // 0.0 -> .22
         if(progress >=curaitontextRangs.curate.start && progress < curaitontextRangs.curate.end){
            const mappedProgress =( ((progress - curaitontextRangs.curate.start) * 1) / (curaitontextRangs.curate.end - curaitontextRangs.curate.start)) 
-          //  console.log("mapped progress1", mappedProgress)
-
+         
            gsap.to(".curate .curate-inner",{
       x:`${100 - 100 * mappedProgress}%`,
      })
@@ -157,6 +144,8 @@ const CurationSection = () => {
         if(progress >=curaitontextRangs.lottie.start && progress <curaitontextRangs.lottie.end){
            const mappedProgress =( ((progress - curaitontextRangs.lottie.start) * 1) / (curaitontextRangs.lottie.end - curaitontextRangs.lottie.start)) 
 
+          //  console.log("mapped progress lottie", mappedProgress)
+
            gsap.to(".lottie .curate-inner",{
             "--x-translation":`${100 - 100 * mappedProgress}%`
            })
@@ -165,9 +154,9 @@ const CurationSection = () => {
       yPercent:(i)=>{
         if((i+1)%2 === 0){
           if((i + 1)%4 === 0){
-            return 50 - 50 *Math.min(mappedProgress * 1.1)
+            return 50 - 50 *Math.min(1,mappedProgress * 1.2)
           }
-          return -50 + 50 * Math.min(mappedProgress * 1.1)
+          return -50 + 50 * Math.min(1,mappedProgress * 1.2)
         }else return 0
       },
      })
@@ -175,9 +164,12 @@ const CurationSection = () => {
 
        
       },
-    });
+      }
+     })
+
+
     
-  },{scope:curationSectionRef});
+  },);
   
   return (
    

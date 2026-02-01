@@ -1,6 +1,6 @@
 
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import useDebounce from './useDebounce';
 
 interface WindowSize {
@@ -9,44 +9,81 @@ interface WindowSize {
 }
 
 function useWindowSize(debounceDelay = 300) {
-  const [windowSize, setWindowSize] = useState<WindowSize>({
-    width:0,
-    height: 0,
+
+   const getSize = (): WindowSize => ({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
   });
 
+  const getBreakpoints = () => ({
+    isMobile: window.matchMedia('(max-width: 767px)').matches,
+    isTablet: window.matchMedia('(min-width: 768px) and (max-width: 1023px)').matches,
+    isDesktop: window.matchMedia('(min-width: 1024px) and (max-width: 1279px)').matches,
+    isXlarge: window.matchMedia('(min-width: 1280px)').matches,
+  });
+
+  const [windowSize, setWindowSize] = useState<WindowSize>(getSize);
+  const [breakpoints, setBreakpoints] = useState(getBreakpoints);
+
+
+    
+
   const debouncedWindowSize = useDebounce(windowSize, debounceDelay);
-  // const [isMobile,setIsMobile] = useState(debouncedWindowSize?.width < 768?true:false)
-  // const [isTablet,setIsTablet] = useState(debouncedWindowSize?.width > 768 && debouncedWindowSize.width<1024?true:false)
-  // const [isDesktop,setIsDesktop] = useState(debouncedWindowSize?.width > 1024 && debouncedWindowSize.width<1280?true:false)
 
   useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window?.innerWidth || 0,
-        height: window?.innerHeight || 0,
-      });
-      // setIsMobile(debouncedWindowSize.width <768)
-    }
+    // ---- Size listener ----
+    const handleResize = () => {
+      setWindowSize(getSize());
+    };
 
     window.addEventListener('resize', handleResize);
-    handleResize();
 
-    return () => window.removeEventListener('resize', handleResize);
+    // ---- Breakpoint listeners ----
+    const mediaQueries = [
+      window.matchMedia('(max-width: 767px)'),
+      window.matchMedia('(min-width: 768px) and (max-width: 1023px)'),
+      window.matchMedia('(min-width: 1024px) and (max-width: 1279px)'),
+      window.matchMedia('(min-width: 1280px)'),
+    ];
+
+    const handleMediaChange = () => {
+      setBreakpoints(getBreakpoints());
+    };
+
+     mediaQueries.forEach(mq =>
+      mq.addEventListener('change', handleMediaChange)
+    );
+
+    // Initialize once on mount
+    handleResize();
+    handleMediaChange();
+
+
+     return () => {
+      window.removeEventListener('resize', handleResize);
+      mediaQueries.forEach(mq =>
+        mq.removeEventListener('change', handleMediaChange)
+      );
+    };
+    
   }, []);
 
-  // useEffect(()=>{
+  
+  //   const breakpoints = useMemo(() => {
+  //   const width = debouncedWindowSize.width;
 
-  //   setIsMobile(debouncedWindowSize.width < 768)
-  //   setIsTablet(debouncedWindowSize?.width > 768 && debouncedWindowSize.width<1024?true:false)
-  //   setIsDesktop(debouncedWindowSize?.width > 1024 && debouncedWindowSize.width<1280?true:false)
-  // },[debouncedWindowSize.width])
+  //   return {
+  //     isMobile: width < 768,
+  //     isTablet: width >= 768 && width < 1024,
+  //     isDesktop: width >= 1024 && width < 1280,
+  //     isXlarge: width >= 1280,
+  //   };
+  // }, [debouncedWindowSize.width]);
 
-   const isXlarge = windowSize.width > 1280
-  const isDesktop = windowSize.width >= 1024  && windowSize.width< 1280
-  const isTablet = windowSize.width < 1200 && windowSize.width >= 768
-  const isMobile = windowSize.width <768
-
-  return {isMobile,isTablet,isDesktop,isXlarge,debouncedWindowSize};
+  return {
+    ...breakpoints,
+    debouncedWindowSize
+  };
 }
 
 export default useWindowSize;

@@ -146,24 +146,9 @@ return [...firstPostions,...secondPostions]
         start:"+=480%",
         end:"+=50%",
         scrub:1,
-        markers:true
       }
     }
   )
-
- 
-  gsap.to(sectionRef.current,{
-    scrollTrigger:{
-      trigger:"#stack-wrapper",
-      start:`+=530%`,
-      end:`+=200%`,
-      // onUpdate:({progress})=>{
-      //   console.log("image trailing progress", progress)
-      // }
-    }
-  })
-
-  
 
   
     return ()=>{
@@ -175,7 +160,7 @@ return [...firstPostions,...secondPostions]
 
 
   return (
-    <div id="trailing-image-container" ref={sectionRef} className='w-full h-screen bg-white z-10 panel  '>
+    <div id="trailing-image-container" ref={sectionRef} className='w-full h-screen bg-white z-20 panel  '>
       <div id='trailing-inner' className="w-full h-screen relative overflow-hidden">
 
         <div className="images-container"

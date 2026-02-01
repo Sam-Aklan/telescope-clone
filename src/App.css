@@ -7,13 +7,13 @@
   --curate-font-size:5.8rem;
   --p:0.0;
   --tilt:15svh;
-  --min-h:calc(2.65rem + .3rem*2);
+  --min-h:calc(2.65rem + .05rem*2);
   --min-w:min(33vw,475px);
   --shift:.3rem;
   --footer-width:calc(min(1440px,100vw) - 15px);
   --footer-height:calc(50svh + var(--min-h) * 2);
   --grid-margin:calc(var(--shift) * 2);
-  --min-scale:.4;
+  --min-scale:.3;
   --button-height:2.5rem;
   
 }
@@ -44,12 +44,12 @@
 
 
 body{
-  @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto relative font-federant-regular
+  @apply w-full xl:w-full xl:max-w-[1440px] h-screen min-h-screen mx-auto relative box-border font-federant-regular
 }
 
 
 #root{
-  @apply w-full min-h-full bg-[#fffddd] relative p-0 m-0
+  @apply w-full min-h-full relative p-0 m-0
 }
 
 
@@ -107,6 +107,9 @@ body{
   @apply text-center! lg:text-start! text-2xl
 }
 
+.svg-container-masks{
+  @apply absolute top-0 left-0 w-full h-screen
+}
 
 .person-description .line {
   display: inline-block;
@@ -162,7 +165,13 @@ body{
   }
 }
 
+.curation {
+  @apply w-full absolute z-50 top-0 left-0 h-fit min-h-screen
+}
+
+
 .curation .section{
+    /* translate: 0% 50%; */
     translate: 0% 50%;
     overflow: hidden;
   }
@@ -278,7 +287,7 @@ body{
 }
 
 .svg-container{
-  @apply w-full h-[150%] absolute  -z-0
+  @apply w-full h-[150%] absolute z-0
 }
 
 .btn-inner{
@@ -299,7 +308,7 @@ body{
 }
 
 .inner > .top{
-  @apply w-full h-10 px-2 bg-green-400
+  @apply w-full h-10 px-2 bg-primary
 }
 
 /* .inner > .bottom{
@@ -383,6 +392,19 @@ stroke-dashoffset: -.01%;
   --x-translation:0.0%;
   transform: translate(var(--x-translation),0%) !important;
 } 
+
+/* @media screen and(max-width:767px) {
+  :root{
+    --min-scale:.2;
+  }
+} */
+
+@media screen and (min-width:768px) {
+  :root{
+    --min-h:calc(2.65rem + .3rem*2);
+    --min-scale:.3;
+  }
+}
 
 @media screen and(min-width:768) {
   :root{

@@ -1,5 +1,5 @@
 import { useGSAP } from '@gsap/react';
-import  React, { useEffect, useRef, useState } from 'react'
+import  React, { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import TrialingButton from './TrailingButton';
 import {SplitText} from 'gsap/SplitText'
@@ -149,8 +149,9 @@ const goToSlide = contextSafe((nextIndex:number)=>{
 
 
 
-const {debouncedWindowSize}=useWindowSize()
+const {debouncedWindowSize,isMobile,isDesktop,isXlarge,isTablet}=useWindowSize()
 
+// console.log("is desktop", isDesktop)
 
 const leftMatrix = useResponsiveMatrix(
   {
@@ -173,10 +174,10 @@ const rightMatrix = useResponsiveMatrix(
 
 
   return (
-    <>
+    <div className='absolute top-0 left-0 w-full h-screen '>
     <div id="mask-container" className="w-full h-screen relative overflow-hidden" ref={maskContainerRef}>
       
-    <Stakes isMobile ={debouncedWindowSize.width<1024} sectionRef={maskContainerRef}/>
+    <Stakes isMobile ={isMobile || isTablet} sectionRef={maskContainerRef}/>
 
       {slides.map((src, i) => (
         <div
@@ -220,21 +221,21 @@ const rightMatrix = useResponsiveMatrix(
         
           <Paragraphs person={slidesPara[i]} isActive={ i === current} />
         
-          {debouncedWindowSize.width>=1024?<ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} />:undefined}
+          {debouncedWindowSize.width>=1024?<ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} isDesktop isTablet isMobile />:undefined}
         
         </div>
         
       ))}
-    <div className='absolute w-full h-screen'>
+    {/* <div className='absolute w-full h-screen '> */}
 
-    {debouncedWindowSize.width>=1024?<TrialingButton goToSlide={goToSlide} currentIndex={current}/>: <MobileCarouselBtns currentIndex={current} goToSlide={goToSlide}/>}
-    </div>
+    {isDesktop || isXlarge?<TrialingButton goToSlide={goToSlide} currentIndex={current}/>: <MobileCarouselBtns currentIndex={current} goToSlide={goToSlide}/>}
+    {/* </div> */}
     </div>
 
 
 
     {/* SVG Masks */}
-    <div className='svg-container '>
+    <div className='svg-container-masks '>
 
  {/* SVG Masks */}
     <svg width="0" height="0" viewBox={`0 0 ${Math.min(1440,debouncedWindowSize.width)} ${debouncedWindowSize.height}`}>
@@ -272,7 +273,7 @@ const rightMatrix = useResponsiveMatrix(
       </defs>
     </svg>
     </div>
-  </>
+  </div>
   )
 }
 
@@ -282,16 +283,21 @@ export default CarousselThumbPara
 const ThumbnailBoxes = ({
   boxes,
   isActive,
+  isMobile,
+  isDesktop,
+  isTablet
 }: {
   boxes: typeof slidesBoxes[0];
   isActive: boolean;
+  isMobile:boolean,
+  isTablet:boolean,
+  isDesktop:boolean,
 }) => {
   const boxesRef = useRef<HTMLDivElement[]>([]);
   const initialPositions = useRef<number[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [boxWidth, setboxWidth] = useState(3.75)
   const [expandedWidth, setexpandedWidth] = useState(7.5)
-  const {isDesktop,isMobile,isTablet}=useWindowSize()
 
   useEffect(()=>{
     if(isMobile) {
@@ -365,7 +371,6 @@ const ThumbnailBoxes = ({
   const expandBox = contextSafe((index: number) => {
     
     const tl = gsap.timeline();
-    console.log("expanded", index)
 
     tl.to(boxesRef.current[index], {
       width: `${expandedWidth}rem`, // expand relative to original width
@@ -513,59 +518,62 @@ const ThumbnailBoxes = ({
 
 
 
-const Stakes = ({isMobile,sectionRef}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivElement|null>}) => {
+const Stakes = ({isMobile}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivElement|null>}) => {
+
+  const rotateDegree= useMemo(()=>{
+
+    if(isMobile) return {startDeg:90,firstEnd:45,lastEnd:135,}
+    return {startDeg:0,firstEnd:45,lastEnd:-45,}
+
+  },[isMobile])
   
     useGSAP(()=>{
 
-      if(!sectionRef.current) return
-
-
      const tl = gsap.timeline({paused:true})
-      gsap.set(".stake.line",{
-        rotate:()=> isMobile?90:0
-      })
+
         tl.fromTo(".stake.line",
           {
-            rotate:isMobile?90:0
+            rotate:rotateDegree.startDeg
           },
           {
             rotate:(index)=>{ 
+             return index / 2 === 0 ?rotateDegree.lastEnd:rotateDegree.firstEnd
              
-              if(isMobile){ 
-                return index / 2 ===0? 135: 45
-
-              }
-              return index / 2 ===0?-45:45
             }
               ,
             duration:1,
         })
 
+        console.log("is Mobile", isMobile)
+
+
         ScrollTrigger.create({
-          trigger:sectionRef.current,
+          trigger:"#carousel-curation",
           start:"top center",
           end:"bottom top",
-          markers:true,
           onEnter:()=>{
             tl.play()
           },
           onEnterBack:()=>{
-            tl.restart()
-          }
+            tl.play(0)
+          },
+          animation:tl,
         })
-    },{dependencies:[isMobile]})
-    console.log("isMobile", isMobile)
+
+        ScrollTrigger.refresh()
+
+    },{dependencies:[rotateDegree]})
+
     return (
+     
       <>
-      
-        <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-0.5 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left z-6 "
+          <div className="stake line absolute top-1/4 left-[49%] w-[70%] h-0.5 -translate-y-1/4  bg-white  lg:top-[47.5%] lg:left-1/4 lg:-translate-y-1/2  origin-top-left z-6 "
         >
 
         </div>
         <div className="stake line absolute top-1/4 -translate-y-1/4 left-[52%] z-6  w-[70%] h-0.5 origin-top-left  bg-white lg:top-[50.5%] lg:left-1/4">
         </div>
       </>
-     
     );
   };
   

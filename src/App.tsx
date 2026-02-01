@@ -3,10 +3,11 @@ import gsap from "gsap";
 import {  useEffect,  useRef } from "react";
 import { ReactLenis, type LenisRef } from "lenis/react";
 import ZoomEffectSection from "./components/ZoomEffectSection";
-import CarousselThumbPara from "./components/ShutterSection/CarouselThumbPara";
 import Section4 from "./components/Section4";
+import CurationCarouselSection from "./components/Curation-Carousel-Section";
+import Telescope from "./components/Telescope";
 
-function App() {
+function App() { 
   const lenisRef = useRef<LenisRef>(null);
   useEffect(() => {
     function update(time: number) {
@@ -22,9 +23,9 @@ function App() {
   return (
     <>
       <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
-        {/* <ZoomEffectSection/>
-        <CarousselThumbPara/>
-        <div className="w-full h-screen bg-yellow-300"></div> */}
+        <ZoomEffectSection/>
+        <CurationCarouselSection/>
+        <Telescope/>
         <Section4/>
       </ReactLenis>
     </>
