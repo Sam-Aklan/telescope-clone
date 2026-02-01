@@ -7,7 +7,7 @@
   --curate-font-size:5.8rem;
   --p:0.0;
   --tilt:15svh;
-  --min-h:calc(2.65rem + .1rem*2);
+  --min-h:calc(2.65rem + .05rem*2);
   --min-w:min(33vw,475px);
   --shift:.3rem;
   --footer-width:calc(min(1440px,100vw) - 15px);

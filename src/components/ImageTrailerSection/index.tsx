@@ -146,22 +146,9 @@ return [...firstPostions,...secondPostions]
         start:"+=480%",
         end:"+=50%",
         scrub:1,
-        markers:true
       }
     }
   )
-
- 
-  // gsap.to(sectionRef.current,{
-  //   scrollTrigger:{
-  //     trigger:"#stack-wrapper",
-  //     start:`+=530%`,
-  //     end:`+=200%`,
-    
-  //   }
-  // })
-
-  
 
   
     return ()=>{

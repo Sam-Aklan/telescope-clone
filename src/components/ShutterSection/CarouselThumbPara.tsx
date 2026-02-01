@@ -558,7 +558,6 @@ const Stakes = ({isMobile}:{isMobile:boolean,sectionRef:React.RefObject<HTMLDivE
             tl.play(0)
           },
           animation:tl,
-          // toggleActions:"play none none reset"
         })
 
         ScrollTrigger.refresh()

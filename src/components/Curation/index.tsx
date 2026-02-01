@@ -24,8 +24,8 @@ const CurationSection = () => {
             end:.77,
           },
           lottie:{
-            start:.77,
-            end:1.,
+            start:.7,
+            end:.82,
           }
         }
     },[])

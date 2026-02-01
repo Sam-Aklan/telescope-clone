@@ -7,7 +7,7 @@ import Section4 from "./components/Section4";
 import CurationCarouselSection from "./components/Curation-Carousel-Section";
 import Telescope from "./components/Telescope";
 
-function App() {
+function App() { 
   const lenisRef = useRef<LenisRef>(null);
   useEffect(() => {
     function update(time: number) {
