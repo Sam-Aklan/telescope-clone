@@ -16,7 +16,6 @@ interface ResponsiveMatrixOptions {
   
   rotationDegree :number
   yPercent?: number; // optional vertical anchor (default 0.5 = center)
-  side?: "left"|"right"
 }
 
 export function useResponsiveMatrix({
@@ -24,21 +23,11 @@ export function useResponsiveMatrix({
   xPercent,
   yPercent = 0.5,
   rotationDegree,
-  side="left"
   
 }: ResponsiveMatrixOptions) {
   const [transform, setTransform] = useState("");
 
-  function rotateVector(x: number, y: number, angleRad: number) {
-  const cos = Math.cos(angleRad);
-  const sin = Math.sin(angleRad);
-
-  return {
-    x: x * cos - y * sin,
-    y: x * sin + y * cos,
-  };
-}
-
+  
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
