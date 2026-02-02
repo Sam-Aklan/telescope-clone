@@ -55,8 +55,6 @@ return [...firstPostions,...secondPostions]
         const handleMouseMove = (e: MouseEvent) => {
              if (!sectionRef.current) return;
   
-
-       // this function is resopnsible for determing how far the trailing images can go horizontally and vertically
         const getBounds = ()=>{
             const rect = sectionRef.current?.getBoundingClientRect()
             return {

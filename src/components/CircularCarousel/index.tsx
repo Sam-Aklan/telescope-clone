@@ -55,16 +55,12 @@ const CircularCarousel = () => {
         trigger:"#stack-wrapper",
         start:"top top",
         end:`+=${slideImages.length * 80}%`,
-        // pin:true,
-        // pinSpacing:true,
         scrub:1,
         onUpdate:({progress})=>{
-
-          // this callback fn for navigating using scrolling
       const roundedProgress = Math.round(progress * 100) / 100
       
       if(roundedProgress >= .38 && roundedProgress <.72){
-        const mappedIndex =( ((roundedProgress - .38) * (5 - 1)) / (.7-.38)) + 1 // map .38 - .72 to 1 -5
+        const mappedIndex =( ((roundedProgress - .38) * (5 - 1)) / (.7-.38)) + 1
         if(Math.floor(mappedIndex) !== currentRef.current) goToSlide(Math.floor(mappedIndex))
       }
     else if(roundedProgress < .38 ){

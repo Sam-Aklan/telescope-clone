@@ -151,8 +151,6 @@ const goToSlide = contextSafe((nextIndex:number)=>{
 
 const {debouncedWindowSize,isMobile,isDesktop,isXlarge,isTablet}=useWindowSize()
 
-// console.log("is desktop", isDesktop)
-
 const leftMatrix = useResponsiveMatrix(
   {
   containerRef:maskContainerRef,
@@ -190,13 +188,8 @@ const rightMatrix = useResponsiveMatrix(
           }}
           className="bg-item absolute w-full h-full overflow-hidden"
         >
-          {/* First half */}
           <div className="img w-full h-screen absolute">
-            {/* <img
-              src={src}
-              alt="pic"
-              className="object-cover w-full max-w-[1080px] h-full absolute"
-            /> */}
+          
             <img
               src={src}
               alt="pic"
@@ -204,13 +197,8 @@ const rightMatrix = useResponsiveMatrix(
             />
           </div>
 
-          {/* Second half */}
           <div className="img w-full h-screen">
-            {/* <img
-              src={src}
-              alt=""
-              className="object-cover w-full max-w-[1080px] h-full absolute"
-            /> */}
+
             <img
               src={src}
               alt=""
@@ -221,23 +209,17 @@ const rightMatrix = useResponsiveMatrix(
         
           <Paragraphs person={slidesPara[i]} isActive={ i === current} />
         
-          {debouncedWindowSize.width>=1024?<ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} isDesktop isTablet isMobile />:undefined}
+          {isDesktop || isXlarge?<ThumbnailBoxes boxes={slidesBoxes[i]} isActive={i === current} />:undefined}
         
         </div>
         
       ))}
-    {/* <div className='absolute w-full h-screen '> */}
 
     {isDesktop || isXlarge?<TrialingButton goToSlide={goToSlide} currentIndex={current}/>: <MobileCarouselBtns currentIndex={current} goToSlide={goToSlide}/>}
-    {/* </div> */}
     </div>
 
-
-
-    {/* SVG Masks */}
     <div className='svg-container-masks '>
 
- {/* SVG Masks */}
     <svg width="0" height="0" viewBox={`0 0 ${Math.min(1440,debouncedWindowSize.width)} ${debouncedWindowSize.height}`}>
       <defs>
         <mask id="radial-mask-left">
@@ -283,21 +265,16 @@ export default CarousselThumbPara
 const ThumbnailBoxes = ({
   boxes,
   isActive,
-  isMobile,
-  isDesktop,
-  isTablet
 }: {
   boxes: typeof slidesBoxes[0];
   isActive: boolean;
-  isMobile:boolean,
-  isTablet:boolean,
-  isDesktop:boolean,
 }) => {
   const boxesRef = useRef<HTMLDivElement[]>([]);
   const initialPositions = useRef<number[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [boxWidth, setboxWidth] = useState(3.75)
   const [expandedWidth, setexpandedWidth] = useState(7.5)
+  const {isDesktop,isMobile,isTablet,isXlarge}=useWindowSize()
 
   useEffect(()=>{
     if(isMobile) {
@@ -310,14 +287,12 @@ const ThumbnailBoxes = ({
       setexpandedWidth(5)
       return
     }
-    if(isDesktop){
-       setboxWidth(3.75)
-      setexpandedWidth(7.5)
+    if(isDesktop || isXlarge){
+       setboxWidth(3.)
+      setexpandedWidth(6.)
       return
     }
   },[isMobile,isDesktop,isTablet])
- 
-  // console.log("box width",boxWidth)
 
   const { contextSafe } = useGSAP(
     () => {
@@ -367,19 +342,18 @@ const ThumbnailBoxes = ({
     { dependencies: [isActive,boxWidth], revertOnUpdate: true }
   );
 
-  // expand on hover
   const expandBox = contextSafe((index: number) => {
     
     const tl = gsap.timeline();
+    console.log("expanded", index)
 
     tl.to(boxesRef.current[index], {
-      width: `${expandedWidth}rem`, // expand relative to original width
-      transformOrigin: "right center", // expand from center
+      width: `${expandedWidth}rem`,
+      transformOrigin: "right center",
       zIndex: 50,
       duration: 0.3,
     });
 
-    // Shift boxes AFTER hovered one
   boxesRef.current.forEach((box, i) => {
     if (i > index ) {
       tl.to(
@@ -389,7 +363,7 @@ const ThumbnailBoxes = ({
           duration: 0.3,
           ease: "power2.out",
         },
-        "<" // sync with width animation
+        "<"
       );
     }
   });
@@ -397,12 +371,10 @@ const ThumbnailBoxes = ({
     setActiveIndex(index);
   });
 
-  // shrink on mouse leave
   const shrinkBox = contextSafe((index: number) => {
     if(activeIndex !==index) return
     const tl = gsap.timeline();
 
-  // Reset width
   tl.to(boxesRef.current[index], {
     width: `${boxWidth}rem`,
     zIndex: 20,
@@ -410,7 +382,6 @@ const ThumbnailBoxes = ({
     ease: "power2.inOut",
   });
 
-  // Reset positions
   boxesRef.current.forEach((box, i) => {
     if(index !==i){
 
@@ -470,11 +441,8 @@ const ThumbnailBoxes = ({
       const nameEl = containerRef.current!.querySelector(".person-name");
       const descEls = containerRef.current!.querySelectorAll(".person-description");
   
-     
-     // Split each description into lines
   descEls.forEach((descEl) => {
     const split = new SplitText(descEl, { type: "lines", linesClass: "line" });
-    // Wrap each line in a span for stagger
     split.lines.forEach((line) => {
       line.innerHTML = `<span>${line.innerHTML}</span>`;
     });

@@ -8,6 +8,10 @@ gsap.registerPlugin([ScrollTrigger])
 const Telescope = () => {
  useGSAP(()=>{
 
+  gsap.set(".footer",{
+    pointerEvents:"none"
+  })
+
   gsap.set(".footer-top .socials",{
     autoAlpha:0
 
@@ -32,20 +36,18 @@ const Telescope = () => {
         }
         if(progress >.8 && progress <=1.){
           const mappedProgress =( ((progress - .8) * 1) / (1. - .8))
-          console.log("mapped progress footer", mappedProgress)
           gsap.set(".footer",{
            "--p":mappedProgress
          })
         }
-
-
       },
+      
     }
   })
  })
    
   return (
-    <div className='footer'>
+    <div className='footer '>
     <div className="bg">
       <div className="inner">
         <TelescopeHeader/>

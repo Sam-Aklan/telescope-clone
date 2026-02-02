@@ -42,9 +42,8 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
        
   const timeElapsed = tl.time() % duration
 
-  // Convert to path length
-  const currentLength = (timeElapsed / duration) * pathLength
-        // --- define target values based on ranges ---
+  const currentLength = (timeElapsed / duration) * pathLength;
+
         let targetLineLength = 50
         let targetSampleCount = 30
       
@@ -68,19 +67,17 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
           targetLineLength = 280
         }
       
-        // --- smooth interpolation (lerp) ---
         const lerp = (a: number, b: number, t: number) => a + (b - a) * t
-        currentLineLength = lerp(currentLineLength, targetLineLength, 0.2) // smoothing factor
+        currentLineLength = lerp(currentLineLength, targetLineLength, 0.2) 
         currentSampleCount = Math.round(lerp(currentSampleCount, targetSampleCount, 0.2))
       
-         // --- wrap segment around path ---
   let startLength = currentLength - currentLineLength / 2
   let endLength = currentLength + currentLineLength / 2
 
         let pathData = ""
         for (let i = 0; i <= currentSampleCount; i++) {
           let sampleLength = startLength + (endLength - startLength) * (i / currentSampleCount)
-           // -- wrap around instead of cutting off --
+
     if (sampleLength < 0) sampleLength += pathLength
     if (sampleLength > pathLength) sampleLength -= pathLength
 
@@ -102,13 +99,11 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
         ease:"none",
       })
 
-      // Insert pauses at given times
       const pauseTimes = [0.43, 2.13, 3.92, 5.40, 7.]
       pauseTimes.forEach(time => {
         tl.call(() => {
           tl.pause()
-         
-          // Resume automatically after 1 second (optional)
+
           const dc =gsap.delayedCall(1, () => tl.resume())
           resumedCalls.push(dc)
           
@@ -191,8 +186,7 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
   onLeave: () => {
     resumedCalls.forEach(dc=> dc.kill())
     resumedCalls = []
-          tl.pause() // Pause at the beginning
-    
+          tl.pause() 
   },
   onLeaveBack: () => {
      resumedCalls.forEach(dc=> dc.kill())
@@ -205,7 +199,6 @@ gsap.set(".path-stroke", { drawSVG: "0%" })
   }, [])
   return (
     <div className="lottie section">
-      {/* <div className="w-full h-[60svh] bg-white absolute -z-50"></div> */}
      <div className="curate-inner">
       <div className="curation-text">
         tast

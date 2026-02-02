@@ -13,22 +13,16 @@ function ZoomEffectSection() {
 
   useGSAP(() => {
     if(!heroContainerRef.current) return
-    // set the intial size of every layer
     gsap.set(".image.mask", { scale: (i) => 0.9 - i * 0.15 });
-
-    // scale down the container to zero intially
-
     gsap.set(".banner-img-container", { scale: 0 });
 
     const tl = gsap.timeline()
 
-    // animate images from deeper z
     tl.from(".pic.z-1",{
       z:-50,
       autoAlpha:0,
       duration:1,
       overwrite:"auto",
-      // delay:.1,
       stagger:.2,
       
     }
@@ -39,7 +33,6 @@ function ZoomEffectSection() {
       duration:1,
       overwrite:"auto",
       autoAlpha:0,
-      // delay:.1,
       stagger:.2,
   },"<")
 
@@ -48,11 +41,9 @@ function ZoomEffectSection() {
       duration:1,
       autoAlpha:0,
       overwrite:"auto",
-      // delay:.1,
       stagger:.2,
   },"<")
 
-  // animate text
   const secondLine =heroContainerRef.current.querySelectorAll(".line")
 
   secondLine.forEach(phrase=>{
@@ -73,8 +64,6 @@ function ZoomEffectSection() {
     ease:"power2.inOut"
   })
 
-    // gsap.set(".text-left, .text-right", { xPercent: 0 });
-
     ScrollTrigger.create({
       trigger: heroContainerRef.current,
       start: "top top",
@@ -85,17 +74,14 @@ function ZoomEffectSection() {
       onUpdate: ({ progress }) => {
 
         if(progress >=0. && progress <=.3){
-          // Intro component animation
-          // cinamatic intro animation
-          const introProgress = (((progress - 0) * (1.-0))/(.3 - .0)) + .0 // range maping
+         
+          const introProgress = (((progress - 0) * (1.-0))/(.3 - .0)) + .0 ;
          const clampedIntro =Math.min(Math.max(introProgress,0),1)
          
          gsap.to(".pic.z-1",{z:clampedIntro * 400,})
      gsap.to(".pic.z-2",{z:clampedIntro * 600})
      
      gsap.to(".pic.z-4",{z:clampedIntro * 800})
-
-    
 
         }
 
@@ -109,8 +95,7 @@ function ZoomEffectSection() {
            })
 
         }
-       
-        // zoom effect animation
+     
         gsap.set(".banner-img-container", { scale: progress.toFixed(2) });
 
         gsap.set(".image.mask", {
@@ -119,8 +104,8 @@ function ZoomEffectSection() {
             const layerProgress = Math.min(progress / 0.9, 1.0);
 
             const currentScale =
-              initialScale + layerProgress * (1.0 - initialScale); // the equation calcuate the speed in which each layer should scale
-
+              initialScale + layerProgress * (1.0 - initialScale); 
+              
             return currentScale;
           },
         });

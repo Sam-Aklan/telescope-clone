@@ -50,8 +50,8 @@ const TelescopeContent = () => {
       autoAlpha:0
     })
 
-    const fadeDuration = 0.5      // seconds
-  const displayDuration = 1  // seconds each image stays visible
+    const fadeDuration = 0.5 ;
+  const displayDuration = 1;
 
     const tl =gsap.timeline({
       repeat:-1,
@@ -70,23 +70,18 @@ const TelescopeContent = () => {
 
     thumbNailsRef.current.forEach((thumb,i)=>{
       const nextThumb = thumbNailsRef.current[(i+1) % thumbNailsRef.current.length ]
-
-      // hold current thumb
       tl.to({},{duration:displayDuration})
 
-      // crossfade
       .to(thumb, { autoAlpha: 0, duration: fadeDuration },"<" )
       .to(nextThumb, { autoAlpha: 1, duration: fadeDuration },"<" )
 
     })
 
-    // FINAL STEP: show the O
 tl.to(oPathRef.current, {
   autoAlpha: 1,
   duration: 0.6,
 })
 
-// hide thumbnails when O shows
 tl.to(thumbNailsRef.current, {
   autoAlpha: 0,
   duration: 0.3,
@@ -125,7 +120,6 @@ ScrollTrigger.create({
 
 
   return ()=>{
-    // resizeObserver.disconnect();
     gsap.ticker.remove(updateOMatrix)
   }
    

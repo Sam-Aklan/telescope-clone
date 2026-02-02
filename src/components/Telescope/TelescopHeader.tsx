@@ -77,7 +77,9 @@ const TelescopeHeader = () => {
           <button className='sign-in-btn'>
             sign in
         </button>
-        <button className="ui-button t-mono -yellow is-btn" aria-expanded="false" aria-label="Join Waitlist" ><div className="btn-inner" onMouseEnter={letterAnimationHandler}>
+        <button className="ui-button t-mono -yellow is-btn pointer-events-auto" aria-expanded="false" aria-label="Join Waitlist" ><div className="btn-inner" onMouseEnter={letterAnimationHandler}
+        onClick={()=>console.log("join is clicked")}
+        >
             <span className="z-3" aria-hidden="true" data-text="Join Waitlist" data-v-ef4014b6="">
                 Join Waitlist
             </span>

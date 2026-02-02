@@ -1,5 +1,5 @@
 
-import { useCallback, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import CurateSection from './CurateSection'
 import TasteMorphing from './TasteMorphing'
 import YourSection from './YourSection'
@@ -36,14 +36,6 @@ const CurationSection = () => {
       
     },[])
 
-   const calcualteYTranslation = useCallback((progress:number)=>{
-
-    if(window.innerWidth < 768){
-
-      return 50 - 50 * Math.min(1,progress)
-    }
-    return  37 - 87 * Math.min(1,progress )
-    },[window.innerWidth])
    
     useGSAP(()=>{
       if(!curationSectionRef.current) return
@@ -52,9 +44,6 @@ const CurationSection = () => {
 
     if(!curationHeight) return
     const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
-
-    // const totalCurationHeightPrecent = curationHeightPrecent + 50
-    console.log("curation height prencet", curationHeightPrecent.toFixed(3))
 
      const curationTexts = curationSectionRef.current.querySelectorAll(".curation .curation-text")
     
@@ -99,7 +88,6 @@ const CurationSection = () => {
         scrub:1,
         onUpdate: ({ progress }) => {
 
-        // 0.0 -> .22
         if(progress >=curaitontextRangs.curate.start && progress < curaitontextRangs.curate.end){
            const mappedProgress =( ((progress - curaitontextRangs.curate.start) * 1) / (curaitontextRangs.curate.end - curaitontextRangs.curate.start)) 
          
@@ -117,7 +105,7 @@ const CurationSection = () => {
       },
      })
         }
- // .22 -> .32 to 0 -> 1
+
         if(progress >= curaitontextRangs.your.start && progress < curaitontextRangs.your.end){
            const mappedProgress =( ((progress - curaitontextRangs.your.start) * 1) / (curaitontextRangs.your.end - curaitontextRangs.your.start)) 
 
@@ -128,23 +116,17 @@ const CurationSection = () => {
              gsap.to(".your .curation-text .letter  ",{
       yPercent:(i)=>{
         if((i+1)%2 === 0){
-          // console.log("your progress",mappedProgress )
            if((i + 1)%4 === 0){
-            // console.log("translate y your", 50 - 50 *Math.min(1,mappedProgress * 1.3))
             return 50 - 50 *Math.min(1,mappedProgress * 1.3)
           }
-          // console.log("translate y your", 50 - 50 *Math.min(1,mappedProgress * 1.3))
           return -50 + 50 * Math.min(1,mappedProgress * 1.3)
         }else return 0
       },
      })
         }
 
-        // .32 -> .57
         if(progress >=curaitontextRangs.lottie.start && progress <curaitontextRangs.lottie.end){
            const mappedProgress =( ((progress - curaitontextRangs.lottie.start) * 1) / (curaitontextRangs.lottie.end - curaitontextRangs.lottie.start)) 
-
-          //  console.log("mapped progress lottie", mappedProgress)
 
            gsap.to(".lottie .curate-inner",{
             "--x-translation":`${100 - 100 * mappedProgress}%`
@@ -161,8 +143,6 @@ const CurationSection = () => {
       },
      })
         }
-
-       
       },
       }
      })

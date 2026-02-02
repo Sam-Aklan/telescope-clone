@@ -26,8 +26,7 @@ useGSAP(() => {
         pinSpacing:true,
         onUpdate:({progress})=>{
           if(progress >.66 && progress <= 1.){
-            const mappedProgress = ((progress - .66) *(1 - 0)) / (1. - .66) +0.
-            // console.log("mapped progress", mappedProgress.toFixed(2))
+            const mappedProgress = ((progress - .66) *(1 - 0)) / (1. - .66) +0.;
             gsap.set(".black-overlay",{
               opacity: `${30 * mappedProgress}%`,
             })

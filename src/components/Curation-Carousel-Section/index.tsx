@@ -12,15 +12,10 @@ const CurationCarouselSection = () => {
   const carouselCurationRef = useRef<HTMLDivElement>(null)
 
   useGSAP(()=>{
-    // console.log(document.querySelector('.curation')?.clientHeight)
     const curationHeight = document.querySelector('.curation')?.clientHeight
 
     if(!curationHeight) return
     const curationHeightPrecent = (curationHeight / window.innerHeight) * 100
-
-    // console.log("precent net", (curationHeightPrecent ).toFixed(3))
-    // console.log("precent", (curationHeightPrecent + 50).toFixed(3))
-    // console.log("precent", `+=${(curationHeightPrecent + 50).toFixed(3)}%`)
 
     gsap.set(".white-overlay",{
       opacity:0,
@@ -36,7 +31,6 @@ const CurationCarouselSection = () => {
       onUpdate:({progress})=>{
         if(progress > .8 && progress <=.95){
           const mappedProgress =( ((progress - .8) * 1) / (.95 - .8)) 
-          // console.log("mapped progress opacity",mappedProgress)
           gsap.set(".white-overlay",{
             opacity:mappedProgress
           })
@@ -47,11 +41,7 @@ const CurationCarouselSection = () => {
           opacity:0,
         })
       },
-      // onLeave:()=>{
-      //   gsap.set(".white-overlay",{
-      //     opacity:0,
-      //   })
-      // },
+      
     })
 
 

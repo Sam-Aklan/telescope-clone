@@ -84,7 +84,7 @@ body{
 }
 
 .mouse-pointer{
-  @apply bg-primary w-10 h-10 lg:w-20 lg:h-20 rounded-full  transition-transform duration-100 absolute z-20
+  @apply bg-primary w-10 h-10 lg:w-20 lg:h-20 rounded-full  transition-transform duration-100 absolute z-25
 }
 
 .person-name{
@@ -130,10 +130,6 @@ body{
   
 }
 
-/* .stake.line:first-child{
-  @apply absolute top-[10%] left-[40%] bg-white rotate-90 w-[110%] h-auto md:top-[45] md:left-[40%] origin-[0%_50%] z-6 md:rotate-0 md:w-auto
-/* taste morphing */
-
 .lottie{
   clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
   width: 100%;
@@ -171,7 +167,6 @@ body{
 
 
 .curation .section{
-    /* translate: 0% 50%; */
     translate: 0% 50%;
     overflow: hidden;
   }
@@ -236,19 +231,19 @@ body{
   @apply w-18 h-45 md:w-22 md:h-66 lg:w-27.5 lg:h-75 relative
 }
 
-/* .trailing-image-wraper{
-  @apply flex flex-col w-fit h-fit absolute
-} */
 
 .trailing-image{
   @apply w-15 h-15 md:w-20 md:h-20 lg:w-25 lg:h-25 absolute 
 }
+
 .trailing-image-1{
   @apply w-15 h-15 md:w-20 md:h-20 lg:w-25 lg:h-25  
 }
 
+/* telescope footer */
+
 .footer{
-  @apply fixed top-2.5 left-1/2 -translate-x-1/2 w-[var(--footer-width)] h-[var(--footer-height)] z-120 lg:inset-[auto_auto_0.75rem_50%] lg:w-[calc(var(--footer-width)_-_var(--grid-margin)_*_2)] xl:max-w-[1440px] xl:mx-auto 
+  @apply fixed top-2.5 left-1/2 -translate-x-1/2 w-[var(--footer-width)] h-[var(--footer-height)]  lg:inset-[auto_auto_0.75rem_50%] lg:w-[calc(var(--footer-width)_-_var(--grid-margin)_*_2)] xl:max-w-[1440px] xl:mx-auto z-10
 }
 
 .footer-top{
@@ -304,16 +299,13 @@ body{
 }
 
 .bg > .inner{
-  @apply w-full h-full flex flex-col justify-between items-center
+  @apply w-full h-full flex flex-col justify-between items-center pointer-events-none
 }
 
 .inner > .top{
   @apply w-full h-10 px-2 bg-primary
 }
 
-/* .inner > .bottom{
-  @apply w-full h-10 px-2 bg-green-400
-} */
 
 .brand{
   @apply w-[calc(var(--shift)_*_60.8)] h-[calc(var(--shift)_*_12.7)] lg:w-192 lg:h-40 relative 
@@ -321,7 +313,6 @@ body{
 
 .footer .inner .brand{
   --ip:calc(1 - var(--p));
-  /* --ip:0; */
 transform: translateY(calc((-50% - (50svh - 4.15rem + var(--min-h)) * .5) * var(--ip))) translate(calc((-50vw + var(--spacing) * 1) * var(--ip))) translate(calc(4.585rem * var(--ip)));
  
 }
@@ -342,17 +333,7 @@ transform: translateY(calc((-50% - (50svh - 4.15rem + var(--min-h)) * .5) * var(
   @apply flex flex-col items-start justify-center 
 }
 
-
-/* @keyframes dashOffsetSmooth {
-  from{
-    stroke-dashoffset: 314%;
-  }
-  to{
-stroke-dashoffset: -.01%;
-  }
-} */
-
-
+/* curation section */
 .curation >.curate{
   clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 100%);
   transform: translate(0%, -50%);
@@ -393,11 +374,6 @@ stroke-dashoffset: -.01%;
   transform: translate(var(--x-translation),0%) !important;
 } 
 
-/* @media screen and(max-width:767px) {
-  :root{
-    --min-scale:.2;
-  }
-} */
 
 @media screen and (min-width:768px) {
   :root{
@@ -406,24 +382,6 @@ stroke-dashoffset: -.01%;
   }
 }
 
-@media screen and(min-width:768) {
-  :root{
-     --tilt:15svh;
-  }
-  .curation .section{
-    translate: 0% 37%;
-  }
-
-  .curation >.curate{
-  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 100%);
-  transform: translate(0%, -50%);
-}
-.curation >.your{
-  clip-path: polygon(0 0, 100% var(--tilt), 100% 100%, 0 100%);
-  transform: translate(0%, -30%);
-}
-
-}
 
 @media screen and (min-width:1024px) {
 
@@ -455,7 +413,6 @@ stroke-dashoffset: -.01%;
 
   .footer .inner .brand {
     --ip: calc(1 - var(--p));
-    /* --ip:0.; */
     transform: translateY(calc((50% + (50svh - 10.5rem + var(--min-h)) * 0.5) * var(--ip))) translate(calc((var(--min-w) * -0.5 + var(--shift) * 2) * var(--ip))) translate(calc(4.15rem * var(--ip)));
   }
 
@@ -494,12 +451,5 @@ stroke-dashoffset: -.01%;
   transform: translate(0%, -55%);
 }
 
-
-
-  /* .lottie{
-  
-  clip-path: polygon(0 var(--tilt),100% 0,100% 100%,0 calc(100% - var(--tilt)));
-  
-  } */
 }
 
