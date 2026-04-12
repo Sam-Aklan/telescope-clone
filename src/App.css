@@ -198,8 +198,8 @@ body{
 
 .banner-img-container .image.mask{
   position: absolute;
-  -webkit-mask-image: url("/pics/zoom/stefan-moertl.png");
-  mask-image: url("/pics/zoom/stefan-moertl.png");
+  -webkit-mask-image: url("/pics/zoom/stefan-moertl-optimized.png");
+  mask-image: url("/pics/zoom/stefan-moertl-optimized.png");
   -webkit-mask-size: cover;
   mask-size: cover;
   -webkit-mask-position: center;

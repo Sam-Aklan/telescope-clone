@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { getPosition } from "../../utils/zoomEffect"
 
 const introImages = [
-    {img:"albert-dera.jpg",z:"z-4",size:"w-20 h-20 lg:w-35 lg:h-35 xl:w-40 xl:h-40"},
+    {img:"albert-dera-optimized.jpg",z:"z-4",size:"w-20 h-20 lg:w-35 lg:h-35 xl:w-40 xl:h-40"},
     {img:"charlie-green.jpg",z:"z-1",size:"w-20 h-20 lg:w-35 lg:h-35 xl:w-40 xl:h-40"},
     {img:"christian-buehner.jpg",z:"z-1",size:"w-20 h-20 lg:w-35 lg:h-35 xl:w-40 xl:h-40"},
     {img:"abubakr-palestine.jpg",z:"z-4",size:"w-20 h-20 lg:w-35 lg:h-35 xl:w-40 xl:h-40"},
