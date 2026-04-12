@@ -16,7 +16,7 @@ function App() {
   "./pics/albert-einstein.jpg",
   "./pics/Mozart.jpg",
   "./pics/frida-kahlo.jpg",
-  "./intro/albert-dera.jpg",
+  "./pics/intro/albert-dera-optimized.jpg",
 "./intro/charlie-green.jpg",
 "./intro/christian-buehner.jpg",
 "./intro/abubakr-palestine.jpg",
@@ -29,7 +29,7 @@ function App() {
 "./intro/sara-palestine.jpg",
 "./intro/pexels-hk.jpg",
 "./zoom/stefan-moertl.jpg",
-"./zoom/stefan-moertl.png",
+"./zoom/stefan-moertl-optimized.png",
 ],[])
 
 const{isDone,progress} = useImagePreloader(images)
