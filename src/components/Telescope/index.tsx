@@ -20,7 +20,7 @@ const Telescope = () => {
   gsap.to(".footer",{
     scrollTrigger:{
       trigger:"#stack-wrapper",
-      start:"+=600%",
+      start:"+=500%",
       end:`+=230%`,
       scrub:1,
       onUpdate:({progress})=>{

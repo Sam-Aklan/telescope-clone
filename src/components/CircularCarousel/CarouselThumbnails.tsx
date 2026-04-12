@@ -6,7 +6,7 @@ const CarouselThumbnails = ({thumbNailsImages}:{thumbNailsImages:string[]}) => {
 
   const mapRangs = useCallback(()=>{
     const newValue = ((window.innerWidth - 320) / (768 - 320)) * (800 - 300) + (300)
-    return `translate(${-newValue},-437.6721163)`
+    return `translate(${-newValue -50},-437.6721163)`
   },[])
 
   const transfomMatrix = useMemo(()=>{

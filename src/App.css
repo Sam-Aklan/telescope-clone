@@ -220,7 +220,7 @@ body{
 }
 
 .thumbNail{
-  @apply w-10 h-10 md:w-20 md:h-20 lg:w-25 lg:h-25 absolute top-0 left-0
+  @apply w-17 h-17 md:w-20 md:h-20 lg:w-25 lg:h-25 absolute top-0 left-0
 }
 
 .thumb-slide{

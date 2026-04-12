@@ -25,9 +25,6 @@ function useWindowSize(debounceDelay = 300) {
   const [windowSize, setWindowSize] = useState<WindowSize>(getSize);
   const [breakpoints, setBreakpoints] = useState(getBreakpoints);
 
-
-    
-
   const debouncedWindowSize = useDebounce(windowSize, debounceDelay);
 
   useEffect(() => {
@@ -67,18 +64,6 @@ function useWindowSize(debounceDelay = 300) {
     };
     
   }, []);
-
-  
-  //   const breakpoints = useMemo(() => {
-  //   const width = debouncedWindowSize.width;
-
-  //   return {
-  //     isMobile: width < 768,
-  //     isTablet: width >= 768 && width < 1024,
-  //     isDesktop: width >= 1024 && width < 1280,
-  //     isXlarge: width >= 1280,
-  //   };
-  // }, [debouncedWindowSize.width]);
 
   return {
     ...breakpoints,
