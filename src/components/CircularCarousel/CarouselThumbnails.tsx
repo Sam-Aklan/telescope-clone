@@ -26,7 +26,7 @@ const CarouselThumbnails = ({thumbNailsImages}:{thumbNailsImages:string[]}) => {
       className="thumbNail"
 
         >
-         <img src={`./pics/intro/${thumb}`} alt="" className='w-full h-full' loading='lazy' />
+         <img src={`./pics/intro/${thumb}`} alt="" className='w-full h-full'/>
         </div>)}
       </div>
 

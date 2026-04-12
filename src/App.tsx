@@ -48,12 +48,13 @@ const{isDone,progress} = useImagePreloader(images)
   
   return (
     <>
-     { !isDone?<OverLayLoader progress={progress}/>:<ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
+     { !isDone&&<OverLayLoader progress={progress}/>}
+     <ReactLenis root ref={lenisRef} options={{ lerp: 0.05, autoRaf: false }}>
         <ZoomEffectSection/>
         <CurationCarouselSection/>
         <Telescope/>
         <Section4/>
-      </ReactLenis>}
+      </ReactLenis>
     </>
   );
 }
